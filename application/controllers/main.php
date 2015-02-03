@@ -14,7 +14,8 @@ class Main extends CI_Controller {
 	{
 		$this->load->view('principal.php',$output);
 	}
-/***** Funciones GroceryCrud para Modulo Proyectos *******/
+/********* Funciones GroceryCrud para Modulo Proyectos *********/
+//----------- Creacion de Proyectos Version hecha a mano -------/
 	public function iframeRegProyectos(){
 		$this->load->view('proyectos/iframeRegProyectos');
 	}
@@ -50,7 +51,6 @@ class Main extends CI_Controller {
 
 	public function dias_por_tipo(){
 		$tempo = json_decode($_POST['data']);
-
 		if ($tempo->localiza === 'URBANO'){
 			$query = $this->db->query("select urbano as dias from tipo_proyecto where desc_tipo_proy = '".$tempo->tipo."'");
 		}else if ($tempo->localiza === 'RURAL'){
@@ -63,7 +63,8 @@ class Main extends CI_Controller {
 		{ 
 			$fecha = strtotime($tempo->fecha_ini);
 			$nueva_fecha = date('d-m-Y',strtotime('+'.$row->dias.' days', $fecha));
-			echo $nueva_fecha;
+			//echo $nueva_fecha;
+			return('1');
 	 	 }
 	}
 
@@ -81,9 +82,37 @@ class Main extends CI_Controller {
 			echo "<tr><td class='proyecto'>".$row->id_proyecto."</td><td class='tipo_proyecto'>".$row->tipo_proyecto."</td><td class='prioridad_proyecto'>".$row->prioridad."</td><td>".$row->fecha_inicio."</td><td>".$row->fecha_fin."</td><tr>";
 	 	 }
 	}
+
+	//---------- Registro de Proyectos Version GROSERY CRUD -------//
+	public function iframeRegProyectos2(){
+		$this->load->view('proyectos/iframeRegProyectos2');
+	}
+
+	public function registro_proyectos2(){
+		$crud = new grocery_CRUD();
+		$crud->set_subject('Creacion de Proyectos');
+		$crud->set_table('proyecto');
+
+		$crud->required_fields('id_proyecto', 'num_sub_proyectos', 'tipo_proyecto', 'localizacion', 'prioridad', 'responsable', 'naturaleza', 'fecha_inicio', 'fecha_fin');
+
+		$crud->set_relation("tipo_proyecto", "tipo_proyecto", "desc_tipo_proy");
+		$crud->set_relation("prioridad", "prioridad_proy", "desc_prioridad");
+		$crud->set_relation("tipo_proyecto", "tipo_proyecto", "desc_tipo_proy");
+		$crud->set_relation("localizacion", "localizacion", "localizacion");
+		$crud->set_relation("responsable", "responsable", "nombre_responsable");
+		$crud->set_relation("naturaleza", "naturaleza_proy", "desc_naturaleza");
+
+		$crud->set_field_upload("asbuilt", "assets/uploads/files");
+
+		$output = $crud->render();
+
+		echo $this->load->view('proyectos/regProyectos2', $output, true);
+		//echo $this->load->view('proyectos/regProyectos2');
+	}
+
 /*************************************************************/
 /******* Funciones GroceryCrud para Modulo Configuraciones ********/
-//------- Para registro de Usuarios
+	//------- Para registro de Usuarios ------------//
 	public function iframeUsr(){
 		$this->load->view('backend/iframeRegUsr');
 	}
@@ -113,7 +142,7 @@ class Main extends CI_Controller {
 	}
 	public function regTipoProyecto(){
 		$crud = new grocery_CRUD();
-		$crud->set_subject('Tipempos por Tipo de Proyecto');
+		$crud->set_subject('Tiempos por Tipo de Proyecto');
 		$crud->set_table('tipo_proyecto');
 
 		$crud->display_as('desc_tipo_proy', 'Descripcion del Proyecto');
@@ -366,7 +395,6 @@ class Main extends CI_Controller {
 		echo json_encode(array('status' => $status, 'msg' => $msg, 'archivo' => $data['file_name']));
 	}
 
-
 	public function importarMateriales(){
 		$file = './assets/uploads/files/'.$_POST['data'];//'./files/test.xlsx';
 		//load the excel library
@@ -515,7 +543,6 @@ class Main extends CI_Controller {
 		{ 
 			echo "<tr><td>".$row->cod_unidad."</td><td class='tipo_proyecto'>".$row->descripcion."</td><tr>";
 	 	 }
-	
 	}
 /*************************************************************/
 	public function index(){

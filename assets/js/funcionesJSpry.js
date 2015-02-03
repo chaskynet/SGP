@@ -2,16 +2,13 @@ $(document).ready(function ()
 {
   carga_tipo_proy();
   carga_naturaleza();
-  
   carga_prioridad();
   lista_proyectos();
 });
 
 //---- Guardar Orden/Asignacion -------
 $(document).on('click', '#guardar', function(){
-  //var cabecera = [];
   var cabecera = new Object();
-  
   cabecera.codigo = $('#codigo_proyecto').val();
   cabecera.numsubproy = $('#numsubproy').val();
   cabecera.tipo = $('#tipo_proyecto').val();

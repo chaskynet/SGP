@@ -240,6 +240,12 @@ $(function(){
 
 });
 
+	// mi modificacion
+	$(document).on('change','#field-fecha_inicio', function(){
+	var var_fecha = $("#field-fecha_inicion").val();
+	alert(var_fecha);
+	});
+
 function displaying_and_pages(this_container)
 {
 	if (this_container.find('.crud_page').val() == 0) {

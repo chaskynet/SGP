@@ -17,9 +17,10 @@ var abreRegProyectos = function(){
 		iframeProyectos();
 	});
 }
+
 var iframeProyectos = function(){
 	$.ajax({
-       url: 'iframeRegProyectos',
+       url: 'iframeRegProyectos2',
       // data: data,
        type: "GET",
        //dataType: "html",
