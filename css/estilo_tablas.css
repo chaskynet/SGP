@@ -1,0 +1,251 @@
+.tabla{
+	display: table;
+	width: 100%;
+	font-family: verdana;
+}
+.fecha{
+	height: 25px;
+	width: 100px;
+	margin-top: 10px;
+	padding: 1px 3px;
+	font-size: 10px;
+}
+.div_codigo{
+	float: left;
+}
+.div_fecha{
+	float: left;
+	width: 150px;
+	padding-left: 15px;
+}
+.div_proveedor{
+	float: left;
+}
+.lista_proveedores{
+	width: 120px;
+}
+.div_factura{
+	float: left;
+	padding-left: 15px;
+}
+.lista_facturas{
+	width: 80px;
+}
+.btn{
+	font-size: 12px;
+}
+.div_botones{
+	width: 480px;
+	margin: auto;
+}
+.lista_codigos{
+	width: 40px;
+}
+
+.tabla .fila_cuerpo:nth-child(odd) {
+   background-color: #ffc;
+   color:#000;
+ }
+.tabla .fila_cuerpo:nth-child(even) {
+   background-color: #fff;
+   color:#000;
+}
+
+.tabla-cabecera{
+	display: table;
+	width: 100%;
+	position: relative;
+	font-size: 10px;
+	font-weight: bold;
+}
+
+.footer_ccif{
+	display: table-footer-group;
+	font-family: verdana;
+	font-size: 13px;
+	color: red;
+}
+.etiqueta_totales{
+	width: 240px;
+	border-top: 1px solid;
+	padding-left: 254px;
+}
+.total_valor_cif{
+	width: 120px;
+	border-top: 1px solid;
+}
+.total_gastos{
+	width: 90px;
+	border-top: 1px solid;
+}
+.total_costo{
+	width: 100px;
+	border-top: 1px solid;
+}
+.cuerpo{
+	height: 80%;
+	overflow: auto;
+	font-size: 10px;
+}
+
+.cuerpo_ccif{
+	height: 50%;
+	overflow: auto;
+	font-size: 10px;
+}
+
+.cuerpo_gastos_cif{
+	height: 25%;
+	overflow: auto;
+	font-size: 12px;
+}
+
+.fila_cabecera{
+	display: table-row;
+
+}
+.fila_cuerpo{
+	display: table-row;
+}
+.tabla .fila_cuerpo:hover{
+	background-color: #ccc;
+	color: #000;
+}
+
+.columna{
+	display: table-cell;
+	border-bottom: 1px solid;
+}
+.acciones{
+	width: 44px;
+}
+.acciones_gasto{
+	width: 55px;
+}
+.chk{
+	width: 10px;
+}
+.codigo{
+	width: 50px;
+}
+.descripcion{
+	width: 120px;
+}
+.procedencia{
+	width: 63px;
+}
+.unidad{
+	width: 50px;
+}
+.empaque{
+	width: 50px;
+}
+.costo{
+	width: 50px;
+	text-align: right;
+}
+.utilidad{
+	width: 50px;
+	text-align: right;
+}
+.precio{
+	width: 50px;
+	text-align: right;
+}
+.cantidad{
+	text-align: right;
+}
+.cantidad_cif{
+	width: 50px;
+}
+.unidad_cif{
+	width: 40px;
+	text-align: center;;
+}
+.valor_unit_cif{
+	width: 40px;
+}
+.avg_gya{
+	width: 45px;
+}
+.gastos_y_aranceles{
+	width: 40px;
+}
+.valor_cif_total_usd{
+	width: 45px;
+}
+.costo_total_usd{
+	width: 45px;
+}
+.costo_unit_usd{
+	width: 40px;
+}
+.avg_utilidad{
+	width: 40px;
+}
+.precio_lista{
+	width: 55px;
+}
+.password{
+	width: 110px;
+}
+
+.caja-input, input[type="text"], input[type="password"]{
+	
+	margin-bottom: 3px;
+	margin-top: 3px;
+	font-size: 12;
+	/*padding: 1px 3px;*/
+}
+.caja-botones{
+	width: 65%;
+	float: right;
+	text-align: right;
+}
+.caja-btn{
+	width: 20%;
+	display: inline;
+}
+
+.panel{
+	height: 7%;
+}
+.cargaArchivo{
+	width: 70%;
+	background-color: #B1B1B1;
+}
+
+.buscaArticulos{
+	z-index:2;
+ 	position:relative;
+}
+.gastos{
+	margin-top: 10px;
+	width: 35%;
+	height: 70%;
+}
+.plus_icon{
+	width: 20px;
+}
+.totales_gastos{
+	float: right;
+	font-size: 12px;
+	font-weight: bold;
+}
+.desc_gasto{
+	width: 155px;
+	padding-right: 5px;
+}
+.monto_gasto{
+	width: 50px;
+}
+.moneda_gasto{
+	text-align: center;
+}
+.suma_gasto{
+	width: 100px;
+}
+.avg_gasto{
+	width: 30px;
+	padding-left: 5px;
+}

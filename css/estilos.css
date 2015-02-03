@@ -1,0 +1,240 @@
+body{
+	background: #fff;
+	font-family: sans-serif;
+	font-size: 11px;
+}
+.body_login{
+	background-color: #C7C7C7;
+	background-image: url(../imagenes/ORIENTE1.jpg);
+}
+#tipo_proyecto{
+	width: 220px;
+}
+#fechas{
+	float:right;
+	margin-top: 20px;
+}
+#cabecera{
+	width: 50%;	
+	float: left;
+
+}
+#lista_proyectos{
+	width: 50%;
+	float: right;
+}
+.lupa {
+	max-width: 20px;
+	height: 20px;
+}
+#libros
+{
+	float:right;
+	margin-right:0px;
+}
+.clearfloat {
+	clear: both;
+	height: 1;
+	font-size: 1px;
+	line-height: 0px;
+}
+
+#sidebar{
+	width:20%;
+	float: left;
+}
+
+#loginBox{
+	background: #ffffff;
+	width: 50%;
+	position: absolute;
+	top: 25%;
+	left: 25%;
+}
+
+#loginTable td{
+	border-bottom: none;
+}
+
+#loginTable{
+	width: 70%;
+	margin: auto;
+}
+
+#cuerpo{
+	vertical-align: bottom;
+	
+}
+
+.innerimg {
+	background-position: left center; 
+	padding-left: 17px; 
+	width: 80px; 
+	background-image: url(../imagenes/calendario.png); 
+	background-repeat: no-repeat;
+}
+
+.cabeceraDePagina{
+	background: #ffffff;
+	/*width: 60%;*/
+	margin-left: 70px;
+	margin-right: 0px;
+	width: 700px;
+	margin: auto;
+}
+.cabeceraDePagina img{
+	width: 250px;
+}
+.cabeceraDePagina_login{
+	width: 150px;
+	margin-left: 30%;
+	margin-bottom: 15px;
+}
+.wrapper{
+	background: #fff;
+	
+	margin: auto;
+}
+
+.wrapper_login{
+	height: 400px;
+	width: 400px;
+	margin-top: 600px;
+	margin:auto;
+}
+
+.wrapper2{
+	background: #FFF;
+	width: 70%;
+	margin: auto;
+}
+
+.wrapperCompras{
+	background: #FFF;;
+	width: 80%;
+	margin: auto;
+}
+
+#header{
+	position: relative;
+	width: 100%;
+}
+#buscaArticulos{
+	background-color: #C7C7C7;
+}
+#bodyData{
+	position: realtive;
+	height: 320px;
+	overflow: auto;
+	
+	margin-left: 70px;
+	margin-right: 0px;
+	width: 798px;
+	margin: auto;
+	/*margin-right: 87px;
+	margin-left: 87px;*/
+}
+#bodyTotales{
+	margin-left: 70px;
+	margin-right: 0px;
+	width: 800px;
+	margin: auto;
+}
+#bodyTotales table{
+	padding-right: 10px;
+}
+table{
+	width: 90%;
+	border-collapse: collapse;
+	margin: auto;
+}
+
+th, tfoot{
+	padding: 0 0 0 0;
+	background-color: #666;
+	border-top: 1px solid #666;
+	border-bottom: 1px solid #666;
+	color: #FFF;
+}
+td{
+	padding: 0 1px 0 1px;
+	border-bottom: solid 1px #CCC;
+}
+
+caption{
+	font-size: 1.2em;
+	font-weight: bold;
+}
+
+#tabla_totales{
+	width: 80%;
+}
+
+#tblPdf{
+	font-size: 10px;
+}
+#tblPdf th{
+	font-size: 10px;
+	color: #FFF;
+	height: 15px;
+}
+
+.facturasVentas input{
+	background-color: #FFC;
+}
+
+.cabezaTablaVentas{
+	margin-right:100px;
+	margin-left:50px;
+}
+
+.tablaFacturasVentas{
+	background-color: #FFC;
+}
+
+.tablaFacturasVentasPdf{
+	background-color: #FFFFFF;
+}
+
+.tablaFacturasCompras{
+	background-color: #FFF;
+}
+/*#cuerpo tr:nth-child(2n+1){
+background-color: #B6B6B6;
+color:white;
+}*/
+
+.tablaFacturasComprasPdf{
+	background-color: #FFFFFF;
+}
+
+.tabla_proyectos tr:hover{
+	background-color: #FCFFCB;
+} 
+
+.tablaFacturasCompras:hover{
+	background-color: #FFC;
+}
+
+.buscador{
+	float:right;
+	margin-top:6px;
+	color:#F4F1F1;
+}
+
+.llaves {
+	width:55px;
+}
+
+#data{
+	margin-top: 20px;
+}
+.proyecto{
+	width: 60px;
+}
+.tipo_proyecto{
+	width: 250px;
+}
+.prioridad_proyecto{
+	width: 50px;
+}
