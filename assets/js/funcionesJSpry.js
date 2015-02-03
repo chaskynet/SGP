@@ -33,6 +33,12 @@ $(document).on('click', '#guardar', function(){
   else if ($('#localizacion_proyecto').val().length < 1){
     alert('Debe llenar la Localizacion del Proyecto');
   }
+  else if ($('#naturaleza_proyecto').val().length < 1){
+    alert('Debe llenar la Naturaleza del Proyecto');
+  }
+  else if ($('#prioridad_proyecto').val().length < 1){
+    alert('Debe llenar la Prioridad del Proyecto');
+  }
   else{
     var newObj = JSON.stringify(cabecera);
     $.ajax({
