@@ -9,11 +9,11 @@ endforeach;
  foreach($js_files as $file): ?>
 	<script src="<?php echo $file; ?>"></script>
 <?php endforeach; ?>
-	<script src="../assets/js/funcionesJSimportaManoObra.js"></script>
 	<script src="../assets/js/AjaxFileUploader/ajaxfileupload.js"></script>
+	<script src="../assets/js/funcionesJSimportarUnidades.js"></script>
 </head>
 <body>
-	<div id="form_importar">
+<div id="form_importar">
 		<form method="post" action="" id="upload_file">
 
 		    <label for="userfile">Archivo: </label>
@@ -25,12 +25,9 @@ endforeach;
     	<label for="archivo_subido">Archivo Subido: </label>
 		<span id="archivo_subido"></span>
 	</div>
+<h1>Registro de Unidades</h1><a href="#" id="fimportar">Importar desde archivo Excel</a>
 <div>
-	<h1>Registro de Mano de Obra</h1><a href="#" id="fimportar">Importar desde archivo Excel</a>
-</div>
-
-<div>
-		<?php echo $output; ?>
+	<?php echo $output; ?>
 </div>
 </body>
 </html>

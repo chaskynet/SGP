@@ -8,7 +8,7 @@ endforeach;
  foreach($js_files as $file): ?>
 	<script src="<?php echo $file; ?>"></script>
 <?php endforeach; ?>
-<script type="text/javascript">
+<script type="text/javascript"> 
 // $(document).on('change','#field-fecha_inicio', function(){
 // 	var tipo = $('#field-tipo_proyecto');
 //   var localiza = $('#field-localizacion');

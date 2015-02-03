@@ -141,8 +141,6 @@ $(document).on('click', '#calcular', function(){
        }
     });
   }
-  
-  
 });
 
 var carga_naturaleza = function(){

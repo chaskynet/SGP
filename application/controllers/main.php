@@ -476,7 +476,23 @@ class Main extends CI_Controller {
 		$output = $crud->render();
 		echo $this->load->view('mano_de_obra/regManoObra', $output, true);
 	}
+//---------------- Registro de Unidades version GroceryCrud ---//
+	public function iframeRegUnidades2(){
+		$this->load->view('unidades/iframeRegUnidades2');
+	}
+	public function registro_unidades2(){
+		$crud = new grocery_CRUD();
 
+		$crud->set_table('unidades');
+		//$crud->set_relation("proyecto", "proyecto", "id_proyecto");
+		$crud->set_subject('Registro de Unidades');
+		$crud->required_fields('cod_unidad', 'idproducto', 'descripcion', 'cantidad', 'codigo_fab', 'idproducto_fab', 'descripcion_item', 'unidad', 'archivo');
+
+		$crud->set_field_upload("archivo", "assets/uploads/files");
+
+		$output = $crud->render();
+		echo $this->load->view('unidades/regUnidades2', $output, true);
+	}
 //------------------------------------------------------------//
 	public function iframeRegUnidades(){
 		$this->load->view('unidades/iframeRegUnidades');

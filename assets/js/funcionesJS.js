@@ -74,7 +74,7 @@ $(document).on('click', '#regUnidades', function(){
 
 var iframeUnidades = function(){
   $.ajax({
-       url: 'iframeRegUnidades',
+       url: 'iframeRegUnidades2',
       // data: data,
        type: "GET",
        //dataType: "html",
