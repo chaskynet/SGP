@@ -351,7 +351,7 @@ class Main extends CI_Controller {
 		        // $file_id = $this->files_model->insert_file($data['file_name'], $_POST['title']);
 		        // if($file_id)
 		        // {
-		        //     $status = "success";
+		        //     $status = "success"; 
 		             $msg = "Archivo subido correctamente!";
 		        // }
 		        // else
