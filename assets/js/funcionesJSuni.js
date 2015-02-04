@@ -113,7 +113,6 @@ $(document).on('click', '#guardar', function(){
 
   $("#cuerpo_tabla_unidad tbody tr").each(function(){
     var unidad = new Object();
-    var lista_productos = new Array();
 
     unidad.cod_unidad = cod_unidad;
     unidad.desc_unidad = desc_unidad;
@@ -122,6 +121,7 @@ $(document).on('click', '#guardar', function(){
     unidad.cantidad = $(this).find('#cantidad').val();
     lista_productos.push(unidad);
   });
+  
   var newObj2 = JSON.stringify(lista_productos);
   
   $.ajax({

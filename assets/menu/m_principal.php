@@ -60,7 +60,7 @@
                       <li><a href="#" id="regMateriales">Registro de Materiales</a></li>
                       <li><a href="#" id="regManoObra">Registro de Mano de Obra</a></li>
                       <li class="divider"></li>
-                      <li><a href="#" id="regUnidades2">Registro de Unidades</a></li>
+                      <li><a href="#" id="regUnidades2">Registro de Unidades desde Archivo</a></li>
                       <li><a href="#" id="regUnidades">Registro de Unidades Manual</a></li>
                       <li class="divider"></li>
                       <li><a href="#" id="regUbicacionPostes">Registro de Ubicacion Postes</a></li>

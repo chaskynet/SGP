@@ -10,7 +10,7 @@
 
 	<script src="../assets/js/jquery.min.js" type="text/javascript"></script>
 	<script src="../assets/js/jquery-ui.min.js" type="text/javascript"></script>
-	<script src="../assets/js/funcionesJSuni.js" type="text/javascript"></script>
+	<script src="<?php echo base_url(); ?>assets/js/funcionesJSuni.js" type="text/javascript"></script>
 <body>
 <!-- Ventana para busqueda de articulos-->
 	<div class="buscaArticulos" id="buscaArticulos">
