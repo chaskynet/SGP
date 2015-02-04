@@ -520,7 +520,9 @@ public function importarUnidades(){
 		//$crud->set_relation("proyecto", "proyecto", "id_proyecto");
 		$crud->set_subject('Registro de Unidades');
 		$crud->required_fields('cod_unidad', 'idproducto', 'descripcion', 'cantidad', 'codigo_fab', 'idproducto_fab', 'descripcion_item', 'unidad', 'archivo');
+
 		$crud->display_as('archivo', 'Imagen de Referencia');
+		
 		$crud->set_field_upload("archivo", "assets/uploads/files");
 
 		$output = $crud->render();
