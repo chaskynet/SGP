@@ -34,7 +34,7 @@
 <!-- Fin ventana Busqueda de Articulos -->
 	<div>
 		<center>
-			<h1>Creacion de Unidades</h1>
+			<h1>Creacion de Unidades Manual</h1>
 		</center>
 	</div>
 	<div id="cabecera">

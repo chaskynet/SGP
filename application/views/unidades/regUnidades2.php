@@ -9,8 +9,8 @@ endforeach;
  foreach($js_files as $file): ?>
 	<script src="<?php echo $file; ?>"></script>
 <?php endforeach; ?>
-	<script src="../assets/js/AjaxFileUploader/ajaxfileupload.js"></script>
-	<script src="../assets/js/funcionesJSimportarUnidades.js"></script>
+	<script src="<?php echo base_url(); ?>assets/js/AjaxFileUploader/ajaxfileupload.js"></script>
+	<script src="<?php echo base_url(); ?>assets/js/funcionesJSimportarUnidades.js"></script>
 </head>
 <body>
 <div id="form_importar">

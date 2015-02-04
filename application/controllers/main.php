@@ -574,21 +574,22 @@ public function importarUnidades(){
            '</div>';
 	 	 }
 	}
-//-------------------------------------------------------------//
+//---------------- Guarda Cabecera de Unidad y Articulos Asociados a la unidad-----------------------------------//
 	public function guarga_unidad(){
 		$tempo = json_decode($_POST['data2']);
 		foreach ($tempo as $key) 
 		{
 			//echo ("insert into producto_ordsrv (COD_OSRV, COD_PRO, DES_PRO, CANT_PRO, PRECIO) values('".$tmp."', '".$key->codigo."', '".$key->descripcion."', '".$key->cantidad."', '0.00')");
-			$query = $this->db->query("insert into unidades (cod_unidad, descripcion, codigo_fab, cantidad) values('".$key->cod_unidad."', '".$key->desc_unidad."', '".$key->codigo."', '".$key->cantidad."')");
+			$query = $this->db->query("insert into unidades (cod_unidad, descripcion, codigo_fab, descripcion_item, cantidad) values('".$key->cod_unidad."', '".$key->desc_unidad."', '".$key->codigo."', '".$key->descripcion."', '".$key->cantidad."')");
 		}
 	}
+
 //-------------------------------------------------------------//	
 	public function carga_unidades(){
-		$query = $this->db->query("select * from unidades");
+		$query = $this->db->query("SELECT distinct(cod_unidad), descripcion FROM `unidades` ");
 		foreach ($query->result() as $row) 
 		{ 
-			echo "<tr><td>".$row->cod_unidad."</td><td class='tipo_proyecto'>".$row->descripcion."</td><tr>";
+			echo "<tr><td style='height: 25px;'>".$row->cod_unidad."</td><td class='tipo_proyecto'>".$row->descripcion."</td><tr>";
 	 	 }
 	}
 /*************************************************************/

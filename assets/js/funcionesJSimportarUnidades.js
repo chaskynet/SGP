@@ -44,9 +44,9 @@ $(function() {
 			secureuri		:false,
 			fileElementId	:'userfile',
 			dataType		: 'json',
-			data			: {
-				'title'				: $('#title').val()
-			},
+			// data			: {
+			// 	'title'				: $('#title').val()
+			// },
 			success	: function (data, status)
 			{
 				if(data.status != 'error')

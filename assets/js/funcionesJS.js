@@ -68,13 +68,30 @@ var iframeManoObra = function(){
 };
 
 //-------------Registro de Unidades ---------
+$(document).on('click', '#regUnidades2', function(){
+    iframeUnidades2();
+});
+
+var iframeUnidades2 = function(){
+  $.ajax({
+       url: 'iframeRegUnidades2',
+      // data: data,
+       type: "GET",
+       //dataType: "html",
+       success: function(response)
+       {
+         $('#data').html(response);
+       }
+    });
+};
+
 $(document).on('click', '#regUnidades', function(){
     iframeUnidades();
 });
 
 var iframeUnidades = function(){
   $.ajax({
-       url: 'iframeRegUnidades2',
+       url: 'iframeRegUnidades',
       // data: data,
        type: "GET",
        //dataType: "html",

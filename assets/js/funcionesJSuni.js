@@ -16,7 +16,7 @@ $(document).ready(function ()
           var tamcheck = $( "input:checkbox:checked" ).length;
           $( "input[name='articulo[]']:checked").each(function()
             {
-              var id = $(this).attr("id");
+              //var id = $(this).attr("id");
               var cadena = '<tr>'
                               +'<td class="columna acciones">'
                               //+'<input type="hidden" id="id_fila" >'
@@ -100,7 +100,8 @@ $(document).on('click','#elimina_prod',function(){
   $(objFila).remove();
 
 });
-//---- Guardar Orden/Servicio -------
+
+//---- Guardar Unidad -------
 $(document).on('click', '#guardar', function(){
   //var cabecera = [];
   
@@ -112,6 +113,8 @@ $(document).on('click', '#guardar', function(){
 
   $("#cuerpo_tabla_unidad tbody tr").each(function(){
     var unidad = new Object();
+    var lista_productos = new Array();
+
     unidad.cod_unidad = cod_unidad;
     unidad.desc_unidad = desc_unidad;
     unidad.codigo = $(this).find('#codigo').text();
@@ -120,7 +123,7 @@ $(document).on('click', '#guardar', function(){
     lista_productos.push(unidad);
   });
   var newObj2 = JSON.stringify(lista_productos);
-  alert(newObj2);
+  
   $.ajax({
         url: 'guarga_unidad',
         data: {data2: newObj2},
