@@ -484,10 +484,10 @@ public function importarUnidades(){
 		$data= $arr_data;
 		//$data = json_encode($data);
 		//echo $data;
-		$modif = $this->$db->query( 'SET @@global.max_allowed_packet = ' . 500 * 1024 * 1024 );
+		//$modif = $this->$db->query( 'SET @@global.max_allowed_packet = ' . 500 * 1024 * 1024 );
 		foreach ($data as $key) {
 			$sql = 'insert into unidades (cod_unidad, idproducto, descripcion, cantidad, codigo_fab, idproducto_fab, descripcion_item, unidad) values("'.$key["B"].'", "'.$key["C"].'", "'.addslashes($key["D"]).'", "'.$key["E"].'","'.$key["F"].'","'.$key["G"].'","'.addslashes($key["H"]).'","'.$key["I"].'")';
-			$this->$db->query( 'SET @@global.max_allowed_packet = ' . strlen( $sql ) + 1024 );
+			//$this->$db->query( 'SET @@global.max_allowed_packet = ' . strlen( $sql ) + 1024 );
 			$insertar = $this->db->query($sql);
 			
 		}
@@ -520,7 +520,7 @@ public function importarUnidades(){
 		//$crud->set_relation("proyecto", "proyecto", "id_proyecto");
 		$crud->set_subject('Registro de Unidades');
 		$crud->required_fields('cod_unidad', 'idproducto', 'descripcion', 'cantidad', 'codigo_fab', 'idproducto_fab', 'descripcion_item', 'unidad', 'archivo');
-
+		$crud->display_as('archivo', 'Imagen de Referencia');
 		$crud->set_field_upload("archivo", "assets/uploads/files");
 
 		$output = $crud->render();
