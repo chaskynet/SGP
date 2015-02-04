@@ -484,9 +484,11 @@ public function importarUnidades(){
 		$data= $arr_data;
 		//$data = json_encode($data);
 		//echo $data;
+		$modif = $this->$db->query( 'SET @@global.max_allowed_packet = ' . 500 * 1024 * 1024 );
 		foreach ($data as $key) {
-			
-			$insertar = $this->db->query('insert into unidades (cod_unidad, idproducto, descripcion, cantidad, codigo_fab, idproducto_fab, descripcion_item, unidad) values("'.$key["B"].'", "'.$key["C"].'", "'.addslashes($key["D"]).'", "'.$key["E"].'","'.$key["F"].'","'.$key["G"].'","'.addslashes($key["H"]).'","'.$key["I"].'")');
+			$sql = 'insert into unidades (cod_unidad, idproducto, descripcion, cantidad, codigo_fab, idproducto_fab, descripcion_item, unidad) values("'.$key["B"].'", "'.$key["C"].'", "'.addslashes($key["D"]).'", "'.$key["E"].'","'.$key["F"].'","'.$key["G"].'","'.addslashes($key["H"]).'","'.$key["I"].'")';
+			$this->$db->query( 'SET @@global.max_allowed_packet = ' . strlen( $sql ) + 1024 );
+			$insertar = $this->db->query($sql);
 			
 		}
 	}
