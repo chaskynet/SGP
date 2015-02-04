@@ -4,14 +4,14 @@ $( "#form_importar" ).dialog(
   {
      autoOpen: false,
      height: 250,
-     width: 550,
+     width: 450,
      modal: true,
      buttons:
       {
         "Cargar Articulos": function(){
         	var archivo = $("#archivo_subido").text();
         	$.ajax({
-		        url: 'importarMateriales',
+		        url: 'importarUnidades',
 		        data: {data: archivo},
 		        type: "POST",
 		        dataType: "html",
@@ -22,7 +22,7 @@ $( "#form_importar" ).dialog(
 		        success: function(response)
 		        {
 		          //dialog.dialog( "close" );
-		          location.reload('iframeRegMateriales');
+		          location.reload('iframeRegUnidades2');
 		        }
 		    });
 
