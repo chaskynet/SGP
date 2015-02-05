@@ -110,6 +110,84 @@ class Main extends CI_Controller {
 		//echo $this->load->view('proyectos/regProyectos2');
 	}
 
+	//---------- Registro de Proyectos-SubProyecto Version GROSERY CRUD -------//
+	public function iframeRegPrySubPry(){
+		$this->load->view('proyectos/iframeRegPrySubPry');
+	}
+
+	public function registro_proyecto_subproyecto(){
+		$crud = new grocery_CRUD();
+		$crud->set_subject('Creacion de Proyectos-SubProyectos');
+		$crud->set_table('pry_subpry_unid');
+
+		//$crud->set_relation_n_n('COD_PRO', 'orden_servicio', 'producto','COD_OSRV', 'COD_PRO', 'DES_PRO', 'COD_PRO');
+		$crud->set_relation_n_n('unidades', 'pry_subpry_unid', 'unidades','id', 'unidad', 'cod_unidad');
+
+		//$crud->required_fields('id_proyecto', 'num_sub_proyectos', 'tipo_proyecto', 'localizacion', 'prioridad', 'responsable', 'naturaleza', 'fecha_inicio', 'fecha_fin');
+
+		//$crud->set_field_upload("asbuilt", "assets/uploads/files");
+
+		$output = $crud->render();
+
+		echo $this->load->view('proyectos/regPrySubPry', $output, true);
+		//echo $this->load->view('proyectos/regProyectos2');
+	}
+
+	public function buscaUnidades(){
+		//echo ("SELECT distinct(cod_unidad) as cod_unidad, descripcion from unidades where descripcion like '%".$_POST["data"]."%'");
+		$query = $this->db->query("SELECT distinct(cod_unidad) as cod_unidad, descripcion from unidades where cod_unidad like '%".$_POST["data"]."%' or descripcion like '%".$_POST["data"]."%'");
+		foreach ($query->result() as $key) 
+		{ 
+			echo '<div class="fila_cuerpo">'.
+                   '<div class="columna procedencia">'.
+                   '<input type="checkbox" name="articulo[]" value="'.
+                    $key->descripcion.
+                   ' " id="'.
+                    $key->cod_unidad.
+                   ' ">'.
+                   $key->cod_unidad.
+                   '</div><div class="columna descripcion">'.
+                   $key->descripcion.
+                   '</div>'.
+           '</div>';
+	 	 }
+	}
+
+	public function carga_proyecto_subproyecto(){
+		$query = $this->db->query("SELECT CONCAT(id_proyecto, '-', id_sub_proy) as proySubproy, unidad FROM `pry_subpry_unid` ");
+		foreach ($query->result() as $row) 
+		{ 
+			echo "<tr><td style='height: 25px;'><a href='#'>".$row->proySubproy."</a></td><td class='tipo_proyecto'>".$row->unidad."</td><tr>";
+	 	 }
+	}
+
+	public function carga_cod_proyectos(){
+		$query = $this->db->query("SELECT id_proyecto FROM `proyecto` ");
+		foreach ($query->result() as $row) 
+		{ 
+			echo "<option>".$row->id_proyecto."</option>";
+	 	 }
+	}
+
+	public function calcula_sub_proyectos(){
+		$query = $this->db->query("SELECT num_sub_proyectos FROM `proyecto` where id_proyecto = ".$_POST['data']);
+		foreach ($query->result() as $row) 
+		{ 
+			$numero = $row->num_sub_proyectos;
+	 	 }
+		for ($i = 1; $i<= $numero; $i++){
+			echo "<option>".$i."</option>";
+		}
+	}
+	//---------------- Guarda Cabecera de Unidad y Articulos Asociados a la unidad-----------------------------------//
+	public function guarga_proyecto_subproyecto(){
+		$tempo = json_decode($_POST['data2']);
+		foreach ($tempo as $key) 
+		{
+			//echo ("insert into producto_ordsrv (COD_OSRV, COD_PRO, DES_PRO, CANT_PRO, PRECIO) values('".$tmp."', '".$key->codigo."', '".$key->descripcion."', '".$key->cantidad."', '0.00')");
+			$query = $this->db->query("insert into pry_subpry_unid (id_proyecto, id_sub_proy, unidad, desc_unidad) values('".$key->codigo_proyecto."', '".$key->codigo_subproyecto."', '".$key->codigo_unidad."', '".$key->descripcion."')");
+		}
+	}
 /*************************************************************/
 /******* Funciones GroceryCrud para Modulo Configuraciones ********/
 	//------- Para registro de Usuarios ------------//
@@ -225,31 +303,6 @@ class Main extends CI_Controller {
 	$this->googlemaps->add_marker($marker);
 
 	$marker = array();
-	$marker['position'] = '-17.393313, -66.157664'; //'37.429, -122.1519';
-	$marker['infowindow_content'] = 'poste A3 - OK!';
-	$marker['icon'] = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=A|9999FF|000000';
-	$this->googlemaps->add_marker($marker);
-
-	$marker = array();
-	$marker['position'] = '-17.393487, -66.158608';//'37.409, -122.1319';
-	$marker['infowindow_content'] = 'Poste A4 - Pendiente de Asignacion!';
-	$marker['draggable'] = TRUE;
-	$marker['animation'] = 'DROP';
-	$this->googlemaps->add_marker($marker);
-
-	$marker = array();
-	$marker['position'] = '-17.393487, -66.158608';//'37.409, -122.1319';
-	$marker['infowindow_content'] = 'Poste A5 - Pendiente de Asignacion!';
-	$marker['draggable'] = TRUE;
-	$marker['animation'] = 'DROP';
-	$this->googlemaps->add_marker($marker);
-
-	$marker = array();
-	$marker['position'] = '-17.393416, -66.157599';//'37.449, -122.1419';
-	$marker['onclick'] = 'alert("Poste A6 - Sub proyecto 123 (Pendiente de conciliacion!!")';
-	$this->googlemaps->add_marker($marker);
-
-	$marker = array();
 	$marker['position'] = '-17.394357, -66.157449';//'37.449, -122.1419';
 	$marker['onclick'] = 'alert("Poste A7 - Sub proyecto 123 (Pendiente de conciliacion!!")';
 	$this->googlemaps->add_marker($marker);
@@ -267,43 +320,6 @@ class Main extends CI_Controller {
 	$marker['icon'] = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=A|9999FF|000000';
 	$marker['draggable'] = TRUE;
 	$marker['animation'] = 'DROP';
-	$this->googlemaps->add_marker($marker);
-
-	$marker = array();
-	$marker['position'] = '-17.394593, -66.157470';//'37.409, -122.1319';
-	$marker['infowindow_content'] = 'Poste A10 - OK!';
-	$marker['draggable'] = TRUE;
-	$marker['animation'] = 'DROP';
-	$this->googlemaps->add_marker($marker);
-
-	$marker = array();
-	$marker['position'] = '-17.395432, -66.157299'; //'37.429, -122.1519';
-	$marker['infowindow_content'] = 'poste A11 - Reclamo Odeco #2343';
-	$marker['icon'] = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=A|9999FF|000000';
-	$this->googlemaps->add_marker($marker);
-
-	$marker = array();
-	$marker['position'] = '-17.395637, -66.157191'; //'37.429, -122.1519';
-	$marker['infowindow_content'] = 'poste A12 - Reclamo Odeco #2343';
-	$marker['icon'] = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=A|9999FF|000000';
-	$this->googlemaps->add_marker($marker);
-
-	$marker = array();
-	$marker['position'] = '-17.395432, -66.156204'; //'37.429, -122.1519';
-	$marker['infowindow_content'] = 'poste A13 - ';
-	$marker['icon'] = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=A|9999FF|000000';
-	$this->googlemaps->add_marker($marker);
-
-	$marker = array();
-	$marker['position'] = '-17.395248, -66.155110'; //'37.429, -122.1519';
-	$marker['infowindow_content'] = 'poste A14 - ';
-	$marker['icon'] = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=A|9999FF|000000';
-	$this->googlemaps->add_marker($marker);
-
-	$marker = array();
-	$marker['position'] = '-17.395090, -66.154043'; //'37.429, -122.1519';
-	$marker['infowindow_content'] = 'poste A15 - ';
-	$marker['icon'] = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=A|9999FF|000000';
 	$this->googlemaps->add_marker($marker);
 
 	$marker = array();

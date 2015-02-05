@@ -11,7 +11,7 @@ $(document).ready(function () {
   abrePrioridadProyecto();
 });
 
-//-------------Registro Vehiculos ---------
+//-------------Registro Proyectos ---------
 var abreRegProyectos = function(){
 	$('#regProyectos').click(function(){
 		iframeProyectos();
@@ -27,6 +27,23 @@ var iframeProyectos = function(){
        success: function(response)
        {
        	 $('#data').html(response);
+       }
+    });
+}
+//------------ Registro Proyecto-Subproeycto -------
+$(document).on('click', '#regPrySubPry', function(){
+  iframePrySubPry();
+});
+
+var iframePrySubPry = function(){
+  $.ajax({
+       url: 'iframeRegPrySubPry',
+      // data: data,
+       type: "GET",
+       //dataType: "html",
+       success: function(response)
+       {
+         $('#data').html(response);
        }
     });
 }

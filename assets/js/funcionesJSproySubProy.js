@@ -1,6 +1,7 @@
 $(document).ready(function () 
 {
-  carga_unidades();
+  carga_proyecto_subproyecto();
+  cargar_proyectos();
 
   //---- carga Articulos ---
   $( "#buscaArticulos" ).dialog(
@@ -28,13 +29,9 @@ $(document).ready(function ()
                               +'<td class="columna descripcion" id="descripcion">'
                                 +$(this).attr('value')
                               +'</td>'
-                             
-                              +'<td class="columna cantidad_cif">'
-                                +'<input type="text" id="cantidad" class="cantidad_cif cantidad">'
-                              +'</td>'
                               
                             +'</tr>';
-              $("#cuerpo_tabla_unidad tbody").append(cadena);
+              $("#cuerpo_tabla_proySubproy tbody").append(cadena);
 
             });
           if (tamcheck>0){
@@ -63,15 +60,8 @@ $(document).on('click','#btn_busca_articulos',function(){
       if(e.which == 13)
       {
         i++;
-        var fuente = $('input:radio[name=fuente]:checked').val();
-        
+        var url = "buscaUnidades";
         consulta = $("#busqueda").val();
-        if (fuente === 'materiales') {
-          var url = "buscaMateriales";  
-        }else{
-          var url = "buscaManoObra";
-        }
-        
         //hace la búsqueda
         $.ajax({
             url: url,
@@ -105,26 +95,26 @@ $(document).on('click','#elimina_prod',function(){
 $(document).on('click', '#guardar', function(){
   //var cabecera = [];
   
-  var lista_productos = new Array();
+  var lista_proySubproy = new Array();
   
-  var cod_unidad = $('#codigo_unidad').val();
-  var desc_unidad = $('#desc_unidad').val();
+  var codigo_proyecto = $('#codigo_proyecto').val();
+  var codigo_subproyecto = $('#codigo_subproyecto').val();
 
-  $("#cuerpo_tabla_unidad tbody tr").each(function(){
-    var unidad = new Object();
+  $("#cuerpo_tabla_proySubproy tbody tr").each(function(){
+    var proySubproy = new Object();
 
-    unidad.cod_unidad = cod_unidad;
-    unidad.desc_unidad = desc_unidad;
-    unidad.codigo = $(this).find('#codigo').text();
-    unidad.descripcion = $(this).find('#descripcion').text();
-    unidad.cantidad = $(this).find('#cantidad').val();
-    lista_productos.push(unidad);
+    proySubproy.codigo_proyecto = codigo_proyecto;
+    proySubproy.codigo_subproyecto = codigo_subproyecto;
+    proySubproy.codigo_unidad = $(this).find('#codigo').text();
+    proySubproy.descripcion = $(this).find('#descripcion').text();
+    
+    lista_proySubproy.push(proySubproy);
   });
   
-  var newObj2 = JSON.stringify(lista_productos);
+  var newObj2 = JSON.stringify(lista_proySubproy);
   
   $.ajax({
-        url: 'guarga_unidad',
+        url: 'guarga_proyecto_subproyecto',
         data: {data2: newObj2},
         type: "POST",
         dataType: "html",
@@ -134,21 +124,21 @@ $(document).on('click', '#guardar', function(){
         },
         success: function(response)
         {
-          alert('La Unidad se guardo correctamente!');
-          $('#codigo_unidad').val('');
-          $('#desc_unidad').val('');
+          alert('El Proyecto-SubProyecto se guardo correctamente!');
+          $('#codigo_proyecto').val('');
+          $('#codigo_subproyecto').val('');
           
-          $('#cuerpo_tabla_unidad tbody').empty();
-          carga_unidades();
+          $('#cuerpo_tabla_proySubproy tbody').empty();
+          carga_proyecto_subproyecto();
         }
     });
   
 });
 //-----------------------------------
-var carga_unidades = function(){
+var carga_proyecto_subproyecto = function(){
 
   $.ajax({
-          url: 'carga_unidades',
+          url: 'carga_proyecto_subproyecto',
           //data: {data: newObj},
           type: "POST",
           dataType: "html",
@@ -163,3 +153,49 @@ var carga_unidades = function(){
           }
       });
 }
+
+var cargar_proyectos = function(){
+  $.ajax({
+    url: 'carga_cod_proyectos',
+          //data: {data: newObj},
+          type: "POST",
+          dataType: "html",
+          error: function()
+          {
+              alert('Error al cargar Proyectos!');
+          },
+          success: function(response)
+          {
+            $('#codigo_proyecto').append(response);
+            
+          }
+  });
+}
+
+$(document).on('change', '#codigo_proyecto', function(){
+  var $tmp = $(this).val();
+  //$('#codigo_subproyecto').html("<option></option>");
+  //alert($(this).val().length+'--'+$tmp.length);
+  if($tmp.length < 1 ){
+    alert("Elija un proyecto");
+    $('#codigo_subproyecto').empty();
+  }
+  else{
+    $.ajax({
+      url: 'calcula_sub_proyectos',
+            data: {data: $tmp},
+            type: "POST",
+            dataType: "html",
+            error: function()
+            {
+                alert('Error al calcular Sub Proyectos!');
+            },
+            success: function(response)
+            {
+
+              $('#codigo_subproyecto').html(response);
+              
+            }
+    });
+  }
+});
