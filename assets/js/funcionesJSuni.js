@@ -6,8 +6,8 @@ $(document).ready(function ()
   $( "#buscaArticulos" ).dialog(
   {
      autoOpen: false,
-     height: 350,
-     width: 400,
+     height: 490,
+     width: 430,
      modal: true,
      buttons:
       {
@@ -53,7 +53,7 @@ $(document).ready(function ()
 $(document).on('click','#btn_busca_articulos',function(){
     $("#tabla_articulos").empty();
     $("#busqueda").val('');
-    $( "#buscaArticulos" ).dialog( "open" );
+    $("#buscaArticulos").dialog( "open" );
     var consulta;
 
     $("#busqueda").focus();
@@ -163,3 +163,28 @@ var carga_unidades = function(){
           }
       });
 }
+//--------------- Para la Edicion ----
+$(document).on('click', '#unidad', function(){
+  
+  tmp = $(this).find('#codigo_elemento_unidad').text();
+  tmp2 = $(this).find('#descripcion').text();
+  
+  $("#codigo_unidad").val(tmp);
+  $("#desc_unidad").val(tmp2);
+
+  //------ Trae las unidades asociadas ----//
+  $.ajax({
+      url: 'trae_elementos_de_unidad',
+            data: {dato: tmp},
+            type: "POST",
+            dataType: "html",
+            error: function()
+            {
+                alert('Error al calcular Sub Proyectos!');
+            },
+            success: function(response)
+            {
+              $("#cuerpo_tabla_unidad tbody").html(response);
+            }
+    });
+});

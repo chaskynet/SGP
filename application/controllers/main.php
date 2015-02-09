@@ -120,13 +120,6 @@ class Main extends CI_Controller {
 		$crud->set_subject('Creacion de Proyectos-SubProyectos');
 		$crud->set_table('pry_subpry_unid');
 
-		//$crud->set_relation_n_n('COD_PRO', 'orden_servicio', 'producto','COD_OSRV', 'COD_PRO', 'DES_PRO', 'COD_PRO');
-		$crud->set_relation_n_n('unidades', 'pry_subpry_unid', 'unidades','id', 'unidad', 'cod_unidad');
-
-		//$crud->required_fields('id_proyecto', 'num_sub_proyectos', 'tipo_proyecto', 'localizacion', 'prioridad', 'responsable', 'naturaleza', 'fecha_inicio', 'fecha_fin');
-
-		//$crud->set_field_upload("asbuilt", "assets/uploads/files");
-
 		$output = $crud->render();
 
 		echo $this->load->view('proyectos/regPrySubPry', $output, true);
@@ -157,7 +150,7 @@ class Main extends CI_Controller {
 		$query = $this->db->query("SELECT CONCAT(id_proyecto, '-', id_sub_proy) as proySubproy, unidad FROM `pry_subpry_unid` ");
 		foreach ($query->result() as $row) 
 		{ 
-			echo "<tr><td style='height: 25px;'><a href='#'>".$row->proySubproy."</a></td><td class='tipo_proyecto'>".$row->unidad."</td><tr>";
+			echo "<tr><td style='height: 25px;' id='proysubproy'>".$row->proySubproy."</td><td class='tipo_proyecto'>".$row->unidad."</td><tr>";
 	 	 }
 	}
 
@@ -176,18 +169,44 @@ class Main extends CI_Controller {
 			$numero = $row->num_sub_proyectos;
 	 	 }
 		for ($i = 1; $i<= $numero; $i++){
-			echo "<option>".$i."</option>";
+			echo "<option value='".$i."'>";
 		}
 	}
 	//---------------- Guarda Cabecera de Unidad y Articulos Asociados a la unidad-----------------------------------//
 	public function guarga_proyecto_subproyecto(){
+
 		$tempo = json_decode($_POST['data2']);
+		$tempo1 = json_decode($_POST['data2'], true);
+		//echo($tempo[0]['codigo_proyecto']);
+		$query1 = $this->db->query("delete from pry_subpry_unid where id_proyecto=".$tempo1[0]['codigo_proyecto']." and id_sub_proy = ".$tempo1[0]['codigo_subproyecto']);
 		foreach ($tempo as $key) 
 		{
 			//echo ("insert into producto_ordsrv (COD_OSRV, COD_PRO, DES_PRO, CANT_PRO, PRECIO) values('".$tmp."', '".$key->codigo."', '".$key->descripcion."', '".$key->cantidad."', '0.00')");
 			$query = $this->db->query("insert into pry_subpry_unid (id_proyecto, id_sub_proy, unidad, desc_unidad) values('".$key->codigo_proyecto."', '".$key->codigo_subproyecto."', '".$key->codigo_unidad."', '".$key->descripcion."')");
+			
 		}
 	}
+	//----------------- Para editar proyecto sub Proyecto ------------------------//
+	public function trae_proysubproy(){
+		$resultado = $this->db->query("SELECT distinct(id_proyecto) as id_proyecto, id_sub_proy FROM `pry_subpry_unid` where concat(id_proyecto,'-', id_sub_proy)='".$_POST['dato']."'");
+		$i = 0;
+		foreach ($resultado->result() as $row) 
+			{ 
+				$jsondata[$i]['id_proyecto'] = $row->id_proyecto;
+    			$jsondata[$i]['id_sub_proyecto'] = $row->id_sub_proy;
+    			$i++;
+		 	 }
+		 echo json_encode($jsondata);
+	}
+	public function trae_unidades_asociadas(){
+		$resultado = $this->db->query("SELECT unidad, desc_unidad FROM `pry_subpry_unid` where concat(id_proyecto,'-', id_sub_proy)='".$_POST['dato']."'");
+
+		foreach ($resultado->result() as $row) 
+			{ 
+				echo "<tr style='height:25px;'><td class='columna acciones'><a href='#' id='elimina_prod' >Eliminar</a></td><td class='columna descripcion' id='codigo'>".$row->unidad."</td><td class='columna descripcion' id='descripcion'>".$row->desc_unidad."</td>";
+		 	}
+	}
+
 /*************************************************************/
 /******* Funciones GroceryCrud para Modulo Configuraciones ********/
 	//------- Para registro de Usuarios ------------//
@@ -200,6 +219,15 @@ class Main extends CI_Controller {
 		$crud->set_table('usuarios');
 
 		$crud->change_field_type('password', 'password');
+
+		$crud->display_as('uname', 'Nombre de Usuario');
+		$crud->display_as('apaterno', 'Apellido Paterno');
+		$crud->display_as('amaterno', 'Apellido Materno');
+
+		$crud->set_relation('estado_usuario', 'catalogo', 'valor', array('nombre' => 'estado_usuario'));
+		$crud->set_relation('rol', 'catalogo', 'valor', array('nombre' => 'rol_usuario'));
+
+		$crud->required_fields('uname', 'password', 'nombre', 'apaterno', 'ci', 'rol', 'estado_usuario');
 
 		$crud->callback_before_insert(array($this,'encripta_password'));
 		$crud->callback_before_update(array($this,'encripta_password'));
@@ -225,7 +253,7 @@ class Main extends CI_Controller {
 
 		$crud->display_as('desc_tipo_proy', 'Descripcion del Proyecto');
 
-		$crud->required_fields('desc_tipo_proy', 'rubano', 'rural', 'tropico');
+		$crud->required_fields('desc_tipo_proy', 'urbano', 'rural', 'tropico');
 
 		$output = $crud->render();
 		echo $this->load->view('backend/regTipoProyecto', $output, true);
@@ -236,8 +264,11 @@ class Main extends CI_Controller {
 	}
 	public function regNaturaProyecto(){
 		$crud = new grocery_CRUD();
-		$crud->set_subject('Tipo de Proyecto');
+		$crud->set_subject('Naturaleza de Proyecto');
 		$crud->set_table('naturaleza_proy');
+
+		$crud->display_as('desc_naturaleza', 'Naturaleza del Proyecto');
+
 		$output = $crud->render();
 		echo $this->load->view('backend/regNaturaProyecto', $output, true);
 	}
@@ -247,8 +278,11 @@ class Main extends CI_Controller {
 	}
 	public function regPrioridadProyecto(){
 		$crud = new grocery_CRUD();
-		$crud->set_subject('Tipo de Proyecto');
+		$crud->set_subject('Prioridad de Proyecto');
 		$crud->set_table('prioridad_proy');
+
+		$crud->display_as('desc_prioridad', 'Descripcion Prioridad');
+
 		$output = $crud->render();
 		echo $this->load->view('backend/regPrioridadProyecto', $output, true);
 	}
@@ -263,7 +297,7 @@ class Main extends CI_Controller {
 
 		$crud->set_table('importa_datos');
 		$crud->set_relation("proyecto", "proyecto", "id_proyecto");
-		$crud->set_subject('Importacion de Datos desde Archivo');
+		$crud->set_subject('Documentos');
 
 		$crud->set_field_upload("archivo", "assets/uploads/files");
 
@@ -415,98 +449,64 @@ class Main extends CI_Controller {
 		$file = './assets/uploads/files/'.$_POST['data'];//'./files/test.xlsx';
 		//load the excel library
 		$this->load->library('excel');
-		//read file from path
-		$objPHPExcel = PHPExcel_IOFactory::load($file);
-		//get only the Cell Collection
-		$cell_collection = $objPHPExcel->getActiveSheet()->getCellCollection();
-		//extract to a PHP readable array format
-		foreach ($cell_collection as $cell) {
-			$column = $objPHPExcel->getActiveSheet()->getCell($cell)->getColumn();
-			$row = $objPHPExcel->getActiveSheet()->getCell($cell)->getRow();
-			$data_value = $objPHPExcel->getActiveSheet()->getCell($cell)->getValue();
-			//header will/should be in row 1 only. of course this can be modified to suit your need.
-			if ($row == 1) {
-			    $header[$row][$column] = $data_value;
-			} else {
-			    $arr_data[$row][$column] = $data_value;
-			}
-		}
-		//send the data in an array format
-		//$data['header'] = $header;
-		$data= $arr_data;
-		//$data = json_encode($data);
-		//echo $data;
-		foreach ($data as $key) {
-			
-			$insertar = $this->db->query('insert into materiales (codigo_fab, descripcion, unidad, costo) values("'.$key["B"].'", "'.addslashes($key["C"]).'", "'.$key["D"].'", "'.$key["E"].'")');
-			
-		}
+		$nombreArchivo = $file; //'../Archivos/'.$_FILES['archivoArticulos']['name'];
+		$columnas=PHPepeExcel::xls2array($nombreArchivo);
+		$options = array ('start' => 1, 'limit'=>20000);
+		$query = PHPepeExcel::xls2sql ( $nombreArchivo, array ("codigo_fab", "descripcion", "unidad", "costo",), "materiales", $options );
+		$this->db->query($query);
 	}
 
 	public function importarManoObra(){
 		$file = './assets/uploads/files/'.$_POST['data'];//'./files/test.xlsx';
 		//load the excel library
 		$this->load->library('excel');
-		//read file from path
-		$objPHPExcel = PHPExcel_IOFactory::load($file);
-		//get only the Cell Collection
-		$cell_collection = $objPHPExcel->getActiveSheet()->getCellCollection();
-		//extract to a PHP readable array format
-		foreach ($cell_collection as $cell) {
-			$column = $objPHPExcel->getActiveSheet()->getCell($cell)->getColumn();
-			$row = $objPHPExcel->getActiveSheet()->getCell($cell)->getRow();
-			$data_value = $objPHPExcel->getActiveSheet()->getCell($cell)->getValue();
-			//header will/should be in row 1 only. of course this can be modified to suit your need.
-			if ($row == 1) {
-			    $header[$row][$column] = $data_value;
-			} else {
-			    $arr_data[$row][$column] = $data_value;
-			}
-		}
-		//send the data in an array format
-		//$data['header'] = $header;
-		$data= $arr_data;
-		//$data = json_encode($data);
-		//echo $data;
-		foreach ($data as $key) {
-			
-			$insertar = $this->db->query('insert into mano_de_obra (codigo_fab, descripcion, unidad, costo) values("'.$key["B"].'", "'.addslashes($key["C"]).'", "'.$key["D"].'", "'.$key["E"].'")');
-			
-		}
+		$nombreArchivo = $file; //'../Archivos/'.$_FILES['archivoArticulos']['name'];
+		$columnas=PHPepeExcel::xls2array($nombreArchivo);
+		$options = array ('start' => 1, 'limit'=>20000);
+		$query = PHPepeExcel::xls2sql ( $nombreArchivo, array ("codigo_fab", "descripcion", "unidad", "costo",), "mano_de_obra", $options );
+
+		$this->db->query($query);
+		
 	}
 
 public function importarUnidades(){
 		$file = './assets/uploads/files/'.$_POST['data'];//'./files/test.xlsx';
 		//load the excel library
 		$this->load->library('excel');
+		$nombreArchivo = $file; //'../Archivos/'.$_FILES['archivoArticulos']['name'];
+		$columnas=PHPepeExcel::xls2array($nombreArchivo);
+		$options = array ('start' => 1, 'limit'=>20000);
+		$query = PHPepeExcel::xls2sql ( $nombreArchivo, array ("cod_unidad", "idproducto", "descripcion", "cantidad", "codigo_fab", "idproducto_fab", "descripcion_item", "unidad",), "unidades", $options );
+
+		$this->db->query($query);
 		//read file from path
-		$objPHPExcel = PHPExcel_IOFactory::load($file);
-		//get only the Cell Collection
-		$cell_collection = $objPHPExcel->getActiveSheet()->getCellCollection();
-		//extract to a PHP readable array format
-		foreach ($cell_collection as $cell) {
-			$column = $objPHPExcel->getActiveSheet()->getCell($cell)->getColumn();
-			$row = $objPHPExcel->getActiveSheet()->getCell($cell)->getRow();
-			$data_value = $objPHPExcel->getActiveSheet()->getCell($cell)->getValue();
-			//header will/should be in row 1 only. of course this can be modified to suit your need.
-			if ($row == 1) {
-			    $header[$row][$column] = $data_value;
-			} else {
-			    $arr_data[$row][$column] = $data_value;
-			}
-		}
-		//send the data in an array format
-		//$data['header'] = $header;
-		$data= $arr_data;
-		//$data = json_encode($data);
-		//echo $data;
-		//$modif = $this->$db->query( 'SET @@global.max_allowed_packet = ' . 500 * 1024 * 1024 );
-		foreach ($data as $key) {
-			$sql = 'insert into unidades (cod_unidad, idproducto, descripcion, cantidad, codigo_fab, idproducto_fab, descripcion_item, unidad) values("'.$key["B"].'", "'.$key["C"].'", "'.addslashes($key["D"]).'", "'.$key["E"].'","'.$key["F"].'","'.$key["G"].'","'.addslashes($key["H"]).'","'.$key["I"].'")';
-			//$this->$db->query( 'SET @@global.max_allowed_packet = ' . strlen( $sql ) + 1024 );
-			$insertar = $this->db->query($sql);
+		// $objPHPExcel = PHPExcel_IOFactory::load($file);
+		// //get only the Cell Collection
+		// $cell_collection = $objPHPExcel->getActiveSheet()->getCellCollection();
+		// //extract to a PHP readable array format
+		// foreach ($cell_collection as $cell) {
+		// 	$column = $objPHPExcel->getActiveSheet()->getCell($cell)->getColumn();
+		// 	$row = $objPHPExcel->getActiveSheet()->getCell($cell)->getRow();
+		// 	$data_value = $objPHPExcel->getActiveSheet()->getCell($cell)->getValue();
+		// 	//header will/should be in row 1 only. of course this can be modified to suit your need.
+		// 	if ($row == 1) {
+		// 	    $header[$row][$column] = $data_value;
+		// 	} else {
+		// 	    $arr_data[$row][$column] = $data_value;
+		// 	}
+		// }
+		// //send the data in an array format
+		// //$data['header'] = $header;
+		// $data= $arr_data;
+		// //$data = json_encode($data);
+		// //echo $data;
+		// //$modif = $this->$db->query( 'SET @@global.max_allowed_packet = ' . 500 * 1024 * 1024 );
+		// foreach ($data as $key) {
+		// 	$sql = 'insert into unidades (cod_unidad, idproducto, descripcion, cantidad, codigo_fab, idproducto_fab, descripcion_item, unidad) values("'.$key["B"].'", "'.$key["C"].'", "'.addslashes($key["D"]).'", "'.$key["E"].'","'.$key["F"].'","'.$key["G"].'","'.addslashes($key["H"]).'","'.$key["I"].'")';
+		// 	//$this->$db->query( 'SET @@global.max_allowed_packet = ' . strlen( $sql ) + 1024 );
+		// 	$insertar = $this->db->query($sql);
 			
-		}
+		// }
 	}
 //------------------------------------------------------------//
 	public function iframeRegManoObra(){
@@ -535,7 +535,14 @@ public function importarUnidades(){
 		$crud->set_table('unidades');
 		//$crud->set_relation("proyecto", "proyecto", "id_proyecto");
 		$crud->set_subject('Registro de Unidades');
-		$crud->required_fields('cod_unidad', 'idproducto', 'descripcion', 'cantidad', 'codigo_fab', 'idproducto_fab', 'descripcion_item', 'unidad', 'archivo');
+
+		$crud->display_as('cod_unidad', 'Unidad Cons.');
+		$crud->display_as('idproducto', 'Id Producto');
+		$crud->display_as('codigo_fab', 'Código Fab.');
+		$crud->display_as('idproducto_fab', 'Id Producto Fab.');
+		$crud->display_as('descripcion_item', 'Descripcion de Item');
+
+		$crud->required_fields('cod_unidad', 'idproducto', 'descripcion', 'cantidad', 'codigo_fab', 'idproducto_fab', 'descripcion_item', 'unidad');
 
 		$crud->display_as('archivo', 'Imagen de Referencia');
 		
@@ -555,9 +562,9 @@ public function importarUnidades(){
 
 	public function buscaMateriales(){
 		//$tempo = json_decode($_POST['data']);
-		$query = $this->db->like("descripcion",$_POST['data']);
-		$query = $this->db->get("materiales");
-
+		// $query = $this->db->like("descripcion",$_POST['data']);
+		// $query = $this->db->get("materiales");
+		$query = $this->db->query("select * from materiales where codigo_fab like '%".$_POST['data']."%' or descripcion like '%".$_POST['data']."%'");
 		foreach ($query->result() as $key) 
 		{ 
 			echo '<div class="fila_cuerpo">'.
@@ -575,9 +582,9 @@ public function importarUnidades(){
 	 	 }
 	}
 	public function buscaManoObra(){
-		$query = $this->db->like("descripcion",$_POST['data']);
-		$query = $this->db->get("mano_de_obra");
-
+		// $query = $this->db->like("descripcion",$_POST['data']);
+		// $query = $this->db->get("mano_de_obra");
+		$query = $this->db->query("select * from mano_de_obra where codigo_fab like '%".$_POST['data']."%' or descripcion like '%".$_POST['data']."%'");
 		foreach ($query->result() as $key) 
 		{ 
 			echo '<div class="fila_cuerpo">'.
@@ -596,7 +603,12 @@ public function importarUnidades(){
 	}
 //---------------- Guarda Cabecera de Unidad y Articulos Asociados a la unidad-----------------------------------//
 	public function guarga_unidad(){
+		//$tempo = json_decode($_POST['data2']);
 		$tempo = json_decode($_POST['data2']);
+		$tempo1 = json_decode($_POST['data2'], true);
+		//echo($tempo[0]['codigo_proyecto']);
+		
+		$query1 = $this->db->query("delete from unidades where cod_unidad='".$tempo1[0]['cod_unidad']."'");
 		foreach ($tempo as $key) 
 		{
 			//echo ("insert into producto_ordsrv (COD_OSRV, COD_PRO, DES_PRO, CANT_PRO, PRECIO) values('".$tmp."', '".$key->codigo."', '".$key->descripcion."', '".$key->cantidad."', '0.00')");
@@ -606,12 +618,33 @@ public function importarUnidades(){
 
 //-------------------------------------------------------------//	
 	public function carga_unidades(){
-		$query = $this->db->query("SELECT distinct(cod_unidad), descripcion FROM `unidades` ");
+		$query = $this->db->query("SELECT distinct(cod_unidad) as cod_unidad, descripcion FROM `unidades` order by cod_unidad asc");
 		foreach ($query->result() as $row) 
 		{ 
-			echo "<tr><td style='height: 25px;'>".$row->cod_unidad."</td><td class='tipo_proyecto'>".$row->descripcion."</td><tr>";
+			echo "<tr id='unidad'><td style='height: 25px;' id='codigo_elemento_unidad'>".$row->cod_unidad."</td><td class='tipo_proyecto' id='descripcion'>".$row->descripcion."</td><tr>";
 	 	 }
 	}
+	//----------------- Para editar Unidades y sus elementos ------------------------//
+	
+	public function trae_elementos_de_unidad(){
+
+		$resultado = $this->db->query("SELECT codigo_fab, descripcion_item, cantidad FROM `unidades` where cod_unidad='".$_POST['dato']."'");
+
+		foreach ($resultado->result() as $row) 
+			{ 
+				echo "<tr style='height:25px;'><td class='columna acciones'><a href='#' id='elimina_prod' >Eliminar</a></td><td class='columna descripcion' id='codigo'>".$row->codigo_fab."</td><td class='columna descripcion' id='descripcion'>".$row->descripcion_item."</td><td class='columna cantidad_cif'><input type='text' id='cantidad' value='".$row->cantidad."' size='5'></td>";
+		 	}
+	}
+
+/******************* Acutualizacion de SubProyectos **********/
+public function iframeRegSubPryUnid(){
+		$this->load->view('unidades/iframeRegUnidades');
+	}
+	public function registro_subproy_unidad(){
+		
+		echo $this->load->view('unidades/regUnidades');
+	}
+
 /*************************************************************/
 	public function index(){
 		$this->login();

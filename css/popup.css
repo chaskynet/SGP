@@ -1,0 +1,9 @@
+.messagepop {
+  cursor:default;
+  display:none;
+  margin-top: 15px;
+  
+  text-align:left;
+  z-index:50;
+  
+}

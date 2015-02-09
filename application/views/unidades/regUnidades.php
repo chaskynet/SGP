@@ -3,18 +3,19 @@
 	<link rel="stylesheet" type="text/css" href="../css/estilos.css" />
 	<link href="../css/calendario.css" type="text/css" rel="stylesheet" />
 	<link rel="stylesheet" type="text/css" href="../css/estilo_tablas.css" />
+	<link rel="stylesheet" type="text/css" href="../assets/js/jquery-ui/jquery-ui.min.css" />
 
 	<script src="../assets/js/calendar.js" type="text/javascript"></script>
 	<script src="../assets/js/calendar-es.js" type="text/javascript"></script>
 	<script src="../assets/js/calendar-setup.js" type="text/javascript"></script>
 
 	<script src="../assets/js/jquery.min.js" type="text/javascript"></script>
-	<script src="../assets/js/jquery-ui.min.js" type="text/javascript"></script>
+	<script src="../assets/js/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
 	<script src="<?php echo base_url(); ?>assets/js/funcionesJSuni.js" type="text/javascript"></script>
 <body>
 <!-- Ventana para busqueda de articulos-->
 	<div class="buscaArticulos" id="buscaArticulos">
-		Ingrese el Item a buscar: <input type="text" id="busqueda"/>
+		Ingrese el Elemento a buscar: <input type="text" id="busqueda"/>
 		<div>
 		<input type="radio" name="fuente" value="materiales" checked> Materiales
 		<input type="radio" name="fuente" value="manoObra"> Mano de Obra
@@ -49,7 +50,7 @@
 			<tr>
 				<td>Descripcion de la Unidad *: </td>
 				<td>
-					<input type="text" id="desc_unidad">
+					<input type="text" id="desc_unidad" size="40">
 					
 				</td>
 			</tr>
@@ -57,7 +58,7 @@
 		<div id="cuerpo_unidades">
 		<table id="cuerpo_tabla_unidad">
 			<caption>
-				<img src="../imagenes/plus.ico" class="plus_icon" id="btn_busca_articulos"> Añadir Articulos
+				<img src="../imagenes/plus.ico" class="plus_icon" id="btn_busca_articulos"> Añadir Elementos
 			</caption>
 			<tfoot>
 				<tr>
@@ -69,7 +70,7 @@
 			<thead>
 				<tr>
 					<th>Acciones</th>
-					<th>Producto</th>
+					<th>Codigo Fab</th>
 					<th>Descripcion</th>
 					<th>Cantidad</th>
 					

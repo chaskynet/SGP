@@ -25,7 +25,7 @@
                 <a href="#" style="color:#FFF" class="dropdown-toggle" data-toggle="dropdown" id="importdatos">Importar Datos<b class="caret"></b></a>
                 <ul class="dropdown-menu">
                 <li><a href="#" id="regImportar">Importar datos a Proyecto</a></li>
-                <li><a href="#" id="regAdjuntar">Adjunatar docs a Proyecto</a></li>
+                <li><a href="#" id="regAdjuntar">Adjuntar docs a Proyecto</a></li>
                 <!-- Importar -->
                 <li><a href="#" id="importplanilla">Importar planilla de asignacion de proyecto</a></li>
                 </ul>

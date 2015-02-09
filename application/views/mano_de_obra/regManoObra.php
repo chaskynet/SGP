@@ -9,11 +9,23 @@ endforeach;
  foreach($js_files as $file): ?>
 	<script src="<?php echo $file; ?>"></script>
 <?php endforeach; ?>
-	<script src="../assets/js/funcionesJSimportaManoObra.js"></script>
-	<script src="../assets/js/AjaxFileUploader/ajaxfileupload.js"></script>
+	<link type="text/css" rel="stylesheet" href="<?php echo base_url(); ?>css/popup.css" />
+	<script src="<?php echo base_url(); ?>assets/js/funcionesJSimportaManoObra.js"></script>
+	<script src="<?php echo base_url(); ?>assets/js/AjaxFileUploader/ajaxfileupload.js"></script>
+	<script type="text/javascript">
+	$(document).ready(function(){
+	  	$('.tDiv3').append('<a id="fimportar" href="#">'+
+	  							'<div class="fbutton">'+
+	  								'<div>'+
+	  									'<span>Importar desde Excel</span>'+
+	  								'</div>'+
+	  							'</div>'+
+	  						'</a>');
+	});
+	</script>
 </head>
 <body>
-	<div id="form_importar">
+	<div id="form_importar" class="messagepop pop">
 		<form method="post" action="" id="upload_file">
 
 		    <label for="userfile">Archivo: </label>
@@ -26,7 +38,7 @@ endforeach;
 		<span id="archivo_subido"></span>
 	</div>
 <div>
-	<h1>Registro de Mano de Obra</h1><a href="#" id="fimportar">Importar desde archivo Excel</a>
+	<h1>Registro de Mano de Obra</h1><!--a href="#" id="fimportar">Importar desde archivo Excel</a-->
 </div>
 
 <div>

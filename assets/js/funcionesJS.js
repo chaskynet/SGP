@@ -47,7 +47,23 @@ var iframePrySubPry = function(){
        }
     });
 }
+//------------ Registro Actualizacion de Subproeycto -------
+$(document).on('click', '#actualizaProyecto', function(){
+  iframeSubPryUnid();
+});
 
+var iframeSubPryUnid = function(){
+  $.ajax({
+       url: 'iframeRegSubPryUnid',
+      // data: data,
+       type: "GET",
+       //dataType: "html",
+       success: function(response)
+       {
+         $('#data').html(response);
+       }
+    });
+}
 //-------------Registro de Materiales ---------
 $(document).on('click', '#regMateriales', function(){
     iframeMateriales();

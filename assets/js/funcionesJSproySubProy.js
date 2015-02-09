@@ -7,8 +7,8 @@ $(document).ready(function ()
   $( "#buscaArticulos" ).dialog(
   {
      autoOpen: false,
-     height: 350,
-     width: 400,
+     height: 490,
+     width: 430,
      modal: true,
      buttons:
       {
@@ -18,7 +18,7 @@ $(document).ready(function ()
           $( "input[name='articulo[]']:checked").each(function()
             {
               //var id = $(this).attr("id");
-              var cadena = '<tr>'
+              var cadena = '<tr style="height:25px;">'
                               +'<td class="columna acciones">'
                               //+'<input type="hidden" id="id_fila" >'
                               +'<a href="#" id="elimina_prod" >Eliminar</a>'
@@ -124,6 +124,7 @@ $(document).on('click', '#guardar', function(){
         },
         success: function(response)
         {
+          //alert(response);
           alert('El Proyecto-SubProyecto se guardo correctamente!');
           $('#codigo_proyecto').val('');
           $('#codigo_subproyecto').val('');
@@ -178,7 +179,7 @@ $(document).on('change', '#codigo_proyecto', function(){
   //alert($(this).val().length+'--'+$tmp.length);
   if($tmp.length < 1 ){
     alert("Elija un proyecto");
-    $('#codigo_subproyecto').empty();
+    $('#list_codigo_subproyecto').empty();
   }
   else{
     $.ajax({
@@ -192,10 +193,54 @@ $(document).on('change', '#codigo_proyecto', function(){
             },
             success: function(response)
             {
-
-              $('#codigo_subproyecto').html(response);
+              $('#codigo_subproyecto').val('');
+              $('#list_codigo_subproyecto').html('<option value="">');
+              $('#cuerpo_tabla_proySubproy tbody').empty();
+              $('#list_codigo_subproyecto').html(response);
               
             }
     });
   }
+});
+
+$(document).on('click', '#proysubproy', function(){
+  
+  tmp = $(this).text();
+  // $('#codigo_proyecto').empty();
+  // $('#codigo_subproyecto').empty();
+  $.ajax({
+      url: 'trae_proysubproy',
+            data: {dato: tmp},
+            type: "POST",
+            dataType: "html",
+            error: function()
+            {
+                alert('Error al calcular Sub Proyectos!');
+            },
+            success: function(response)
+            {
+              var obj = $.parseJSON(response);
+              $.each(obj, function(index,valor)
+                {
+                     $("#codigo_proyecto").val(valor.id_proyecto);
+                     $("#codigo_subproyecto").val(valor.id_sub_proyecto);
+                });
+            }
+    });
+
+  //------ Trae las unidades asociadas ----//
+  $.ajax({
+      url: 'trae_unidades_asociadas',
+            data: {dato: tmp},
+            type: "POST",
+            dataType: "html",
+            error: function()
+            {
+                alert('Error al calcular Sub Proyectos!');
+            },
+            success: function(response)
+            {
+              $("#cuerpo_tabla_proySubproy tbody").html(response);
+            }
+    });
 });

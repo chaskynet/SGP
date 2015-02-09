@@ -4,7 +4,7 @@ $( "#form_importar" ).dialog(
   {
      autoOpen: false,
      height: 250,
-     width: 450,
+     width: 350,
      modal: true,
      buttons:
       {

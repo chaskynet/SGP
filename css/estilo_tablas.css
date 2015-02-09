@@ -85,7 +85,7 @@
 .cuerpo{
 	height: 80%;
 	overflow: auto;
-	font-size: 10px;
+	font-size: 12px;
 }
 
 .cuerpo_ccif{
@@ -248,4 +248,7 @@
 .avg_gasto{
 	width: 30px;
 	padding-left: 5px;
+}
+.ui-dialog-titlebar{
+	height: 50px;
 }

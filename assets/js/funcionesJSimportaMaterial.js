@@ -1,10 +1,11 @@
 $(document).ready(function () 
 {
+
 $( "#form_importar" ).dialog(
   {
      autoOpen: false,
      height: 250,
-     width: 250,
+     width: 350,
      modal: true,
      buttons:
       {
@@ -34,7 +35,6 @@ $( "#form_importar" ).dialog(
 $(document).on('click', '#fimportar', function(){
 	$( "#form_importar" ).dialog( "open" );	
 });
-
 
 $(function() {
 	$('#upload_file').submit(function(e) {
