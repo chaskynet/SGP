@@ -16,11 +16,15 @@
 <body>
 <!-- Ventana para busqueda de articulos-->
 	<div class="buscaArticulos" id="buscaArticulos">
-		Ingrese el Unidad a buscar: <input type="text" id="busqueda"/>
+		Ingrese el Elemento a buscar: <input type="text" id="busqueda"/>
+		<div>
+		<input type="radio" name="fuente" value="materiales" checked> Materiales
+		<input type="radio" name="fuente" value="manoObra"> Mano de Obra
+		</div>
 		<div class="tabla-cabecera">
 			<div class="fila_cabecera">
 				<!--div class="columna chk"><input type="checkbox" id="checkAll" onclick="elijeTodosChk();"></div-->
-				<div class="columna descripcion">Codigo Unidad</div>
+				<div class="columna descripcion">Codigo Fab.</div>
 				<div class="columna descripcion">Descripcion</div>
 			</div>
 		</div>	
@@ -64,11 +68,13 @@
 		</table>
 	</div>
 	<div class="clearfloat"></div>
+	<center><h3 id="tipo_unidad"></h3></center>
 	<div id="lista_elementos">
 		
 		<div id="imagen_unidad">
 			
 		</div>
+		
 		<div id= "cabecera_elementos">
 			<table class="cabecera_tabla_elementos">
 				<thead>
@@ -90,9 +96,12 @@
 					
 				</tbody>
 			</table>
-			
+			<input type="button" id="btn_busca_articulos" value="Añadir Elementos">
 		</div>
-
+		<div class="clearfloat"></div>
+	<div style="float: left;">
+			<input type="button" value="Guardar">
+		</div>
 	</div>
 </body>
 </html>

@@ -18,7 +18,7 @@ $(document).ready(function ()
           $( "input[name='articulo[]']:checked").each(function()
             {
               //var id = $(this).attr("id");
-              var cadena = '<tr style="height:25px;">'
+              var cadena = '<tr>'
                               +'<td class="columna acciones">'
                               //+'<input type="hidden" id="id_fila" >'
                               +'<a href="#" id="elimina_prod" >Eliminar</a>'
@@ -28,6 +28,10 @@ $(document).ready(function ()
                               +'</td>'
                               +'<td class="columna descripcion" id="descripcion">'
                                 +$(this).attr('value')
+                              +'</td>'
+                             
+                              +'<td class="columna cantidad_cif">'
+                                +'<input type="text" id="cantidad" class="cantidad_cif cantidad">'
                               +'</td>'
                               
                             +'</tr>';
@@ -60,8 +64,15 @@ $(document).on('click','#btn_busca_articulos',function(){
       if(e.which == 13)
       {
         i++;
-        var url = "buscaUnidades";
+        i++;
+        var fuente = $('input:radio[name=fuente]:checked').val();
+        
         consulta = $("#busqueda").val();
+        if (fuente === 'materiales') {
+          var url = "buscaMateriales";  
+        }else{
+          var url = "buscaManoObra";
+        }
         //hace la búsqueda
         $.ajax({
             url: url,
@@ -231,6 +242,24 @@ $(document).on('change', '#codigo_subproyecto', function(){
 
 $(document).on('change', '#unidades', function(){
   var unidad = $(this).val();
+  $.ajax({
+      url: 'trae_titulo_tipo_unidad',
+            data: {data: unidad},
+            type: "POST",
+            dataType: "html",
+            error: function()
+            {
+                alert('Error al traer las Unidades!');
+            },
+            success: function(response)
+            {
+              //alert(response);
+              
+              $('#tipo_unidad').empty();
+              $('#tipo_unidad').append(response);
+              
+            }
+    });
   $.ajax({
       url: 'trae_elementos_por_unidad',
             data: {data: unidad},

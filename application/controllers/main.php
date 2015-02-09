@@ -662,13 +662,19 @@ public function importarUnidades(){
 		}
 	}
 	public function trae_imagen_de_unidad(){
-		//echo "SELECT cod_unidad, descripcion_item, unidad, cantidad FROM unidades where cod_unidad ='".$_POST['data']."'";
-		$consulta = $this->db->query("select distinct(u.archivo)as archivo from unidades u where u.cod_unidad ='".$_POST['data']."' limit 1");
+		//echo "SELECT distinct(u.archivo)as archivo from unidades u where u.cod_unidad ='".$_POST['data']."' order by archivo DESC limit 1";
+		$consulta = $this->db->query("SELECT distinct(u.archivo)as archivo from unidades u where u.cod_unidad ='".$_POST['data']."' order by archivo DESC limit 1");
 		foreach ($consulta->result() as $key) {
 			echo "<img src='".base_url()."assets/uploads/files/".$key->archivo."' class='imagen_unidad'>";
 		}
-
 	}
+	public function trae_titulo_tipo_unidad(){
+		$consulta = $this->db->query("select distinct(descripcion) as descripcion from unidades where cod_unidad='".$_POST['data']."'");
+		foreach ($consulta->result() as $key) {
+			echo $key->descripcion;
+		}
+	}
+	
 /*************************************************************/
 	public function index(){
 		$this->login();
