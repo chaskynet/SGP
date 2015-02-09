@@ -106,7 +106,7 @@ $(document).on('click', '#guardar', function(){
     proySubproy.codigo_proyecto = codigo_proyecto;
     proySubproy.codigo_subproyecto = codigo_subproyecto;
     proySubproy.codigo_unidad = $(this).find('#codigo').text();
-    proySubproy.descripcion = $(this).find('#descripcion').text();
+    //proySubproy.descripcion = $(this).find('#descripcion').text();
     
     lista_proySubproy.push(proySubproy);
   });

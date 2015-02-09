@@ -39,30 +39,38 @@
 			<h1>Actualizar Avance de Sub-Proyecto</h1>
 		</center>
 	</div>
-	<div id="cabecera">
+	<div id="cabecera_actualizar_subproy">
 		<table>
 		
 			<tr>
-				<td>Codigo de Proyecto *: </td>
-				<td>
+				<td style="width: 110px;">Codigo de Proyecto *: </td>
+				<td style="width: 100px;">
 					<select id="codigo_proyecto">
 						<option></option>
 					</select>
 				</td>
 			
-				<td>Sub Proyecto *: </td>
+				<td style="width: 90px;">Sub Proyecto *: </td>
 				<td>
 					<!--input type="text" id="codigo_subproyecto" list="list_codigo_subproyecto"-->
 					<select id="codigo_subproyecto">
 						<option></option>
 					</select>
 				</td>
-				<td>Unidades: </td>
+				<td style="width: 50px; ">Unidades: </td>
 				<td>
 					<!--input type="text" id="codigo_subproyecto" list="list_codigo_subproyecto"-->
 					<select id="unidades">
 						<option></option>
 					</select>
+				</td>
+				<td style="width: 90px; ">Codigo Poste #1: </td>
+				<td>
+					<input type="text" id="codigo_poste_1" size='5'>
+				</td>
+				<td style="width: 90px; ">Codigo Poste #2: </td>
+				<td>
+					<input type="text" id="codigo_poste_2" size='5'>
 				</td>
 			</tr>
 		</table>
@@ -72,7 +80,6 @@
 	<div id="lista_elementos">
 		
 		<div id="imagen_unidad">
-			
 		</div>
 		
 		<div id= "cabecera_elementos">
@@ -100,7 +107,7 @@
 		</div>
 		<div class="clearfloat"></div>
 	<div style="float: left;">
-			<input type="button" value="Guardar">
+			<input type="button" value="Guardar" id="actualizar">
 		</div>
 	</div>
 </body>

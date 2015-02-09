@@ -17,8 +17,13 @@ body{
 #cabecera{
 	width: 50%;	
 	float: left;
-
 }
+
+#cabecera_actualizar_subproy{
+	width: 80%;	
+	float: left;
+}
+
 #lista_proyectos{
 	width: 50%;
 	float: right;
@@ -240,7 +245,7 @@ color:white;
 }
 #imagen_unidad{
 	float: left;
-	width: 30%;
+	width: 300px;
 }
 .imagen_unidad{
 	width: 100%;

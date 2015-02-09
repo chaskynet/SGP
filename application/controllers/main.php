@@ -147,10 +147,10 @@ class Main extends CI_Controller {
 	}
 
 	public function carga_proyecto_subproyecto(){
-		$query = $this->db->query("SELECT CONCAT(id_proyecto, '-', id_sub_proy) as proySubproy, unidad FROM `pry_subpry_unid` ");
+		$query = $this->db->query("SELECT CONCAT(id_proyecto, '-', id_sub_proy) as proySubproy, cod_unidad FROM `pry_subpry_unid` ");
 		foreach ($query->result() as $row) 
 		{ 
-			echo "<tr><td style='height: 25px;' id='proysubproy'>".$row->proySubproy."</td><td class='tipo_proyecto'>".$row->unidad."</td><tr>";
+			echo "<tr><td style='height: 25px;' id='proysubproy'>".$row->proySubproy."</td><td class='tipo_proyecto'>".$row->cod_unidad."</td><tr>";
 	 	 }
 	}
 
@@ -179,10 +179,10 @@ class Main extends CI_Controller {
 		$tempo1 = json_decode($_POST['data2'], true);
 		//echo($tempo[0]['codigo_proyecto']);
 		$query1 = $this->db->query("delete from pry_subpry_unid where id_proyecto=".$tempo1[0]['codigo_proyecto']." and id_sub_proy = ".$tempo1[0]['codigo_subproyecto']);
+		
 		foreach ($tempo as $key) 
 		{
-			//echo ("insert into producto_ordsrv (COD_OSRV, COD_PRO, DES_PRO, CANT_PRO, PRECIO) values('".$tmp."', '".$key->codigo."', '".$key->descripcion."', '".$key->cantidad."', '0.00')");
-			$query = $this->db->query("insert into pry_subpry_unid (id_proyecto, id_sub_proy, unidad, desc_unidad) values('".$key->codigo_proyecto."', '".$key->codigo_subproyecto."', '".$key->codigo_unidad."', '".$key->descripcion."')");
+			$query = $this->db->query("insert into pry_subpry_unid (id_proyecto, id_sub_proy, cod_unidad, desc_unidad, cantidad, codigo_fab, desc_item, unidad) SELECT '".$key->codigo_proyecto."', '".$key->codigo_subproyecto."', u.cod_unidad, u.descripcion, u.cantidad, codigo_fab, descripcion_item, unidad from unidades u where u.cod_unidad = '".$key->codigo_unidad."'");
 			
 		}
 	}
@@ -199,11 +199,11 @@ class Main extends CI_Controller {
 		 echo json_encode($jsondata);
 	}
 	public function trae_unidades_asociadas(){
-		$resultado = $this->db->query("SELECT unidad, desc_unidad FROM `pry_subpry_unid` where concat(id_proyecto,'-', id_sub_proy)='".$_POST['dato']."'");
+		$resultado = $this->db->query("SELECT cod_unidad, desc_unidad FROM `pry_subpry_unid` where concat(id_proyecto,'-', id_sub_proy)='".$_POST['dato']."'");
 
 		foreach ($resultado->result() as $row) 
 			{ 
-				echo "<tr style='height:25px;'><td class='columna acciones'><a href='#' id='elimina_prod' >Eliminar</a></td><td class='columna descripcion' id='codigo'>".$row->unidad."</td><td class='columna descripcion' id='descripcion'>".$row->desc_unidad."</td>";
+				echo "<tr style='height:25px;'><td class='columna acciones'><a href='#' id='elimina_prod' >Eliminar</a></td><td class='columna descripcion' id='codigo'>".$row->cod_unidad."</td><td class='columna descripcion' id='descripcion'>".$row->desc_unidad."</td>";
 		 	}
 	}
 
@@ -293,8 +293,7 @@ class Main extends CI_Controller {
 	}
 	public function selTipoArch(){
 		$crud = new grocery_CRUD();
-		$crud->set_theme("datatables");
-
+		//$crud->set_theme("datatables");
 		$crud->set_table('importa_datos');
 		$crud->set_relation("proyecto", "proyecto", "id_proyecto");
 		$crud->set_subject('Documentos');
@@ -457,7 +456,7 @@ class Main extends CI_Controller {
 	}
 
 	public function importarManoObra(){
-		$file = './assets/uploads/files/'.$_POST['data'];//'./files/test.xlsx';
+		$file = './assets/uploads/files/'.$_POST['data'];
 		//load the excel library
 		$this->load->library('excel');
 		$nombreArchivo = $file; //'../Archivos/'.$_FILES['archivoArticulos']['name'];
@@ -635,7 +634,7 @@ public function importarUnidades(){
 		 	}
 	}
 
-/******************* Acutualizacion de SubProyectos **********/
+/******************* Actualizacion de SubProyectos por Unidad**********/
 	public function iframeRegSubPryUnid(){
 		$this->load->view('proyectos/iframeRegSubPryUnid');
 	}
@@ -645,20 +644,37 @@ public function importarUnidades(){
 	}
 	public function trae_unidades_por_subproyecto(){
 		$tempo = json_decode($_POST['data'], true);
-		$consulta = 'SELECT unidad from pry_subpry_unid where id_proyecto="'.$tempo['proyecto'].'" AND id_sub_proy="'.$tempo['subproyecto'].'"';
+		$consulta = 'SELECT distinct(cod_unidad) as cod_unidad from pry_subpry_unid where id_proyecto="'.$tempo['proyecto'].'" AND id_sub_proy="'.$tempo['subproyecto'].'"';
 		//echo $consulta;
 		$query = $this->db->query($consulta);
 		foreach ($query->result() as $key) 
 		{
-			echo "<option>".$key->unidad."</option>"; 
+			echo "<option>".$key->cod_unidad."</option>"; 
 		}
 	}
 
+	public function carga_cod_proyectos_unid(){
+	$query = $this->db->query("SELECT distinct(id_proyecto) as id_proyecto FROM `pry_subpry_unid` ");
+	foreach ($query->result() as $row) 
+	{ 
+		echo "<option>".$row->id_proyecto."</option>";
+ 	 }
+	}
+
+	public function calcula_sub_proyectos_unid(){
+		$query = $this->db->query("SELECT distinct(id_sub_proy) as id_sub_proy FROM `pry_subpry_unid` where id_proyecto = '".$_POST['data']."' order by id_sub_proy asc ");
+		foreach ($query->result() as $row) 
+		{ 
+			echo "<option>".$row->id_sub_proy."</option>";
+	 	 }
+	}
+
 	public function trae_elementos_por_unidad(){
+		$tempo = json_decode($_POST['data'], true);
 		//echo "SELECT cod_unidad, descripcion_item, unidad, cantidad FROM unidades where cod_unidad ='".$_POST['data']."'";
-		$consulta = $this->db->query("SELECT cod_unidad, descripcion_item, unidad, cantidad FROM unidades where cod_unidad ='".$_POST['data']."'");
+		$consulta = $this->db->query("SELECT codigo_fab, desc_item, unidad, cantidad, retirado, usado, nuevo FROM pry_subpry_unid where cod_unidad ='".$tempo['unidad']."' AND id_proyecto ='".$tempo['proyecto']."' AND id_sub_proy='".$tempo['subproyecto']."' ");
 		foreach ($consulta->result() as $key) {
-			echo "<tr><td>".$key->cod_unidad."</td><td>".$key->descripcion_item."</td><td>".$key->unidad."</td><td>".$key->cantidad."</td><td><input type='text' id='retirado' size='5'></td><td><input type='text' id='usado' size='5'></td><td><input type='text' id='nuevo' size='5'></td></tr>";
+			echo "<tr><td id='codigo_fab'>".$key->codigo_fab."</td><td id='desc_item'>".$key->desc_item."</td><td id='unidad'>".$key->unidad."</td><td id='cantidad'>".$key->cantidad."</td><td><input type='text' id='retirado' size='5' value=".$key->retirado."></td><td><input type='text' id='usado' size='5' value=".$key->usado."></td><td><input type='text' id='nuevo' size='5' value=".$key->nuevo."></td></tr>";
 		}
 	}
 	public function trae_imagen_de_unidad(){
@@ -672,6 +688,18 @@ public function importarUnidades(){
 		$consulta = $this->db->query("select distinct(descripcion) as descripcion from unidades where cod_unidad='".$_POST['data']."'");
 		foreach ($consulta->result() as $key) {
 			echo $key->descripcion;
+		}
+	}
+
+	public function actualiza_proyecto_subproyecto(){
+		$tempo = json_decode($_POST['data2']);
+		$tempo1 = json_decode($_POST['data2'], true);
+		//echo($tempo[0]['codigo_proyecto']);
+		$query1 = $this->db->query("delete from pry_subpry_unid where id_proyecto=".$tempo1[0]['codigo_proyecto']." and id_sub_proy = ".$tempo1[0]['codigo_subproyecto']." AND cod_unidad='".$tempo1[0]['codigo_unidad']."'");
+		
+		foreach ($tempo as $key) 
+		{
+			$query = $this->db->query("insert into pry_subpry_unid (id_proyecto, id_sub_proy, cod_unidad, desc_unidad, cantidad, codigo_fab, desc_item, unidad, retirado, usado, nuevo) values ('".$key->codigo_proyecto."', '".$key->codigo_subproyecto."', '".$key->codigo_unidad."', '".$key->dec_unidad."', '".$key->cantidad."', '".$key->codigo_fab."', '".$key->descripcion."', '".$key->unidad."', '".$key->retirado."', '".$key->usado."', '".$key->nuevo."')");
 		}
 	}
 	

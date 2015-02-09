@@ -102,22 +102,32 @@ $(document).on('click','#elimina_prod',function(){
 
 });
 
-//---- Guardar Unidad -------
-$(document).on('click', '#guardar', function(){
+//---- Guardar Elementos de la Unidad para un Sub Proyecto-------
+$(document).on('click', '#actualizar', function(){
   //var cabecera = [];
   
   var lista_proySubproy = new Array();
   
   var codigo_proyecto = $('#codigo_proyecto').val();
   var codigo_subproyecto = $('#codigo_subproyecto').val();
+  var cod_unidad = $('#unidades').val();
+  var desc_unidad = $('#tipo_unidad').text();
 
-  $("#cuerpo_tabla_proySubproy tbody tr").each(function(){
+  $("#cuerpo_tabla tbody tr").each(function(){
     var proySubproy = new Object();
 
     proySubproy.codigo_proyecto = codigo_proyecto;
     proySubproy.codigo_subproyecto = codigo_subproyecto;
-    proySubproy.codigo_unidad = $(this).find('#codigo').text();
-    proySubproy.descripcion = $(this).find('#descripcion').text();
+    proySubproy.codigo_unidad = cod_unidad;
+    proySubproy.dec_unidad = desc_unidad;
+
+    proySubproy.codigo_fab = $(this).find('#codigo_fab').text();
+    proySubproy.descripcion = $(this).find('#desc_item').text();
+    proySubproy.unidad = $(this).find('#unidad').text(); 
+    proySubproy.cantidad = $(this).find('#cantidad').text();
+    proySubproy.retirado = $(this).find('#retirado').val();
+    proySubproy.usado = $(this).find('#usado').val();
+    proySubproy.nuevo = $(this).find('#nuevo').val();
     
     lista_proySubproy.push(proySubproy);
   });
@@ -125,7 +135,7 @@ $(document).on('click', '#guardar', function(){
   var newObj2 = JSON.stringify(lista_proySubproy);
   
   $.ajax({
-        url: 'guarga_proyecto_subproyecto',
+        url: 'actualiza_proyecto_subproyecto',
         data: {data2: newObj2},
         type: "POST",
         dataType: "html",
@@ -136,7 +146,7 @@ $(document).on('click', '#guardar', function(){
         success: function(response)
         {
           //alert(response);
-          alert('El Proyecto-SubProyecto se guardo correctamente!');
+          alert('El Proyecto-SubProyecto se Actualizo correctamente!');
           $('#codigo_proyecto').val('');
           $('#codigo_subproyecto').val('');
           
@@ -168,7 +178,7 @@ $(document).on('click', '#guardar', function(){
 
 var cargar_proyectos = function(){
   $.ajax({
-    url: 'carga_cod_proyectos',
+    url: 'carga_cod_proyectos_unid',
           //data: {data: newObj},
           type: "POST",
           dataType: "html",
@@ -194,7 +204,7 @@ $(document).on('change', '#codigo_proyecto', function(){
   }
   else{
     $.ajax({
-      url: 'calcula_sub_proyectos',
+      url: 'calcula_sub_proyectos_unid',
             data: {data: $tmp},
             type: "POST",
             dataType: "html",
@@ -215,13 +225,16 @@ $(document).on('change', '#codigo_proyecto', function(){
 });
 
 $(document).on('change', '#codigo_subproyecto', function(){
-  var proySubproy = new Object();
-  proySubproy.proyecto = $("#codigo_proyecto").val();
-  proySubproy.subproyecto = $(this).val();
-  proySubproy = JSON.stringify(proySubproy);
+  proyecto = $("#codigo_proyecto").val();
+  subproyecto = $(this).val();
+  
+  proySubproy = new Object();
+  proySubproy.proyecto = proyecto;
+  proySubproy.subproyecto = subproyecto;
+  proySubproy1 = JSON.stringify(proySubproy);
   $.ajax({
       url: 'trae_unidades_por_subproyecto',
-            data: {data: proySubproy},
+            data: {data: proySubproy1},
             type: "POST",
             dataType: "html",
             error: function()
@@ -241,7 +254,7 @@ $(document).on('change', '#codigo_subproyecto', function(){
 });
 
 $(document).on('change', '#unidades', function(){
-  var unidad = $(this).val();
+  unidad = $(this).val();
   $.ajax({
       url: 'trae_titulo_tipo_unidad',
             data: {data: unidad},
@@ -257,12 +270,19 @@ $(document).on('change', '#unidades', function(){
               
               $('#tipo_unidad').empty();
               $('#tipo_unidad').append(response);
-              
             }
     });
+    proySubproy2 = new Object();
+    proySubproy2.unidad = unidad;
+    proySubproy2.proyecto = proyecto;
+    proySubproy2.subproyecto = subproyecto;
+
+    proySubproy2 = JSON.stringify(proySubproy2);
   $.ajax({
+      
       url: 'trae_elementos_por_unidad',
-            data: {data: unidad},
+            //data: {data: unidad},
+            data: {data: proySubproy2},
             type: "POST",
             dataType: "html",
             error: function()
@@ -291,10 +311,8 @@ $(document).on('change', '#unidades', function(){
             success: function(response)
             {
               //alert(response);
-              
               $('#imagen_unidad').empty();
               $('#imagen_unidad').html(response);
-              
             }
     });
 });
