@@ -238,3 +238,31 @@ color:white;
 .prioridad_proyecto{
 	width: 50px;
 }
+#imagen_unidad{
+	float: left;
+	width: 30%;
+}
+.imagen_unidad{
+	width: 100%;
+}
+
+#cabecera_elementos{
+	width: 70%;
+	
+	float: right;
+}
+.cabecera_tabla_elementos{
+	width: 100%;
+	position: relative;
+}
+
+#cuerpo_unidad{
+	float: right;
+	width: 70%;
+	height: 40%;
+	
+}
+#cuerpo_tabla{
+	width: 100%;
+	overflow: auto;
+}

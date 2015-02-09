@@ -11,21 +11,26 @@ $( "#form_importar" ).dialog(
       {
         "Cargar Articulos": function(){
         	var archivo = $("#archivo_subido").text();
-        	$.ajax({
-		        url: 'importarMateriales',
-		        data: {data: archivo},
-		        type: "POST",
-		        dataType: "html",
-		        error: function()
-		        {
-		            alert('Error al procesar el archivo!');
-		        },
-		        success: function(response)
-		        {
-		          //dialog.dialog( "close" );
-		          location.reload('iframeRegMateriales');
-		        }
-		    });
+        	// if ($(archivo).length < 1){
+        	// 	alert("Debe seleccionar un archivo!");
+        	// }
+        	// else{
+	        	$.ajax({
+			        url: 'importarMateriales',
+			        data: {data: archivo},
+			        type: "POST",
+			        dataType: "html",
+			        error: function()
+			        {
+			            alert('Error al procesar el archivo!');
+			        },
+			        success: function(response)
+			        {
+			          //dialog.dialog( "close" );
+			          location.reload('iframeRegMateriales');
+			        }
+			    });
+        	//}
 
         }
        }

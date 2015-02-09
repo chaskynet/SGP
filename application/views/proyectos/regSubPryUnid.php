@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 	
-	<link rel="stylesheet" type="text/css" href="../css/estilos.css" />
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>css/estilos.css" />
 	<link rel="stylesheet" type="text/css" href="../css/calendario.css" />
 	<link rel="stylesheet" type="text/css" href="../css/estilo_tablas.css" />
 	<link rel="stylesheet" type="text/css" href="../assets/js/jquery-ui/jquery-ui.min.css" />
@@ -12,7 +12,7 @@
 
 	<script src="../assets/js/jquery.min.js" type="text/javascript"></script>
 	<script src="../assets/js/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
-	<script src="<?php echo base_url(); ?>assets/js/funcionesJSproySubProy.js" type="text/javascript"></script>
+	<script src="<?php echo base_url(); ?>assets/js/funcionesJSsubPryUnid.js" type="text/javascript"></script>
 <body>
 <!-- Ventana para busqueda de articulos-->
 	<div class="buscaArticulos" id="buscaArticulos">
@@ -32,7 +32,7 @@
 <!-- Fin ventana Busqueda de Articulos -->
 	<div>
 		<center>
-			<h1>Adicion de Unidades a Proyecto - SubProyecto</h1>
+			<h1>Actualizar Avance de Sub-Proyecto</h1>
 		</center>
 	</div>
 	<div id="cabecera">
@@ -45,64 +45,47 @@
 						<option></option>
 					</select>
 				</td>
-			</tr>
-			<tr>
+			
 				<td>Sub Proyecto *: </td>
 				<td>
-					<input type="text" id="codigo_subproyecto" list="list_codigo_subproyecto">
-					<datalist id="list_codigo_subproyecto">
+					<!--input type="text" id="codigo_subproyecto" list="list_codigo_subproyecto"-->
+					<select id="codigo_subproyecto">
 						<option></option>
-					</datalist>
+					</select>
+				</td>
+				<td>Unidades: </td>
+				<td>
+					<!--input type="text" id="codigo_subproyecto" list="list_codigo_subproyecto"-->
+					<select id="unidades">
+						<option></option>
+					</select>
 				</td>
 			</tr>
 		</table>
-		<div id="cuerpo_unidades">
-		<table id="cuerpo_tabla_proySubproy">
-			<caption>
-				<img src="../imagenes/plus.ico" class="plus_icon" id="btn_busca_articulos"> Añadir Unidades
-			</caption>
-			<tfoot>
-				<tr>
-					<td colspan="4">
-						<center><input type="button" id="guardar" value="Guardar"></center>
-					</td>
-				</tr>
-			</tfoot>
-			<thead>
-				<tr>
-					<th>Acciones</th>
-					<th>Unidad</th>
-					<th>Descripcion</th>
-				</tr>
-			</thead>
-			<tbody>
-				
-			</tbody>
-		</table>
 	</div>
-	</div>
-	
-	<div id="lista_proyectos">
+	<div class="clearfloat"></div>
+	<div id="lista_elementos">
 		
-		<div id="cabecera_tabla">
+		<div id="imagen_unidad">
 			
-			<table>
-			<caption>
-			Lista de Unidades
-			</caption>
+		</div>
+		<div id= "cabecera_elementos">
+			<table class="cabecera_tabla_elementos">
 				<thead>
 					<tr>
-						<th class="proyecto">Proyecto SubProyecto</th>
-						
-						<th class="tipo_proyecto">Unidad</th>
-						
+						<th>Código</th>
+						<th>Descripción</th>
+						<th>Unidad</th>
+						<th>Presupuest</th>
+						<th>Retirado</th>
+						<th>Usado</th>
+						<th>Nuevo</th>
 					</tr>
 				</thead>
 			</table>
 		</div>
-		<div id="cuerpo">
-			<table id="cuerpo_tabla" class="tabla_proyectos">
-				
+		<div id="cuerpo_unidad">
+			<table id="cuerpo_tabla">
 				<tbody>
 					
 				</tbody>

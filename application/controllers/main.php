@@ -169,7 +169,7 @@ class Main extends CI_Controller {
 			$numero = $row->num_sub_proyectos;
 	 	 }
 		for ($i = 1; $i<= $numero; $i++){
-			echo "<option value='".$i."'>";
+			echo "<option>".$i."</option>";
 		}
 	}
 	//---------------- Guarda Cabecera de Unidad y Articulos Asociados a la unidad-----------------------------------//
@@ -606,7 +606,6 @@ public function importarUnidades(){
 		//$tempo = json_decode($_POST['data2']);
 		$tempo = json_decode($_POST['data2']);
 		$tempo1 = json_decode($_POST['data2'], true);
-		//echo($tempo[0]['codigo_proyecto']);
 		
 		$query1 = $this->db->query("delete from unidades where cod_unidad='".$tempo1[0]['cod_unidad']."'");
 		foreach ($tempo as $key) 
@@ -637,14 +636,39 @@ public function importarUnidades(){
 	}
 
 /******************* Acutualizacion de SubProyectos **********/
-public function iframeRegSubPryUnid(){
-		$this->load->view('unidades/iframeRegUnidades');
+	public function iframeRegSubPryUnid(){
+		$this->load->view('proyectos/iframeRegSubPryUnid');
 	}
 	public function registro_subproy_unidad(){
 		
-		echo $this->load->view('unidades/regUnidades');
+		echo $this->load->view('proyectos/regSubPryUnid');
+	}
+	public function trae_unidades_por_subproyecto(){
+		$tempo = json_decode($_POST['data'], true);
+		$consulta = 'SELECT unidad from pry_subpry_unid where id_proyecto="'.$tempo['proyecto'].'" AND id_sub_proy="'.$tempo['subproyecto'].'"';
+		//echo $consulta;
+		$query = $this->db->query($consulta);
+		foreach ($query->result() as $key) 
+		{
+			echo "<option>".$key->unidad."</option>"; 
+		}
 	}
 
+	public function trae_elementos_por_unidad(){
+		//echo "SELECT cod_unidad, descripcion_item, unidad, cantidad FROM unidades where cod_unidad ='".$_POST['data']."'";
+		$consulta = $this->db->query("SELECT cod_unidad, descripcion_item, unidad, cantidad FROM unidades where cod_unidad ='".$_POST['data']."'");
+		foreach ($consulta->result() as $key) {
+			echo "<tr><td>".$key->cod_unidad."</td><td>".$key->descripcion_item."</td><td>".$key->unidad."</td><td>".$key->cantidad."</td><td><input type='text' id='retirado' size='5'></td><td><input type='text' id='usado' size='5'></td><td><input type='text' id='nuevo' size='5'></td></tr>";
+		}
+	}
+	public function trae_imagen_de_unidad(){
+		//echo "SELECT cod_unidad, descripcion_item, unidad, cantidad FROM unidades where cod_unidad ='".$_POST['data']."'";
+		$consulta = $this->db->query("select distinct(u.archivo)as archivo from unidades u where u.cod_unidad ='".$_POST['data']."' limit 1");
+		foreach ($consulta->result() as $key) {
+			echo "<img src='".base_url()."assets/uploads/files/".$key->archivo."' class='imagen_unidad'>";
+		}
+
+	}
 /*************************************************************/
 	public function index(){
 		$this->login();
