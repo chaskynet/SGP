@@ -193,10 +193,10 @@ $(document).on('change', '#codigo_proyecto', function(){
             },
             success: function(response)
             {
-              $('#codigo_subproyecto').val('');
+              //$('#codigo_subproyecto').val('');
               $('#codigo_subproyecto').html('<option></option>');
               $('#cuerpo_tabla_proySubproy tbody').empty();
-              $('#codigo_subproyecto').html(response);
+              $('#codigo_subproyecto').append(response);
               
             }
     });
@@ -222,8 +222,12 @@ $(document).on('click', '#proysubproy', function(){
               var obj = $.parseJSON(response);
               $.each(obj, function(index,valor)
                 {
+
                      $("#codigo_proyecto").val(valor.id_proyecto);
-                     $("#codigo_subproyecto").val(valor.id_sub_proyecto);
+                     $("#codigo_subproyecto").html('<option>'+valor.id_sub_proy+'</option>');
+                     //$("#codigo_subproyecto").val();
+
+                  
                 });
             }
     });

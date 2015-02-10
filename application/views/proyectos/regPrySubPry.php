@@ -49,7 +49,7 @@
 			<tr>
 				<td>Sub Proyecto *: </td>
 				<td>
-					<!--input type="text" id="codigo_subproyecto" list="list_codigo_subproyecto"-->
+					
 					<select id="codigo_subproyecto">
 						<option></option>
 					</select>

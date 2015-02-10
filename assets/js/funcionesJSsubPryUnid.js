@@ -39,7 +39,7 @@ $(document).ready(function ()
                               +'<input type="text" id="nuevo" size="5">'
                               +'</td>'
                             +'</tr>';
-              $("#cuerpo_tabla tbody").append(cadena);
+              $("#cuerpo_tabla_unid tbody").append(cadena);
 
             });
           if (tamcheck>0){
@@ -117,7 +117,7 @@ $(document).on('click', '#actualizar', function(){
   var cod_unidad = $('#unidades').val();
   var desc_unidad = $('#tipo_unidad').text();
 
-  $("#cuerpo_tabla tbody tr").each(function(){
+  $("#cuerpo_tabla_unid tbody tr").each(function(){
     var proySubproy = new Object();
 
     proySubproy.codigo_proyecto = codigo_proyecto;
@@ -153,8 +153,8 @@ $(document).on('click', '#actualizar', function(){
           alert('El Proyecto-SubProyecto se Actualizo correctamente!');
           $('#codigo_proyecto').val('');
           $('#codigo_subproyecto').val('');
-          
-          $('#cuerpo_tabla_proySubproy tbody').empty();
+          $('#unidades').val('');
+          $('#cuerpo_tabla_unid tbody').empty();
           carga_proyecto_subproyecto();
         }
     });
@@ -295,7 +295,6 @@ $(document).on('change', '#unidades', function(){
             success: function(response)
             {
               //alert(response);
-              
               $('#cuerpo_tabla_unid tbody').empty();
               $('#cuerpo_tabla_unid tbody').append(response);
               

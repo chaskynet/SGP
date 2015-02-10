@@ -147,7 +147,7 @@ class Main extends CI_Controller {
 	}
 
 	public function carga_proyecto_subproyecto(){
-		$query = $this->db->query("SELECT CONCAT(id_proyecto, '-', id_sub_proy) as proySubproy, cod_unidad FROM `pry_subpry_unid` ");
+		$query = $this->db->query("SELECT distinct(CONCAT(id_proyecto, '-', id_sub_proy)) as proySubproy, cod_unidad FROM `pry_subpry_unid` order by id desc");
 		foreach ($query->result() as $row) 
 		{ 
 			echo "<tr><td style='height: 25px;' id='proysubproy'>".$row->proySubproy."</td><td class='tipo_proyecto'>".$row->cod_unidad."</td><tr>";
@@ -177,7 +177,7 @@ class Main extends CI_Controller {
 
 		$tempo = json_decode($_POST['data2']);
 		$tempo1 = json_decode($_POST['data2'], true);
-		//echo($tempo[0]['codigo_proyecto']);
+		//echo $query = "delete from pry_subpry_unid where id_proyecto=".$tempo1[0]['codigo_proyecto']." and id_sub_proy = ".$tempo1[0]['codigo_subproyecto'];
 		$query1 = $this->db->query("delete from pry_subpry_unid where id_proyecto=".$tempo1[0]['codigo_proyecto']." and id_sub_proy = ".$tempo1[0]['codigo_subproyecto']);
 		
 		foreach ($tempo as $key) 
@@ -193,13 +193,13 @@ class Main extends CI_Controller {
 		foreach ($resultado->result() as $row) 
 			{ 
 				$jsondata[$i]['id_proyecto'] = $row->id_proyecto;
-    			$jsondata[$i]['id_sub_proyecto'] = $row->id_sub_proy;
+    			$jsondata[$i]['id_sub_proy'] = $row->id_sub_proy;
     			$i++;
 		 	 }
 		 echo json_encode($jsondata);
 	}
 	public function trae_unidades_asociadas(){
-		$resultado = $this->db->query("SELECT cod_unidad, desc_unidad FROM `pry_subpry_unid` where concat(id_proyecto,'-', id_sub_proy)='".$_POST['dato']."'");
+		$resultado = $this->db->query("SELECT distinct(cod_unidad) as cod_unidad, desc_unidad FROM `pry_subpry_unid` where concat(id_proyecto,'-', id_sub_proy)='".$_POST['dato']."'");
 
 		foreach ($resultado->result() as $row) 
 			{ 
