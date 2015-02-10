@@ -19,23 +19,27 @@ $(document).ready(function ()
             {
               //var id = $(this).attr("id");
               var cadena = '<tr>'
-                              +'<td class="columna acciones">'
-                              //+'<input type="hidden" id="id_fila" >'
-                              +'<a href="#" id="elimina_prod" >Eliminar</a>'
-                              +'</td>'
-                              +'<td class="columna descripcion" id="codigo">'
+                              +'<td id="codigo_fab">'
                                 +$(this).attr('id')
                               +'</td>'
-                              +'<td class="columna descripcion" id="descripcion">'
+                              +'<td id="desc_item">'
                                 +$(this).attr('value')
                               +'</td>'
                              
-                              +'<td class="columna cantidad_cif">'
-                                +'<input type="text" id="cantidad" class="cantidad_cif cantidad">'
+                              +'<td id="unidad">'
+                                +'-'
                               +'</td>'
-                              
+                              +'<td id="cantidad">'
+                              +'0'
+                              +'</td><td>'
+                              +'<input type="text" id="retirado" size="5">'
+                              +'</td><td>'
+                              +'<input type="text" id="usado" size="5">'
+                              +'</td><td>'
+                              +'<input type="text" id="nuevo" size="5">'
+                              +'</td>'
                             +'</tr>';
-              $("#cuerpo_tabla_proySubproy tbody").append(cadena);
+              $("#cuerpo_tabla tbody").append(cadena);
 
             });
           if (tamcheck>0){
@@ -154,7 +158,6 @@ $(document).on('click', '#actualizar', function(){
           carga_proyecto_subproyecto();
         }
     });
-  
 });
 //-----------------------------------
 // var carga_proyecto_subproyecto = function(){
