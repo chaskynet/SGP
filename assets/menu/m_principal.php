@@ -6,7 +6,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="brand" href="#" style="color:#FFF">Gestion de Proyectos</a>
+          <a class="brand" href="#" style="color:#FFF">SGP - Gestion de Gestión Proyectos</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
               <li><a href='<?php echo site_url('main/principal')?>'>Principal</a></li>

@@ -179,7 +179,7 @@ $(document).on('change', '#codigo_proyecto', function(){
   //alert($(this).val().length+'--'+$tmp.length);
   if($tmp.length < 1 ){
     alert("Elija un proyecto");
-    $('#list_codigo_subproyecto').empty();
+    $('#codigo_subproyecto').empty();
   }
   else{
     $.ajax({
@@ -194,9 +194,9 @@ $(document).on('change', '#codigo_proyecto', function(){
             success: function(response)
             {
               $('#codigo_subproyecto').val('');
-              $('#list_codigo_subproyecto').html('<option value="">');
+              $('#codigo_subproyecto').html('<option></option>');
               $('#cuerpo_tabla_proySubproy tbody').empty();
-              $('#list_codigo_subproyecto').html(response);
+              $('#codigo_subproyecto').html(response);
               
             }
     });

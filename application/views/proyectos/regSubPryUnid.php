@@ -98,7 +98,7 @@
 			</table>
 		</div>
 		<div id="cuerpo_unidad">
-			<table id="cuerpo_tabla">
+			<table id="cuerpo_tabla_unid" class="cuerpo_tabla_unid">
 				<tbody>
 					
 				</tbody>

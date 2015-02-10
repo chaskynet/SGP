@@ -229,6 +229,8 @@ class Main extends CI_Controller {
 
 		$crud->required_fields('uname', 'password', 'nombre', 'apaterno', 'ci', 'rol', 'estado_usuario');
 
+		$crud->unique_fields('uname', 'ci');
+
 		$crud->callback_before_insert(array($this,'encripta_password'));
 		$crud->callback_before_update(array($this,'encripta_password'));
 
@@ -478,34 +480,7 @@ public function importarUnidades(){
 		$query = PHPepeExcel::xls2sql ( $nombreArchivo, array ("cod_unidad", "idproducto", "descripcion", "cantidad", "codigo_fab", "idproducto_fab", "descripcion_item", "unidad",), "unidades", $options );
 
 		$this->db->query($query);
-		//read file from path
-		// $objPHPExcel = PHPExcel_IOFactory::load($file);
-		// //get only the Cell Collection
-		// $cell_collection = $objPHPExcel->getActiveSheet()->getCellCollection();
-		// //extract to a PHP readable array format
-		// foreach ($cell_collection as $cell) {
-		// 	$column = $objPHPExcel->getActiveSheet()->getCell($cell)->getColumn();
-		// 	$row = $objPHPExcel->getActiveSheet()->getCell($cell)->getRow();
-		// 	$data_value = $objPHPExcel->getActiveSheet()->getCell($cell)->getValue();
-		// 	//header will/should be in row 1 only. of course this can be modified to suit your need.
-		// 	if ($row == 1) {
-		// 	    $header[$row][$column] = $data_value;
-		// 	} else {
-		// 	    $arr_data[$row][$column] = $data_value;
-		// 	}
-		// }
-		// //send the data in an array format
-		// //$data['header'] = $header;
-		// $data= $arr_data;
-		// //$data = json_encode($data);
-		// //echo $data;
-		// //$modif = $this->$db->query( 'SET @@global.max_allowed_packet = ' . 500 * 1024 * 1024 );
-		// foreach ($data as $key) {
-		// 	$sql = 'insert into unidades (cod_unidad, idproducto, descripcion, cantidad, codigo_fab, idproducto_fab, descripcion_item, unidad) values("'.$key["B"].'", "'.$key["C"].'", "'.addslashes($key["D"]).'", "'.$key["E"].'","'.$key["F"].'","'.$key["G"].'","'.addslashes($key["H"]).'","'.$key["I"].'")';
-		// 	//$this->$db->query( 'SET @@global.max_allowed_packet = ' . strlen( $sql ) + 1024 );
-		// 	$insertar = $this->db->query($sql);
-			
-		// }
+		
 	}
 //------------------------------------------------------------//
 	public function iframeRegManoObra(){

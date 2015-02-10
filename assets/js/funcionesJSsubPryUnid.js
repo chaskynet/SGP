@@ -296,8 +296,8 @@ $(document).on('change', '#unidades', function(){
             {
               //alert(response);
               
-              $('#cuerpo_tabla tbody').empty();
-              $('#cuerpo_tabla tbody').append(response);
+              $('#cuerpo_tabla_unid tbody').empty();
+              $('#cuerpo_tabla_unid tbody').append(response);
               
             }
     });
