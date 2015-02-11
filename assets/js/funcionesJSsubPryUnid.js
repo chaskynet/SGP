@@ -32,11 +32,11 @@ $(document).ready(function ()
                               +'<td id="cantidad">'
                               +'0'
                               +'</td><td>'
-                              +'<input type="text" id="retirado" size="5">'
+                              +'<input type="text" id="retirado" size="5" value="0">'
                               +'</td><td>'
-                              +'<input type="text" id="usado" size="5">'
+                              +'<input type="text" id="usado" size="5" value="0">'
                               +'</td><td>'
-                              +'<input type="text" id="nuevo" size="5">'
+                              +'<input type="text" id="nuevo" size="5" value="0">'
                               +'</td>'
                             +'</tr>';
               $("#cuerpo_tabla_unid tbody").append(cadena);
@@ -116,7 +116,8 @@ $(document).on('click', '#actualizar', function(){
   var codigo_subproyecto = $('#codigo_subproyecto').val();
   var cod_unidad = $('#unidades').val();
   var desc_unidad = $('#tipo_unidad').text();
-
+  var avance = $('#avg_avance').val();
+  var motivo = $('#motivo').val();
   $("#cuerpo_tabla_unid tbody tr").each(function(){
     var proySubproy = new Object();
 
@@ -124,6 +125,8 @@ $(document).on('click', '#actualizar', function(){
     proySubproy.codigo_subproyecto = codigo_subproyecto;
     proySubproy.codigo_unidad = cod_unidad;
     proySubproy.dec_unidad = desc_unidad;
+    proySubproy.avance = avance;
+    proySubproy.motivo = motivo;
 
     proySubproy.codigo_fab = $(this).find('#codigo_fab').text();
     proySubproy.descripcion = $(this).find('#desc_item').text();
@@ -151,11 +154,11 @@ $(document).on('click', '#actualizar', function(){
         {
           //alert(response);
           alert('El Proyecto-SubProyecto se Actualizo correctamente!');
-          $('#codigo_proyecto').val('');
-          $('#codigo_subproyecto').val('');
-          $('#unidades').val('');
-          $('#cuerpo_tabla_unid tbody').empty();
-          carga_proyecto_subproyecto();
+          // $('#codigo_proyecto').val('');
+          // $('#codigo_subproyecto').val('');
+          // $('#unidades').val('');
+          //$('#cuerpo_tabla_unid tbody').empty();
+          
         }
     });
 });

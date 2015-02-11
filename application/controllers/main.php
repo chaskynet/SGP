@@ -102,6 +102,10 @@ class Main extends CI_Controller {
 		$crud->set_relation("responsable", "responsable", "nombre_responsable");
 		$crud->set_relation("naturaleza", "naturaleza_proy", "desc_naturaleza");
 
+		$crud->callback_column('fecha_fin', array($this,'modifica_color'));
+
+		$crud->add_action('Actualizar Proyecto', '', 'main/iframeRegSubPryUnid','ico_update');
+
 		$crud->set_field_upload("asbuilt", "assets/uploads/files");
 
 		$output = $crud->render();
@@ -109,6 +113,11 @@ class Main extends CI_Controller {
 		echo $this->load->view('proyectos/regProyectos2', $output, true);
 		//echo $this->load->view('proyectos/regProyectos2');
 	}
+	function modifica_color($value, $row){
+		//return "<script>$(td div).find('".$row->fecha_fin."').css('background-color','#ff6f6f');</script>";
+		return "<td style='background-color:#BFA8A8;'>".$value."</td>";
+	}
+
 
 	//---------- Registro de Proyectos-SubProyecto Version GROSERY CRUD -------//
 	public function iframeRegPrySubPry(){
@@ -656,7 +665,7 @@ public function importarUnidades(){
 		//echo "SELECT distinct(u.archivo)as archivo from unidades u where u.cod_unidad ='".$_POST['data']."' order by archivo DESC limit 1";
 		$consulta = $this->db->query("SELECT distinct(u.archivo)as archivo from unidades u where u.cod_unidad ='".$_POST['data']."' order by archivo DESC limit 1");
 		foreach ($consulta->result() as $key) {
-			echo "<img src='".base_url()."assets/uploads/files/".$key->archivo."' class='imagen_unidad'>";
+			echo "<img src='".base_url()."assets/uploads/files/".$key->archivo."' class='imagen_unidad'><div><input type='button' value='Guardar/Actualizar' id='actualizar'></div>";
 		}
 	}
 	public function trae_titulo_tipo_unidad(){
@@ -672,6 +681,7 @@ public function importarUnidades(){
 		//echo($tempo[0]['codigo_proyecto']);
 		$query1 = $this->db->query("delete from pry_subpry_unid where id_proyecto=".$tempo1[0]['codigo_proyecto']." and id_sub_proy = ".$tempo1[0]['codigo_subproyecto']." AND cod_unidad='".$tempo1[0]['codigo_unidad']."'");
 		
+		$query2 = $this->db->query("insert into avance_subproyecto (cod_proyecto, cod_subproyecto, avance, motivo, fecha) values ('".$tempo1[0]['codigo_proyecto']."','".$tempo1[0]['codigo_subproyecto']."','".$tempo1[0]['avance']."', '".$tempo1[0]['motivo']."', curdate())");
 		foreach ($tempo as $key) 
 		{
 			$query = $this->db->query("insert into pry_subpry_unid (id_proyecto, id_sub_proy, cod_unidad, desc_unidad, cantidad, codigo_fab, desc_item, unidad, retirado, usado, nuevo) values ('".$key->codigo_proyecto."', '".$key->codigo_subproyecto."', '".$key->codigo_unidad."', '".$key->dec_unidad."', '".$key->cantidad."', '".$key->codigo_fab."', '".$key->descripcion."', '".$key->unidad."', '".$key->retirado."', '".$key->usado."', '".$key->nuevo."')");

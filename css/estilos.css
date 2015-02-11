@@ -20,8 +20,8 @@ body{
 }
 
 #cabecera_actualizar_subproy{
-	width: 80%;	
-	float: left;
+	width: 90%;	
+	margin:auto;
 }
 
 #lista_proyectos{
@@ -68,7 +68,6 @@ body{
 
 #cuerpo{
 	vertical-align: bottom;
-	
 }
 
 .innerimg {
@@ -125,6 +124,7 @@ body{
 	width: 100%;
 }
 #buscaArticulos{
+
 	background-color: #C7C7C7;
 }
 #bodyData{
@@ -277,4 +277,33 @@ color:white;
 	width: 100%;
 	height: 50%;
 	overflow: auto;
+}
+.ico_update{
+	background: url('../imagenes/update.ico');
+	float: right;
+	width: 16px;
+	height: 16px;
+}
+.titulo{
+	width: 70%;
+	margin: auto;
+}
+.titulo_unidad{
+	width: 50%;
+	float: left;
+}
+.postes{
+	width: 50%;
+	float: right;
+}
+.avance{
+	width: 40px;
+}
+.motivo{
+	width: 200px;
+}
+
+.avg_avance{
+	background-color: #066dc4;
+	color: #fff;
 }
