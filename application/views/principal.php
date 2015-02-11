@@ -1,7 +1,7 @@
 <?php
-  echo "<pre>";
-  //print_r($this->session->all_userdata());
-  echo "</pre>"
+  // echo "<pre><br><br>";
+  // print_r($this->session->all_userdata());
+  // echo "</pre>"
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -26,8 +26,8 @@
     <?php include_once "assets/menu/m_principal.php"; ?>
     <DIV align="center" class='container'>
         <div id="data">
-            
-            <h1 class="text-info">Bienvenido al Sistema</h1><br>
+            <br>
+            <h1 class="text-info">Bienvenido <?php echo $this->session->userdata('usuario'); ?></h1><br>
         </div>
         
     </DIV>

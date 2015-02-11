@@ -69,7 +69,7 @@
                 </li>
                 <li class="dropdown">
                   <a href="#" style="color:#FFF" class="dropdown-toggle" data-toggle="dropdown">
-                      Hola!  <b class="caret"></b>
+                      Hola! <?php echo $this->session->userdata('usuario');?> <b class="caret"></b>
                     </a>
                   <ul class="dropdown-menu">
                       <li><a href="perfil.php"> Mi Perfil</a></li>
