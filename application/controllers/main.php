@@ -114,8 +114,8 @@ class Main extends CI_Controller {
 		//echo $this->load->view('proyectos/regProyectos2');
 	}
 	function modifica_color($value, $row){
-		//return "<script>$(td div).find('".$row->fecha_fin."').css('background-color','#ff6f6f');</script>";
-		return "<td style='background-color:#BFA8A8;'>".$value."</td>";
+		return "<script>$(this).css('background-color','#ff6f6f');</script>".$value;
+		//return "<td style='background-color:#BFA8A8;'>".$value."</td>";
 	}
 
 
