@@ -738,11 +738,18 @@ public function importarUnidades(){
 	public function validar_credenciales(){
 		$this->load->model('model_usuarios');
 
-		if($this->model_usuarios->puede_entrar()){
+		if($this->model_usuarios->puede_entrar() == 1 ){
 
 			return true;
-		} else{
-			$this->form_validation->set_message('validar_credenciales', 'Usuario/Password Incorrectos!');
+		} elseif($this->model_usuarios->puede_entrar() == 2 ){
+			$this->form_validation->set_message('validar_credenciales', 'Usuario Bloqueado!');
+			return false;
+		} elseif ($this->model_usuarios->puede_entrar() == 3 ) {
+			$this->form_validation->set_message('validar_credenciales', 'Usuario Inactivo');
+			return false;
+		}
+		else{
+			$this->form_validation->set_message('validar_credenciales', 'Usuario/Password incorrectos!');
 			return false;
 		}
 	}
