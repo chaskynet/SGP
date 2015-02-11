@@ -114,7 +114,17 @@ class Main extends CI_Controller {
 		//echo $this->load->view('proyectos/regProyectos2');
 	}
 	function modifica_color($value, $row){
-		return "<script>$(this).css('background-color','#ff6f6f');</script>".$value;
+		$hoy = date('Y-m-j');
+		$operacion = strtotime($value) - strtotime($hoy);
+		$operacion = $operacion/60/60/24;
+		$operacion = $operacion +0;
+		if ($operacion === 3)
+			return "<script>$('#flex1 tbody tr td:contains(".$value.")').css('background-color','#fffe9e');</script>".$value;
+		elseif ($operacion < 3){
+			return "<script>$('#flex1 tbody tr td:contains(".$value.")').css({'background-color': '#db090a', 'color': '#fffff'});</script>".$value;
+		}
+		elseif ($operacion > 3)
+			return "<script>$('#flex1 tbody tr td:contains(".$value.")').css('background-color','#8bff9c');</script>".$value;
 		//return "<td style='background-color:#BFA8A8;'>".$value."</td>";
 	}
 
