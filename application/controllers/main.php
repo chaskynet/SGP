@@ -103,6 +103,16 @@ class Main extends CI_Controller {
 		$crud->set_relation("responsable", "responsable", "nombre_responsable");
 		$crud->set_relation("naturaleza", "naturaleza_proy", "desc_naturaleza");
 
+		$usuario = $this->session->userdata('usuario');
+		$rol = $this->db->query('SELECT rol FROM usuarios where uname = "'.$usuario.'"');
+		foreach ($rol->result() as $key) {
+			$rol = $key->rol;
+		}
+		if ($rol != 4){
+			$crud->unset_edit();
+			$crud->unset_delete();
+		}
+
 		$crud->callback_column('fecha_fin', array($this,'modifica_color'));
 
 		$crud->add_action('Actualizar Proyecto', '', 'main/iframeRegSubPryUnid','ico_update');
