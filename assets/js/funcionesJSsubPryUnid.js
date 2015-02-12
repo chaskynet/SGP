@@ -163,24 +163,6 @@ $(document).on('click', '#actualizar', function(){
     });
 });
 //-----------------------------------
-// var carga_proyecto_subproyecto = function(){
-
-//   $.ajax({
-//           url: 'carga_proyecto_subproyecto',
-//           //data: {data: newObj},
-//           type: "POST",
-//           dataType: "html",
-//           error: function()
-//           {
-//               alert('Error al cargar Proyectos!');
-//           },
-//           success: function(response)
-//           {
-//             $('#cuerpo_tabla tbody').html(response);
-            
-//           }
-//       });
-// }
 
 var cargar_proyectos = function(){
   $.ajax({
@@ -362,4 +344,26 @@ $(document).on('click', '#proysubproy', function(){
               $("#cuerpo_tabla_proySubproy tbody").html(response);
             }
     });
+});
+
+//------------ Para Calculos ----------------/
+$(document).on('change', '#retirado', function(){
+  var obj = $(this).parents().get(1);
+  var cantidad = $(obj).find('#cantidad');
+  var operacion = parseInt($(cantidad).text()) + parseInt($(this).val());
+  $(cantidad).text(operacion);
+});
+
+$(document).on('change', '#usado', function(){
+  var obj = $(this).parents().get(1);
+  var cantidad = $(obj).find('#cantidad');
+  var operacion = parseInt($(cantidad).text()) + parseInt($(this).val());
+  $(cantidad).text(operacion);
+});
+
+$(document).on('change', '#nuevo', function(){
+  var obj = $(this).parents().get(1);
+  var cantidad = $(obj).find('#cantidad');
+  var operacion = parseInt($(cantidad).text()) - parseInt($(this).val());
+  $(cantidad).text(operacion);
 });
