@@ -103,6 +103,8 @@ class Main extends CI_Controller {
 		$crud->set_relation("responsable", "responsable", "nombre_responsable");
 		$crud->set_relation("naturaleza", "naturaleza_proy", "desc_naturaleza");
 
+		$crud->unique_fields('id_proyecto');
+
 		$usuario = $this->session->userdata('usuario');
 		$rol = $this->db->query('SELECT rol FROM usuarios where uname = "'.$usuario.'"');
 		foreach ($rol->result() as $key) {
@@ -114,10 +116,11 @@ class Main extends CI_Controller {
 		}
 
 		$crud->callback_column('fecha_fin', array($this,'modifica_color'));
-
 		$crud->add_action('Actualizar Proyecto', '', 'main/iframeRegSubPryUnid','ico_update');
 
 		$crud->set_field_upload("asbuilt", "assets/uploads/files");
+
+		$crud->callback_before_delete(array($this,'borra_subproyectos_unidades'));
 
 		$output = $crud->render();
 
@@ -136,10 +139,15 @@ class Main extends CI_Controller {
 		}
 		elseif ($operacion > 3)
 			return "<script>$('#flex1 tbody tr td:contains(".$value.")').css('background-color','#8bff9c');</script>".$value;
-		//return "<td style='background-color:#BFA8A8;'>".$value."</td>";
 	}
 
+	public function borra_subproyectos_unidades($primary_key){
+		// $this->db->where('id_proyecto',$primary_key);
+  //   	$user = $this->db->get('proyecto')->row();
 
+    	$this->db->query('DELETE FROM pry_subpry_unid WHERE id_proyecto='.$primary_key);
+    	$this->db->query('DELETE FROM avance_subproyecto WHERE cod_proyecto='.$primary_key);
+	}
 	//---------- Registro de Proyectos-SubProyecto Version GROSERY CRUD -------//
 	public function iframeRegPrySubPry(){
 		$this->load->view('proyectos/iframeRegPrySubPry');
