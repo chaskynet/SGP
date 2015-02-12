@@ -8,6 +8,7 @@ class Main extends CI_Controller {
 		$this->load->database();
 
 		$this->load->library('grocery_CRUD');
+		$this->load->library('excel');
 	}
 
 	public function _principal_output($output = null)
@@ -468,7 +469,7 @@ class Main extends CI_Controller {
 	public function importarMateriales(){
 		$file = './assets/uploads/files/'.$_POST['data'];//'./files/test.xlsx';
 		//load the excel library
-		$this->load->library('excel');
+		//$this->load->library('excel');
 		$nombreArchivo = $file; //'../Archivos/'.$_FILES['archivoArticulos']['name'];
 		$columnas=PHPepeExcel::xls2array($nombreArchivo);
 		$options = array ('start' => 1, 'limit'=>20000);
@@ -479,7 +480,7 @@ class Main extends CI_Controller {
 	public function importarManoObra(){
 		$file = './assets/uploads/files/'.$_POST['data'];
 		//load the excel library
-		$this->load->library('excel');
+		//$this->load->library('excel');
 		$nombreArchivo = $file; //'../Archivos/'.$_FILES['archivoArticulos']['name'];
 		$columnas=PHPepeExcel::xls2array($nombreArchivo);
 		$options = array ('start' => 1, 'limit'=>20000);
@@ -492,7 +493,7 @@ class Main extends CI_Controller {
 public function importarUnidades(){
 		$file = './assets/uploads/files/'.$_POST['data'];//'./files/test.xlsx';
 		//load the excel library
-		$this->load->library('excel');
+		//$this->load->library('excel');
 		$nombreArchivo = $file; //'../Archivos/'.$_FILES['archivoArticulos']['name'];
 		$columnas=PHPepeExcel::xls2array($nombreArchivo);
 		$options = array ('start' => 1, 'limit'=>20000);
