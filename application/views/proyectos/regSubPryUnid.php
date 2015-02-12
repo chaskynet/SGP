@@ -107,22 +107,24 @@
 		</div>
 		
 		<div id= "cabecera_elementos">
-			<table class="cabecera_tabla_elementos">
+			<!--table class="cabecera_tabla_elementos"-->
+			<table id="cuerpo_tabla_unid" class="cuerpo_tabla_unid">
 				<thead>
 					<tr>
 						<th>Código</th>
 						<th>Descripción</th>
 						<th>Unidad</th>
-						<th>Presupuest</th>
+						<th>Ref.</th>
+						<th>Pres.</th>
 						<th>Retirado</th>
 						<th>Usado</th>
 						<th>Nuevo</th>
 					</tr>
 				</thead>
-			</table>
+			<!--/table>
 		</div>
 		<div id="cuerpo_unidad">
-			<table id="cuerpo_tabla_unid" class="cuerpo_tabla_unid">
+			<table id="cuerpo_tabla_unid" class="cuerpo_tabla_unid"-->
 				<tbody>
 					
 				</tbody>

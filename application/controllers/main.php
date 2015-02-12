@@ -263,6 +263,22 @@ class Main extends CI_Controller {
 		$post_array['password'] = $encriptado;
 		return $post_array;
 	}
+ //------- Para Registro de Responsable ------------
+	public function iframeRegResponsable(){
+		$this->load->view('responsables/iframeRegResponsable');
+	}
+	public function registro_responsable(){
+		$crud = new grocery_CRUD();
+		$crud->set_subject('Responsables');
+		$crud->set_table('responsable');
+
+		$crud->display_as('nombre_responsable', 'Responsable');
+
+		$crud->required_fields('nombre_responsable');
+
+		$output = $crud->render();
+		echo $this->load->view('responsables/regResponsable', $output, true);
+	}
 
  //------- Para registro de Tipo de Proyecto --------
 	public function iframeTipoProyecto(){
@@ -669,14 +685,14 @@ public function importarUnidades(){
 		//echo "SELECT cod_unidad, descripcion_item, unidad, cantidad FROM unidades where cod_unidad ='".$_POST['data']."'";
 		$consulta = $this->db->query("SELECT codigo_fab, desc_item, unidad, cantidad, retirado, usado, nuevo FROM pry_subpry_unid where cod_unidad ='".$tempo['unidad']."' AND id_proyecto ='".$tempo['proyecto']."' AND id_sub_proy='".$tempo['subproyecto']."' ");
 		foreach ($consulta->result() as $key) {
-			echo "<tr><td id='codigo_fab'>".$key->codigo_fab."</td><td id='desc_item'>".$key->desc_item."</td><td id='unidad'>".$key->unidad."</td><td id='cantidad'>".$key->cantidad."</td><td><input type='text' id='retirado' size='5' value=".$key->retirado."></td><td><input type='text' id='usado' size='5' value=".$key->usado."></td><td><input type='text' id='nuevo' size='5' value=".$key->nuevo."></td></tr>";
+			echo "<tr><td id='codigo_fab' style='text-align: center;'>".$key->codigo_fab."</td><td id='desc_item' style='text-align:center;'>".$key->desc_item."</td><td id='unidad' style='text-align:center;'>".$key->unidad."</td><td id='cantidad' style='text-align:center;'>".$key->cantidad."</td><td id='presupuestado' style='text-align:center;'>0</td><td style='text-align:center;'><input type='text' id='retirado' size='5' value=".$key->retirado."></td><td style='text-align:center;'><input type='text' id='usado' size='5' value=".$key->usado."></td><td style='text-align:center;'><input type='text' id='nuevo' size='5' value=".$key->nuevo."></td></tr>";
 		}
 	}
 	public function trae_imagen_de_unidad(){
 		//echo "SELECT distinct(u.archivo)as archivo from unidades u where u.cod_unidad ='".$_POST['data']."' order by archivo DESC limit 1";
 		$consulta = $this->db->query("SELECT distinct(u.archivo)as archivo from unidades u where u.cod_unidad ='".$_POST['data']."' order by archivo DESC limit 1");
 		foreach ($consulta->result() as $key) {
-			echo "<img src='".base_url()."assets/uploads/files/".$key->archivo."' class='imagen_unidad'><div><input type='button' value='Guardar/Actualizar' id='actualizar'></div>";
+			echo "<img src='".base_url()."assets/uploads/files/".$key->archivo."' class='imagen_unidad'><div><input type='button' value='Guardar/Actualizar' id='actualizar'><input type='button' value='Guardar y Salir' id='actualizar_salir'></div>";
 		}
 	}
 	public function trae_titulo_tipo_unidad(){

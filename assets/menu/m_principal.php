@@ -54,6 +54,8 @@
                 	<ul class="dropdown-menu">
                       <li><a href="#" id="regUSR">Registro de Usuarios</a></li>
                       <li class="divider"></li>
+                      <li><a href="#" id="regResp">Registro de Responsables</a></li>
+                      <li class="divider"></li>
                       <li><a href="#" id="regTipoProy">Registro de Tipo Proyecto</a></li>
                       <li><a href="#" id="regNaturaleza">Registro de Naturaleza Proyecto</a></li>
                       <li><a href="#" id="regPrioridadProy">Registro de Prioridad Proyecto</a></li>

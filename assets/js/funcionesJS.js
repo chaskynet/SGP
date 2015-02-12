@@ -172,6 +172,23 @@ var iframeUsuarios = function(){
     });
 }
 
+$(document).on('click', '#regResp', function(){
+    iframeResponsable();
+});
+
+var iframeResponsable = function(){
+  $.ajax({
+       url: 'iframeRegResponsable',
+      // data: data,
+       type: "GET",
+       //dataType: "html",
+       success: function(response)
+       {
+         $('#data').html(response);
+       }
+    });
+};
+
 var abreTipoProyecto = function(){
   $('#regTipoProy').click(function(){
     iframeTipoProyecto();

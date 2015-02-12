@@ -106,11 +106,19 @@ $(document).on('click','#elimina_prod',function(){
 
 });
 
+//---- Guardar Elementos de la Unidad para un Sub Proyecto y Salir -------
+$(document).on('click', '#actualizar_salir', function(){
+  guardar();
+  $(location).attr('href','registro_proyectos2');
+});
+
 //---- Guardar Elementos de la Unidad para un Sub Proyecto-------
 $(document).on('click', '#actualizar', function(){
-  //var cabecera = [];
-  
-  var lista_proySubproy = new Array();
+  guardar();
+});
+
+var guardar = function(){
+    var lista_proySubproy = new Array();
   
   var codigo_proyecto = $('#codigo_proyecto').val();
   var codigo_subproyecto = $('#codigo_subproyecto').val();
@@ -161,7 +169,7 @@ $(document).on('click', '#actualizar', function(){
           
         }
     });
-});
+}
 //-----------------------------------
 
 var cargar_proyectos = function(){
@@ -349,21 +357,21 @@ $(document).on('click', '#proysubproy', function(){
 //------------ Para Calculos ----------------/
 $(document).on('change', '#retirado', function(){
   var obj = $(this).parents().get(1);
-  var cantidad = $(obj).find('#cantidad');
+  var cantidad = $(obj).find('#presupuestado');
   var operacion = parseInt($(cantidad).text()) + parseInt($(this).val());
   $(cantidad).text(operacion);
 });
 
 $(document).on('change', '#usado', function(){
   var obj = $(this).parents().get(1);
-  var cantidad = $(obj).find('#cantidad');
+  var cantidad = $(obj).find('#presupuestado');
   var operacion = parseInt($(cantidad).text()) + parseInt($(this).val());
   $(cantidad).text(operacion);
 });
 
 $(document).on('change', '#nuevo', function(){
   var obj = $(this).parents().get(1);
-  var cantidad = $(obj).find('#cantidad');
+  var cantidad = $(obj).find('#presupuestado');
   var operacion = parseInt($(cantidad).text()) - parseInt($(this).val());
   $(cantidad).text(operacion);
 });
