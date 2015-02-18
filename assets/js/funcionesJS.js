@@ -64,6 +64,23 @@ var iframeSubPryUnid = function(){
        }
     });
 }
+
+$(document).on('click', '#postergaProyecto', function(){
+  iframePostergaPry();
+});
+var iframePostergaPry = function(){
+  $.ajax({
+       url: 'iframeRegPostergaPry',
+      // data: data,
+       type: "GET",
+       //dataType: "html",
+       success: function(response)
+       {
+         $('#data').html(response);
+       }
+    });
+}
+
 //-------------Registro de Materiales ---------
 $(document).on('click', '#regMateriales', function(){
     iframeMateriales();

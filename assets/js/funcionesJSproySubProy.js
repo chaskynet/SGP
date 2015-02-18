@@ -45,8 +45,142 @@ $(document).ready(function ()
         }
       }
   });
+//-------- Importa Mano de Obra -----//
+$( "#form_importar_mano_obra" ).dialog(
+  {
+     autoOpen: false,
+     height: 250,
+     width: 350,
+     modal: true,
+     buttons:
+      {
+        "Importar Presupuesto a la Base de Datos": function(){
+          var archivo = $("#archivo_subido_presu_mano_obra").text();
+          // if ($(archivo).length < 1){
+          //  alert("Debe seleccionar un archivo!");
+          // }
+          // else{
+            $.ajax({
+              url: 'importarPresuManoObra',
+              data: {data: archivo},
+              type: "POST",
+              dataType: "html",
+              error: function()
+              {
+                  alert('Error al procesar el archivo!');
+              },
+              success: function(response)
+              {
+                alert('Presupuesto de Mano de Obra cargado correctamente');
+                dialog.dialog( "close" );
+                //location.reload('iframeRegMateriales');
+              }
+          });
+          //}
+        }
+       }
+   });
+//-------- Importa Materiales -----//
+$( "#form_importar_materiales" ).dialog(
+  {
+     autoOpen: false,
+     height: 250,
+     width: 350,
+     modal: true,
+     buttons:
+      {
+        "Importar Presupuesto a la Base de Datos": function(){
+          var archivo = $("#archivo_subido_presu_materiales").text();
+          // if ($(archivo).length < 1){
+          //  alert("Debe seleccionar un archivo!");
+          // }
+          // else{
+            $.ajax({
+              url: 'importarPresuMateriales',
+              data: {data: archivo},
+              type: "POST",
+              dataType: "html",
+              error: function()
+              {
+                  alert('Error al procesar el archivo!');
+              },
+              success: function(response)
+              {
+                dialog.dialog( "close" );
+                //location.reload('iframeRegMateriales');
+              }
+          });
+          //}
+        }
+       }
+   });
 });
+//------ Abra pop up para importar presupuesto de mano de obra ----
+$(document).on('click', '#imp_presu_mano_obra', function(){
+  $( "#form_importar_mano_obra" ).dialog( "open" ); 
+});
+$(function() {
+  $('#upload_file_mano_obra').submit(function(e) {
+    e.preventDefault();
+    $.ajaxFileUpload({
+      url       :'upload_file', 
+      secureuri   :false,
+      fileElementId :'userfile',
+      dataType    : 'json',
+      // data      : {
+      //         'title' : $('#title').val()
+      //         },
+      success : function (data, status)
+      {
+        if(data.status != 'error')
+        {
+          alert(data.msg);
+          $("#archivo_subido_presu_mano_obra").text(data.archivo);
+          $("#presu_mano_obra").text(data.archivo);
+        }
+        else{
+          alert("error al subir el archivo");
+        }
+        
+      }
+    });
+    return false;
+  });
+});
+//------ Abre pop up para importar presupuesto de Materiales ----
+$(document).on('click', '#imp_presu_materiales', function(){
+  $( "#form_importar_materiales" ).dialog( "open" ); 
+});
+$(function() {
+  $('#upload_file_materiales').submit(function(e) {
+    e.preventDefault();
+    $.ajaxFileUpload({
+      url       :'upload_file', 
+      secureuri   :false,
+      fileElementId :'userfiles',
+      dataType    : 'json',
+      // data      : {
+      //         'title' : $('#title').val()
+      //         },
+      success : function (data, status)
+      {
 
+        if(data.status != 'error')
+        {
+          alert(data.msg);
+          $("#archivo_subido_presu_materiales").text(data.archivo);
+          $("#presu_materiales").text(data.archivo);
+        }
+        else{
+          alert("error al subir el archivo");
+        }
+        
+      }
+    });
+    return false;
+  });
+});
+//-----------------------------------------------------------------
 $(document).on('click','#btn_busca_articulos',function(){
     $("#tabla_articulos").empty();
     $("#busqueda").val('');

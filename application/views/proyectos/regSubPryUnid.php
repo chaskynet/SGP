@@ -20,7 +20,7 @@
 		Ingrese el Elemento a buscar: <input type="text" id="busqueda"/>
 		<div>
 		<input type="radio" name="fuente" value="materiales" checked> Materiales
-		<input type="radio" name="fuente" value="manoObra"> Mano de Obra
+		<input type="radio" name="fuente" value="mano_de_obra"> Mano de Obra
 		</div>
 		<div class="tabla-cabecera">
 			<div class="fila_cabecera">
@@ -65,7 +65,7 @@
 					</select>
 				</td>
 				<td style="width: 90px;" class="avg_avance">
-					Avance de SubProyecto (%):
+					Avance de Proyecto (%):
 				</td>
 				<td class="avg_avance">
 					<input type="number" id='avg_avance' class="avance">

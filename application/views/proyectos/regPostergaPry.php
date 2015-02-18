@@ -13,7 +13,7 @@ endforeach;
 </head>
 <body>
 <div>
-	<h1>Creacion/Actualizacion de Proyectos</h1>
+	<h1>Postergacion de Proyectos</h1>
 	<?php echo $output; ?>
 </div>
 </body>

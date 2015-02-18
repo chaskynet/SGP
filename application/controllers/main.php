@@ -115,8 +115,12 @@ class Main extends CI_Controller {
 			$crud->unset_delete();
 		}
 
-		$crud->callback_column('fecha_fin', array($this,'modifica_color'));
 		$crud->add_action('Actualizar Proyecto', '', 'main/iframeRegSubPryUnid','ico_update');
+
+		$crud->callback_column('fecha_fin', array($this,'modifica_color'));
+		//$crud->callback_column('id_proyecto', array($this, 'muestra_postergacion'));
+
+		
 
 		$crud->set_field_upload("asbuilt", "assets/uploads/files");
 
@@ -128,17 +132,55 @@ class Main extends CI_Controller {
 		//echo $this->load->view('proyectos/regProyectos2');
 	}
 	function modifica_color($value, $row){
+		$value1 = $row->id_proyecto;
+		 $query_postergado = $this->db->query("SELECT fecha, motivo FROM posterga_proyecto where id_proyecto= '".$value1."'");
+		 $cadena = '';
+		if($query_postergado->num_rows()>0){
+			foreach ($query_postergado->result() as $key) {
+				$fecha = $key->fecha;
+				$motivo = $key->motivo;
+			}
+		}
+
+		$query_avance = $this->db->query('SELECT avance FROM avance_subproyecto WHERE id_proyecto = '.$value1);
+		if($query_avance->num_rows()>0){
+			foreach ($query_avance->result() as $key) {
+				$avance = $key->avance;
+			}
+		}
+		else{
+			$avance = 0;
+		}
+
 		$hoy = date('Y-m-j');
 		$operacion = strtotime($value) - strtotime($hoy);
 		$operacion = $operacion/60/60/24;
 		$operacion = $operacion +0;
+
 		if ($operacion === 3)
 			return "<script>$('#flex1 tbody tr td:contains(".$value.")').css('background-color','#fffe9e');</script>".$value;
 		elseif ($operacion < 3){
-			return "<script>$('#flex1 tbody tr td:contains(".$value.")').css({'background-color': '#db090a', 'color': '#fffff'});</script>".$value;
+			return "<script>$('#flex1 tbody tr td:contains(".$value.")').css({'background-color': '#db090a', 'color': '#ffffff'});</script><a href='' onclick=alert('".$avance."%&nbsp;de&nbsp;Avance&nbsp;\\n".$operacion."&nbsp;dias&nbsp;de&nbsp;Retrazo&nbsp\\nPenalizacion:&nbsp;0.00');>".$value."</a>";
 		}
 		elseif ($operacion > 3)
-			return "<script>$('#flex1 tbody tr td:contains(".$value.")').css('background-color','#8bff9c');</script>".$value;
+			return "<script>$('#flex1 tbody tr td:contains(".$value.")').css('background-color','#8bff9c');	</script>".$value;
+	}
+	function muestra_postergacion($value, $row){
+		$value1 = $value;
+		$query_postergado = $this->db->query("SELECT fecha, motivo FROM posterga_proyecto where id_proyecto= '".$value."'");
+		if($query_postergado->num_rows()>0){
+			foreach ($query_postergado->result() as $key) {
+				$fecha = $key->fecha;
+				$motivo = $key->motivo;
+			}
+			//return("<a href='#' onclick=alert('Fecha&nbsp;de&nbsp;Postergacion:&nbsp;".$fecha."&nbsp;Motivo&nbsp;de&nbsp;Postergacion:&nbsp;".$motivo."');>".$value."</a>");
+			//return "<script>$('#flex1 tbody tr td:contains(".$value1.")').css({'background-color': '#db090a', 'color': '#fffff'});</script>".$value;
+			$aa = 'aa';
+			return ("<a href= onclick=alert();>".$value."</a>");
+		}	
+		else{
+			return $value;
+		}
 	}
 
 	public function borra_subproyectos_unidades($primary_key){
@@ -146,7 +188,7 @@ class Main extends CI_Controller {
   //   	$user = $this->db->get('proyecto')->row();
 
     	$this->db->query('DELETE FROM pry_subpry_unid WHERE id_proyecto='.$primary_key);
-    	$this->db->query('DELETE FROM avance_subproyecto WHERE cod_proyecto='.$primary_key);
+    	$this->db->query('DELETE FROM avance_subproyecto WHERE id_proyecto='.$primary_key);
 	}
 	//---------- Registro de Proyectos-SubProyecto Version GROSERY CRUD -------//
 	public function iframeRegPrySubPry(){
@@ -244,7 +286,22 @@ class Main extends CI_Controller {
 				echo "<tr style='height:25px;'><td class='columna acciones'><a href='#' id='elimina_prod' >Eliminar</a></td><td class='columna descripcion' id='codigo'>".$row->cod_unidad."</td><td class='columna descripcion' id='descripcion'>".$row->desc_unidad."</td>";
 		 	}
 	}
+//------------------ Postergacion de Proyectos ---------------/
+	public function iframeRegPostergaPry(){
+		$this->load->view('proyectos/iframeRegPostergaPry');
+	}
+	public function registro_posterga_proyecto(){
+		$crud = new grocery_CRUD();
+		$crud->set_table('posterga_proyecto');
+		//$crud->set_subject('Postergacion de proeyectos');
 
+		$crud->set_relation('id_proyecto', 'proyecto', 'id_proyecto');
+
+		$crud->required_fields('id_proyecto', 'fecha', 'dias', 'motivo');
+
+		$output = $crud->render();
+		echo $this->load->view('proyectos/regPostergaPry', $output, true);
+	}
 /*************************************************************/
 /******* Funciones GroceryCrud para Modulo Configuraciones ********/
 	//------- Para registro de Usuarios ------------//
@@ -342,17 +399,31 @@ class Main extends CI_Controller {
 		$output = $crud->render();
 		echo $this->load->view('backend/regPrioridadProyecto', $output, true);
 	}
-//-------------------------------------------------------------------------------/
+//-------------------- Adjuntar Documentos a Proyecto ----------------------------------------------------/
 
 	public function selProySubProy(){
 		$this->load->view('ImportarDatos/selProySubProy');
 	}
 	public function selTipoArch(){
+		$this->load->library('javascript');
 		$crud = new grocery_CRUD();
 		//$crud->set_theme("datatables");
 		$crud->set_table('importa_datos');
 		$crud->set_relation("proyecto", "proyecto", "id_proyecto");
 		$crud->set_subject('Documentos');
+		
+		$crud->callback_add_field('sub_proyecto', function ($this) {
+		$cadena = '';
+			// $query = $this->db->query("SELECT num_sub_proyectos FROM `proyecto` where id_proyecto = ".$_POST['data']);
+			// foreach ($query->result() as $row) 
+			// { 
+			// 	$numero = $row->num_sub_proyectos;
+		 // 	 }
+			// for ($i = 1; $i<= $numero; $i++){
+			// 	$cadena .= "<option>".$i."</option>";
+			// }
+        	return $cadena.'-'.$this['proyecto'];
+    	});
 
 		$crud->set_field_upload("archivo", "assets/uploads/files");
 
@@ -503,7 +574,7 @@ class Main extends CI_Controller {
 	public function importarMateriales(){
 		$file = './assets/uploads/files/'.$_POST['data'];//'./files/test.xlsx';
 		//load the excel library
-		//$this->load->library('excel');
+		$this->load->library('excel');
 		$nombreArchivo = $file; //'../Archivos/'.$_FILES['archivoArticulos']['name'];
 		$columnas=PHPepeExcel::xls2array($nombreArchivo);
 		$options = array ('start' => 1, 'limit'=>20000);
@@ -514,7 +585,7 @@ class Main extends CI_Controller {
 	public function importarManoObra(){
 		$file = './assets/uploads/files/'.$_POST['data'];
 		//load the excel library
-		//$this->load->library('excel');
+		$this->load->library('excel');
 		$nombreArchivo = $file; //'../Archivos/'.$_FILES['archivoArticulos']['name'];
 		$columnas=PHPepeExcel::xls2array($nombreArchivo);
 		$options = array ('start' => 1, 'limit'=>20000);
@@ -527,7 +598,7 @@ class Main extends CI_Controller {
 public function importarUnidades(){
 		$file = './assets/uploads/files/'.$_POST['data'];//'./files/test.xlsx';
 		//load the excel library
-		//$this->load->library('excel');
+		$this->load->library('excel');
 		$nombreArchivo = $file; //'../Archivos/'.$_FILES['archivoArticulos']['name'];
 		$columnas=PHPepeExcel::xls2array($nombreArchivo);
 		$options = array ('start' => 1, 'limit'=>20000);
@@ -536,6 +607,18 @@ public function importarUnidades(){
 		$this->db->query($query);
 		
 	}
+
+public function importarPresuManoObra(){
+	$file = './assets/uploads/files/'.$_POST['data'];//'./files/test.xlsx';
+		//load the excel library
+		$this->load->library('excel');
+		$nombreArchivo = $file; //'../Archivos/'.$_FILES['archivoArticulos']['name'];
+		$columnas=PHPepeExcel::xls2array($nombreArchivo);
+		$options = array ('start' => 9, 'limit'=>20000);
+		$query = PHPepeExcel::xls2sql ( $nombreArchivo, array ("id_produc", "codigo", "descripcion", "presup", "incremento", "decremento", "cantidad", "precio", "total",), "presup_mano_obra", $options );
+
+		$this->db->query($query);
+}
 //------------------------------------------------------------//
 	public function iframeRegManoObra(){
 		$this->load->view('mano_de_obra/iframeRegManoObra');
@@ -683,11 +766,23 @@ public function importarUnidades(){
 	}
 
 	public function carga_cod_proyectos_unid(){
-	$query = $this->db->query("SELECT distinct(id_proyecto) as id_proyecto FROM `pry_subpry_unid` ");
-	foreach ($query->result() as $row) 
-	{ 
-		echo "<option>".$row->id_proyecto."</option>";
- 	 }
+		$query = $this->db->query("SELECT distinct(id_proyecto) as id_proyecto FROM `pry_subpry_unid` ");
+		foreach ($query->result() as $row) 
+		{ 
+			echo "<option>".$row->id_proyecto."</option>";
+		}
+	}
+
+	public function trae_avance_motivo(){
+		$query = $this->db->query("SELECT  avance, motivo FROM avance_subproyecto WHERE id_proyecto=".$_POST['data']);
+		if($query->num_rows()>0){
+			foreach ($query->result() as $key) {
+				echo $key->avance;
+			}
+		}
+		else{
+			echo "No hay avance registrado!";
+		}
 	}
 
 	public function calcula_sub_proyectos_unid(){
@@ -695,7 +790,16 @@ public function importarUnidades(){
 		foreach ($query->result() as $row) 
 		{ 
 			echo "<option>".$row->id_sub_proy."</option>";
-	 	 }
+	 	}
+	}
+
+	public function trae_unidad_de_medida(){
+		$tempo = json_decode($_POST['data'], true);
+
+		$query = $this->db->query("SELECT unidad FROM ".$tempo['fuente']." WHERE codigo_fab ='".$tempo['codigo']."'");
+		foreach ($query->result() as $key) {
+			echo $key->unidad;
+		}
 	}
 
 	public function trae_elementos_por_unidad(){
@@ -726,7 +830,7 @@ public function importarUnidades(){
 		//echo($tempo[0]['codigo_proyecto']);
 		$query1 = $this->db->query("delete from pry_subpry_unid where id_proyecto=".$tempo1[0]['codigo_proyecto']." and id_sub_proy = ".$tempo1[0]['codigo_subproyecto']." AND cod_unidad='".$tempo1[0]['codigo_unidad']."'");
 		
-		$query2 = $this->db->query("insert into avance_subproyecto (cod_proyecto, cod_subproyecto, avance, motivo, fecha) values ('".$tempo1[0]['codigo_proyecto']."','".$tempo1[0]['codigo_subproyecto']."','".$tempo1[0]['avance']."', '".$tempo1[0]['motivo']."', curdate())");
+		$query2 = $this->db->query("insert into avance_subproyecto (id_proyecto, id_subproyecto, avance, motivo, fecha) values ('".$tempo1[0]['codigo_proyecto']."','".$tempo1[0]['codigo_subproyecto']."','".$tempo1[0]['avance']."', '".$tempo1[0]['motivo']."', curdate())");
 		foreach ($tempo as $key) 
 		{
 			$query = $this->db->query("insert into pry_subpry_unid (id_proyecto, id_sub_proy, cod_unidad, desc_unidad, cantidad, codigo_fab, desc_item, unidad, retirado, usado, nuevo) values ('".$key->codigo_proyecto."', '".$key->codigo_subproyecto."', '".$key->codigo_unidad."', '".$key->dec_unidad."', '".$key->cantidad."', '".$key->codigo_fab."', '".$key->descripcion."', '".$key->unidad."', '".$key->retirado."', '".$key->usado."', '".$key->nuevo."')");

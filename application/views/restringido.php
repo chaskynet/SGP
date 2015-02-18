@@ -36,7 +36,7 @@
     <DIV align="center">
     <h1>No tienes permisos para ingresar a la aplicacion</h1>
         
-        <h1 class="text-info">Bienvenido al Sistema</h1><br>
+        <!--h1 class="text-info">Bienvenido al Sistema</h1--><br>
         <a href="<?php echo base_url();?>main/login">Regresar</a>
     </DIV>
 

@@ -50,8 +50,8 @@ $(function() {
 			fileElementId	:'userfile',
 			dataType		: 'json',
 			data			: {
-				'title'				: $('#title').val()
-			},
+							'title' : $('#title').val()
+							},
 			success	: function (data, status)
 			{
 				if(data.status != 'error')

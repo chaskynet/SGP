@@ -17,30 +17,53 @@ $(document).ready(function ()
           var tamcheck = $( "input:checkbox:checked" ).length;
           $( "input[name='articulo[]']:checked").each(function()
             {
-              //var id = $(this).attr("id");
-              var cadena = '<tr>'
-                              +'<td id="codigo_fab">'
+              var id = $(this).attr("id");
+              var cadena = '<tr id='+id+'>'
+                              +'<td id="codigo_fab" style="text-align:center;">'
                                 +$(this).attr('id')
                               +'</td>'
-                              +'<td id="desc_item">'
+                              +'<td id="desc_item" style="text-align:center;">'
                                 +$(this).attr('value')
                               +'</td>'
                              
-                              +'<td id="unidad">'
+                              +'<td id="unidad" style="text-align:center;">'
                                 +'-'
                               +'</td>'
-                              +'<td id="cantidad">'
+                              +'<td id="cantidad" style="text-align:center;">'
                               +'0'
-                              +'</td><td>'
+                              +'</td>'
+                              +'<td id="presupuestado" style="text-align:center;">'
+                              +'0'
+                              +'</td><td style="text-align:center;">'
                               +'<input type="text" id="retirado" size="5" value="0">'
-                              +'</td><td>'
+                              +'</td><td style="text-align:center;">'
                               +'<input type="text" id="usado" size="5" value="0">'
-                              +'</td><td>'
+                              +'</td><td style="text-align:center;">'
                               +'<input type="text" id="nuevo" size="5" value="0">'
                               +'</td>'
                             +'</tr>';
               $("#cuerpo_tabla_unid tbody").append(cadena);
-
+              //alert($('input:radio[name=fuente]:checked').val());
+              objUnidad = new Object();
+              objUnidad.codigo = id;
+              objUnidad.fuente = $('input:radio[name=fuente]:checked').val();
+              objUnidad = JSON.stringify(objUnidad);
+              $.ajax({
+                  url: 'trae_unidad_de_medida',
+                  data: {data: objUnidad},
+                  type: "POST",
+                  dataType: "html",
+                 // async : false,
+                  error: function()
+                  {
+                      alert("error");
+                  },
+                  success: function(response)
+                  {
+                    id = '#'+id;
+                    $(id).find('#unidad').text(response);
+                  }
+              });
             });
           if (tamcheck>0){
               $( this ).dialog( "close" );
@@ -108,17 +131,41 @@ $(document).on('click','#elimina_prod',function(){
 
 //---- Guardar Elementos de la Unidad para un Sub Proyecto y Salir -------
 $(document).on('click', '#actualizar_salir', function(){
-  guardar();
-  $(location).attr('href','registro_proyectos2');
+  var $avance = $('#avg_avance').val();
+  var $motivo = $('#motivo').val();
+  if ($avance.length > 0) {
+    if ($motivo.length > 0) {
+      guardar();
+      $(location).attr('href','registro_proyectos2');
+    }
+    else{
+    alert('Debe ingresar Motivo de Avance del proyecto');
+    }
+  }
+  else{
+    alert('Debe ingresar % de Avance del proyecto');
+  } 
 });
 
 //---- Guardar Elementos de la Unidad para un Sub Proyecto-------
 $(document).on('click', '#actualizar', function(){
-  guardar();
+  var $avance = $('#avg_avance').val();
+  var $motivo = $('#motivo').val();
+  if ($avance.length>0) {
+    if ($motivo.length > 0) {
+      guardar();
+    }
+    else{
+      alert('Debe ingresar Motivo de Avance del proyecto');
+    }
+  }
+  else{
+    alert('Debe ingresar % de Avance del proyecto');
+  }
 });
 
 var guardar = function(){
-    var lista_proySubproy = new Array();
+  var lista_proySubproy = new Array();
   
   var codigo_proyecto = $('#codigo_proyecto').val();
   var codigo_subproyecto = $('#codigo_subproyecto').val();
@@ -175,47 +222,57 @@ var guardar = function(){
 var cargar_proyectos = function(){
   $.ajax({
     url: 'carga_cod_proyectos_unid',
-          //data: {data: newObj},
-          type: "POST",
-          dataType: "html",
-          error: function()
-          {
-              alert('Error al cargar Proyectos!');
-          },
-          success: function(response)
-          {
-            $('#codigo_proyecto').append(response);
-            
-          }
+    //data: {data: newObj},
+    type: "POST",
+    dataType: "html",
+    error: function()
+    {
+      alert('Error al cargar Proyectos!');
+    },
+    success: function(response)
+    {
+      $('#codigo_proyecto').append(response);
+    }
   });
 }
 
 $(document).on('change', '#codigo_proyecto', function(){
   var $tmp = $(this).val();
-  //$('#codigo_subproyecto').html("<option></option>");
-  //alert($(this).val().length+'--'+$tmp.length);
   if($tmp.length < 1 ){
     alert("Elija un proyecto");
     $('#list_codigo_subproyecto').empty();
   }
   else{
     $.ajax({
+      url: 'trae_avance_motivo',
+      data: {data: $tmp},
+      type: "POST",
+      dataType: "html",
+      error: function()
+      {
+        alert('Error al traer el % de Avance');
+      },
+      success: function(response){
+       // alert(response);
+       $("#avg_avance").val(response);
+      }
+    });
+
+    $.ajax({
       url: 'calcula_sub_proyectos_unid',
-            data: {data: $tmp},
-            type: "POST",
-            dataType: "html",
-            error: function()
-            {
-                alert('Error al calcular Sub Proyectos!');
-            },
-            success: function(response)
-            {
-              $('#codigo_subproyecto').val('');
-              $('#codigo_subproyecto').html('<option></option>');
-              //$('#cuerpo_tabla_proySubproy tbody').empty();
-              $('#codigo_subproyecto').append(response);
-              
-            }
+      data: {data: $tmp},
+      type: "POST",
+      dataType: "html",
+      error: function()
+      {
+          alert('Error al calcular Sub Proyectos!');
+      },
+      success: function(response)
+      {
+        $('#codigo_subproyecto').val('');
+        $('#codigo_subproyecto').html('<option></option>');
+        $('#codigo_subproyecto').append(response); 
+      }
     });
   }
 });

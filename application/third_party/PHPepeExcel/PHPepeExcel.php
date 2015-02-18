@@ -11,11 +11,11 @@ class PHPepeExcel {
 	 *
 	 * Constructor
 	 *
-	 * @access	public
+	 * @access public
 	 */
 	public function __construct()
 	{
-
+		
 	}
 	/**
 	 * Converts an excel to array 

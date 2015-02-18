@@ -30,7 +30,7 @@ $(document).ready(function ()
                               +'</td>'
                              
                               +'<td class="columna cantidad_cif">'
-                                +'<input type="text" id="cantidad" class="cantidad_cif cantidad">'
+                                +'<input type="text" id="cantidad" class="cantidad_cif cantidad" value="1">'
                               +'</td>'
                               
                             +'</tr>';
@@ -38,7 +38,7 @@ $(document).ready(function ()
 
             });
           if (tamcheck>0){
-              $( this ).dialog( "close" );
+              //$( this ).dialog( "close" );
               $("#tabla_articulos").empty();
               $("#busqueda").val('');
           }
