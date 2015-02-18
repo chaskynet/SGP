@@ -10,6 +10,32 @@ endforeach;
  foreach($js_files as $file): ?>
 	<script src="<?php echo $file; ?>"></script>
 <?php endforeach; ?>
+<script type="text/javascript">
+	
+
+	$(document).on('change', '#field-fecha_inicio', function(){
+		// $.get('prueba', {dato:tipo_proyecto}, function(data, status){
+		// 	alert("Data: " + data + "\nStatus: " + status);
+		// });
+		var objeto = new Object();
+		objeto.tipo = $('#field-tipo_proyecto').val();
+		objeto.localiza = $('#field-localizacion').val();
+		objeto.fecha_ini = $(this).val();
+		var newobjeto = JSON.stringify(objeto);
+		$.ajax({
+			url: '<?php echo base_url()?>main/dias_por_tipo',
+			   data: {data:newobjeto},
+			   type: "POST",
+			   //dataType: "html",
+			   //global: false,
+			   success: function(response)
+			   {
+			     //alert(response);
+			     $('#field-fecha_fin').val(response);
+			   }
+		});
+	});
+</script>
 </head>
 <body>
 <div>

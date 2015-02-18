@@ -52,20 +52,28 @@ class Main extends CI_Controller {
 
 	public function dias_por_tipo(){
 		$tempo = json_decode($_POST['data']);
-		if ($tempo->localiza === 'URBANO'){
-			$query = $this->db->query("select urbano as dias from tipo_proyecto where desc_tipo_proy = '".$tempo->tipo."'");
-		}else if ($tempo->localiza === 'RURAL'){
-			$query = $this->db->query("select rural as dias from tipo_proyecto where desc_tipo_proy = '".$tempo->tipo."'");
-		}else if ($tempo->localiza === 'TROPICO'){
-			$query = $this->db->query("select tropico as dias from tipo_proyecto where desc_tipo_proy = '".$tempo->tipo."'");
+		$query_localizacion = $this->db->query('SELECT localizacion FROM localizacion WHERE id_localizacion = '.$tempo->localiza);
+		foreach ($query_localizacion->result() as $key) {
+			$localiza = $key->localizacion;
 		}
-
+		//echo $localiza.'--'.$tempo->tipo;
+		if ($localiza === 'URBANO'){
+			$query = $this->db->query("select urbano as dias from tipo_proyecto where id_tipo_proy = '".$tempo->tipo."'");
+		}else if ($localiza === 'RURAL'){
+			$query = $this->db->query("select rural as dias from tipo_proyecto where id_tipo_proy = '".$tempo->tipo."'");
+		}else if ($localiza === 'TROPICO'){
+			$query = $this->db->query("select tropico as dias from tipo_proyecto where id_tipo_proy = '".$tempo->tipo."'");
+		}
+		
+		$date = DateTime::createFromFormat('d/m/Y', $tempo->fecha_ini);
+		$fecha= $date->format('Y-m-d');
+		
 		foreach ($query->result() as $row) 
 		{ 
-			$fecha = strtotime($tempo->fecha_ini);
-			$nueva_fecha = date('d-m-Y',strtotime('+'.$row->dias.' days', $fecha));
-			//echo $nueva_fecha;
-			return('1');
+			$fecha = strtotime($fecha);//$tempo->fecha_ini);
+			$nueva_fecha = date('d/m/Y',strtotime('+'.$row->dias.' days', $fecha));
+			echo $nueva_fecha;
+			//return('1');
 	 	 }
 	}
 
@@ -85,6 +93,9 @@ class Main extends CI_Controller {
 	}
 
 	//---------- Registro de Proyectos Version GROSERY CRUD -------//
+	public function prueba(){
+		echo "holaa";
+	}
 	public function iframeRegProyectos2(){
 		$this->load->view('proyectos/iframeRegProyectos2');
 	}
@@ -227,7 +238,7 @@ class Main extends CI_Controller {
 	}
 
 	public function carga_proyecto_subproyecto(){
-		$query = $this->db->query("SELECT distinct(CONCAT(id_proyecto, '-', id_sub_proy)) as proySubproy, cod_unidad FROM `pry_subpry_unid` order by id desc");
+		$query = $this->db->query("SELECT distinct(CONCAT(id_proyecto, '-', id_sub_proy)) as proySubproy, cod_unidad FROM `pry_subpry_unid` order by CONCAT(id_proyecto, '-', id_sub_proy) asc");
 		foreach ($query->result() as $row) 
 		{ 
 			echo "<tr><td style='height: 25px;' id='proysubproy'>".$row->proySubproy."</td><td class='tipo_proyecto'>".$row->cod_unidad."</td><tr>";
