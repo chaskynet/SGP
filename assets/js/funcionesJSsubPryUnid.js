@@ -254,7 +254,16 @@ $(document).on('change', '#codigo_proyecto', function(){
       },
       success: function(response){
        // alert(response);
-       $("#avg_avance").val(response);
+        $("#avg_avance").val(response);
+
+        var obj = $.parseJSON(response);
+        $.each(obj, function(index,valor)
+        {
+            $("#avg_avance").val(valor.avance);
+            $("#motivo").val(valor.motivo);
+            //alert(valor.avance+'--'+valor.motivo);
+        });
+
       }
     });
 

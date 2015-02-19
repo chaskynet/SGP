@@ -785,11 +785,16 @@ public function importarPresuManoObra(){
 	}
 
 	public function trae_avance_motivo(){
-		$query = $this->db->query("SELECT  avance, motivo FROM avance_subproyecto WHERE id_proyecto=".$_POST['data']);
+		$query = $this->db->query("SELECT  avance, motivo FROM avance_subproyecto WHERE id_proyecto=".$_POST['data']." order by id_avance desc limit 1");
 		if($query->num_rows()>0){
+			$i=0;
 			foreach ($query->result() as $key) {
-				echo $key->avance;
+			//	echo $key->avance;
+				$data_send[$i]['avance'] = $key->avance;
+				$data_send[$i]['motivo'] = $key->motivo;
+				$i++;
 			}
+			echo json_encode($data_send);
 		}
 		else{
 			echo "No hay avance registrado!";
