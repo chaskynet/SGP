@@ -28,8 +28,8 @@
 			</div>
 		</div>	
 		<div class="cuerpo" id="cuerpo">
-				<div class="tabla" id="tabla_articulos">
-				</div>
+			<div class="tabla" id="tabla_articulos">
+			</div>
 		</div>	
 	</div>
 <!-- Fin ventana Busqueda de Articulos -->
@@ -52,6 +52,21 @@
 				<td>
 					<input type="text" id="desc_unidad" size="40">
 					
+				</td>
+			</tr>
+			<tr>
+				<td>Fecha Inicio Vigencia *: </td>
+				<td>
+					<!--input type="date" id="fecha_inicio_vigencia" size="40"-->
+					<input type="text" id="fecha_inicio_vigencia" name="fecha_inicio_vigencia" class="innerimg" />
+						<script type="text/javascript"> 
+						   Calendar.setup({ 
+						   	inputField:    "fecha_inicio_vigencia",
+						    ifFormat:     "%d-%m-%Y",
+						    selection     : new Date(),
+						    button:    "fecha_inicio_vigencia"
+						});
+						</script>
 				</td>
 			</tr>
 		</table>
@@ -89,7 +104,7 @@
 			
 			<table>
 			<caption>
-			Lista de Unidades
+			Lista de Unidades <input type="search" id="buscaUnidades" placeholder="Presioner para buscar">
 			</caption>
 				<thead>
 					<tr>

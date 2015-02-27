@@ -8,7 +8,7 @@ class Main extends CI_Controller {
 		$this->load->database();
 
 		$this->load->library('grocery_CRUD');
-		$this->load->library('excel');
+		$this->load->library('Excel');
 	}
 
 	public function _principal_output($output = null)
@@ -102,10 +102,10 @@ class Main extends CI_Controller {
 
 	public function registro_proyectos2(){
 		$crud = new grocery_CRUD();
-		$crud->set_subject('Creacion de Proyectos');
+		$crud->set_subject('Proyecto');
 		$crud->set_table('proyecto');
 
-		$crud->required_fields('id_proyecto', 'num_sub_proyectos', 'tipo_proyecto', 'localizacion', 'prioridad', 'responsable', 'naturaleza', 'fecha_inicio', 'fecha_fin');
+		$crud->required_fields('id_proyecto', 'num_sub_proyectos', 'tipo_proyecto', 'localizacion', 'prioridad', 'responsable', 'naturaleza', 'fecha_inicio', 'fecha_fin', 'fecha_entrega_asbuilt', 'distancia');
 
 		$crud->set_relation("tipo_proyecto", "tipo_proyecto", "desc_tipo_proy");
 		$crud->set_relation("prioridad", "prioridad_proy", "desc_prioridad");
@@ -113,6 +113,10 @@ class Main extends CI_Controller {
 		$crud->set_relation("localizacion", "localizacion", "localizacion");
 		$crud->set_relation("responsable", "responsable", "nombre_responsable");
 		$crud->set_relation("naturaleza", "naturaleza_proy", "desc_naturaleza");
+
+		$crud->display_as('fecha_entrega_asbuilt', 'Fecha entrega de As Built');
+
+		$crud->unset_columns('fecha_asbuilt_1', 'fecha_asbuilt_2');
 
 		$crud->unique_fields('id_proyecto');
 
@@ -237,6 +241,15 @@ class Main extends CI_Controller {
 	 	 }
 	}
 
+	public function buscadorDeUnidades(){
+		//echo ("SELECT distinct(cod_unidad) as cod_unidad, descripcion from unidades where descripcion like '%".$_POST["data"]."%'");
+		$query = $this->db->query("SELECT distinct(cod_unidad) as cod_unidad, descripcion from unidades where cod_unidad like '%".$_POST["data"]."%' or descripcion like '%".$_POST["data"]."%'");
+		foreach ($query->result() as $row) 
+		{ 
+			echo "<tr id='unidad'><td style='height: 25px;' id='codigo_elemento_unidad'>".$row->cod_unidad."</td><td class='tipo_proyecto' id='descripcion'>".$row->descripcion."</td><tr>";
+	 	 }
+	}
+
 	public function carga_proyecto_subproyecto(){
 		$query = $this->db->query("SELECT distinct(CONCAT(id_proyecto, '-', id_sub_proy)) as proySubproy, cod_unidad FROM `pry_subpry_unid` order by CONCAT(id_proyecto, '-', id_sub_proy) asc");
 		foreach ($query->result() as $row) 
@@ -273,18 +286,20 @@ class Main extends CI_Controller {
 		
 		foreach ($tempo as $key) 
 		{
-			$query = $this->db->query("insert into pry_subpry_unid (id_proyecto, id_sub_proy, cod_unidad, desc_unidad, cantidad, codigo_fab, desc_item, unidad) SELECT '".$key->codigo_proyecto."', '".$key->codigo_subproyecto."', u.cod_unidad, u.descripcion, u.cantidad, codigo_fab, descripcion_item, unidad from unidades u where u.cod_unidad = '".$key->codigo_unidad."'");
+			$query = $this->db->query("insert into pry_subpry_unid (id_proyecto, id_sub_proy, cod_unidad, desc_unidad, cantidad, codigo_fab, desc_item, unidad, arch_presu_mano, arch_presu_mate) SELECT '".$key->codigo_proyecto."', '".$key->codigo_subproyecto."', u.cod_unidad, u.descripcion, u.cantidad, codigo_fab, descripcion_item, unidad, '".$key->arch_presu_mano."', '".$key->arch_presu_mate."' from unidades u where u.cod_unidad = '".$key->codigo_unidad."'");
 			
 		}
 	}
 	//----------------- Para editar proyecto sub Proyecto ------------------------//
 	public function trae_proysubproy(){
-		$resultado = $this->db->query("SELECT distinct(id_proyecto) as id_proyecto, id_sub_proy FROM `pry_subpry_unid` where concat(id_proyecto,'-', id_sub_proy)='".$_POST['dato']."'");
+		$resultado = $this->db->query("SELECT distinct(id_proyecto) as id_proyecto, id_sub_proy, arch_presu_mano, arch_presu_mate FROM `pry_subpry_unid` where concat(id_proyecto,'-', id_sub_proy)='".$_POST['dato']."'");
 		$i = 0;
 		foreach ($resultado->result() as $row) 
 			{ 
 				$jsondata[$i]['id_proyecto'] = $row->id_proyecto;
     			$jsondata[$i]['id_sub_proy'] = $row->id_sub_proy;
+    			$jsondata[$i]['arch_presu_mano'] = $row->arch_presu_mano;
+    			$jsondata[$i]['arch_presu_mate'] = $row->arch_presu_mate;
     			$i++;
 		 	 }
 		 echo json_encode($jsondata);
@@ -585,7 +600,7 @@ class Main extends CI_Controller {
 	public function importarMateriales(){
 		$file = './assets/uploads/files/'.$_POST['data'];//'./files/test.xlsx';
 		//load the excel library
-		$this->load->library('excel');
+		//$this->load->library('excel');
 		$nombreArchivo = $file; //'../Archivos/'.$_FILES['archivoArticulos']['name'];
 		$columnas=PHPepeExcel::xls2array($nombreArchivo);
 		$options = array ('start' => 1, 'limit'=>20000);
@@ -596,7 +611,7 @@ class Main extends CI_Controller {
 	public function importarManoObra(){
 		$file = './assets/uploads/files/'.$_POST['data'];
 		//load the excel library
-		$this->load->library('excel');
+		//$this->load->library('excel');
 		$nombreArchivo = $file; //'../Archivos/'.$_FILES['archivoArticulos']['name'];
 		$columnas=PHPepeExcel::xls2array($nombreArchivo);
 		$options = array ('start' => 1, 'limit'=>20000);
@@ -609,7 +624,7 @@ class Main extends CI_Controller {
 public function importarUnidades(){
 		$file = './assets/uploads/files/'.$_POST['data'];//'./files/test.xlsx';
 		//load the excel library
-		$this->load->library('excel');
+		//$this->load->library('excel');
 		$nombreArchivo = $file; //'../Archivos/'.$_FILES['archivoArticulos']['name'];
 		$columnas=PHPepeExcel::xls2array($nombreArchivo);
 		$options = array ('start' => 1, 'limit'=>20000);
@@ -620,14 +635,16 @@ public function importarUnidades(){
 	}
 
 public function importarPresuManoObra(){
-	$file = './assets/uploads/files/'.$_POST['data'];//'./files/test.xlsx';
+		$tempo = json_decode($_POST['data']);	
+		$file = './assets/uploads/files/'.$tempo->archivo;//'./files/test.xlsx';
 		//load the excel library
-		$this->load->library('excel');
+		//$this->load->library('excel');
 		$nombreArchivo = $file; //'../Archivos/'.$_FILES['archivoArticulos']['name'];
 		$columnas=PHPepeExcel::xls2array($nombreArchivo);
 		$options = array ('start' => 9, 'limit'=>20000);
-		$query = PHPepeExcel::xls2sql ( $nombreArchivo, array ("id_produc", "codigo", "descripcion", "presup", "incremento", "decremento", "cantidad", "precio", "total",), "presup_mano_obra", $options );
 
+		$query = PHPepeExcel::xls2sql ( $nombreArchivo, array ("id_proyecto", "id_subproyecto","id_produc", "codigo", "descripcion", "presup", "incremento", "decremento", "cantidad", "precio", "total",), "presup_mano_obra", $options );
+		
 		$this->db->query($query);
 }
 //------------------------------------------------------------//
@@ -733,7 +750,7 @@ public function importarPresuManoObra(){
 		foreach ($tempo as $key) 
 		{
 			//echo ("insert into producto_ordsrv (COD_OSRV, COD_PRO, DES_PRO, CANT_PRO, PRECIO) values('".$tmp."', '".$key->codigo."', '".$key->descripcion."', '".$key->cantidad."', '0.00')");
-			$query = $this->db->query("insert into unidades (cod_unidad, descripcion, codigo_fab, descripcion_item, cantidad) values('".$key->cod_unidad."', '".$key->desc_unidad."', '".$key->codigo."', '".$key->descripcion."', '".$key->cantidad."')");
+			$query = $this->db->query("insert into unidades (cod_unidad, descripcion, codigo_fab, descripcion_item, cantidad, fecha_inicio_vigen) values('".$key->cod_unidad."', '".$key->desc_unidad."', '".$key->codigo."', '".$key->descripcion."', '".$key->cantidad."','".$key->fecha_inicio_vigencia."')");
 		}
 	}
 

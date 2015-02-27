@@ -94,7 +94,7 @@ $(document).on('click','#btn_busca_articulos',function(){
     });
   
 });
-//---- Elimina Gastos --------  
+//---- Elimina --------  
 $(document).on('click','#elimina_prod',function(){
   var objFila=$(this).parents().get(1);
   $(objFila).remove();
@@ -109,6 +109,7 @@ $(document).on('click', '#guardar', function(){
   
   var cod_unidad = $('#codigo_unidad').val();
   var desc_unidad = $('#desc_unidad').val();
+  var fecha_inicio_vigencia = $('#fecha_inicio_vigencia').val();
 
   $("#cuerpo_tabla_unidad tbody tr").each(function(){
     var unidad = new Object();
@@ -148,21 +149,52 @@ $(document).on('click', '#guardar', function(){
 var carga_unidades = function(){
 
   $.ajax({
-          url: 'carga_unidades',
-          //data: {data: newObj},
-          type: "POST",
-          dataType: "html",
-          error: function()
-          {
-              alert('Error al cargar Proyectos!');
-          },
-          success: function(response)
-          {
-            $('#cuerpo_tabla tbody').html(response);
-            
-          }
-      });
+      url: 'carga_unidades',
+      //data: {data: newObj},
+      type: "POST",
+      dataType: "html",
+      error: function()
+      {
+          alert('Error al cargar Proyectos!');
+      },
+      success: function(response)
+      {
+        $('#cuerpo_tabla tbody').html(response);
+        
+      }
+  });
 }
+//para capturar el ENTER y realizar la busqueda de Unidades
+$(function () {
+  $("#buscaUnidades").keypress(function (e) 
+  { 
+    if (e.which == 13) 
+    { 
+      //btnBuscar();
+      if ($("#buscaUnidades").val().length > 0 ){
+        var dato = $(this).val();
+        $.ajax({
+            url: 'buscadorDeUnidades',
+            data: {data: dato},
+            type: "POST",
+            dataType: "html",
+            error: function()
+            {
+                alert('Error al cargar Proyectos!');
+            },
+            success: function(response)
+            {
+              $('#cuerpo_tabla tbody').html(response);
+            }
+        });
+      }
+      else 
+      {
+        carga_unidades();
+      }
+    }
+  });
+});
 //--------------- Para la Edicion ----
 $(document).on('click', '#unidad', function(){
   

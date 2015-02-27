@@ -15,8 +15,8 @@
               	<a href="#" style="color:#FFF" class="dropdown-toggle" data-toggle="dropdown">Proyectos<b class="caret"></b></a>
                 <ul class="dropdown-menu">
                 	  <li><a href="#" id="regProyectos">Crear/Actualizar Proyectos</a></li>
-                    <li><a href="#" id="regAdjuntar">Adjuntar docs a Proyecto</a></li>
                     <li><a href="#" id="regPrySubPry">Crear Proyectos-SubProyecto</a></li>
+                    <li><a href="#" id="regAdjuntar">Adjuntar docs a Proyecto</a></li>
                     <!--li><a href="#" id="actualizaProyecto">Actualizar Proyectos</a></li-->
                     <li><a href="#" id="postergaProyecto">Postergar Proyectos</a></li>
                 </ul>

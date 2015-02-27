@@ -263,7 +263,6 @@ $(document).on('change', '#codigo_proyecto', function(){
             $("#motivo").val(valor.motivo);
             //alert(valor.avance+'--'+valor.motivo);
         });
-
       }
     });
 

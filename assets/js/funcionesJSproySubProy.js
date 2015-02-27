@@ -55,14 +55,18 @@ $( "#form_importar_mano_obra" ).dialog(
      buttons:
       {
         "Importar Presupuesto a la Base de Datos": function(){
-          var archivo = $("#archivo_subido_presu_mano_obra").text();
+          var objFile = new Object();
+          objFile.archivo = $("#archivo_subido_presu_mano_obra").text();
+          objFile.id_proyecto = $('#codigo_proyecto').val();
+          objFile.id_sub_proy = $('#codigo_subproyecto').val();
+          newObjFile = JSON.stringify(objFile);
           // if ($(archivo).length < 1){
           //  alert("Debe seleccionar un archivo!");
           // }
           // else{
             $.ajax({
               url: 'importarPresuManoObra',
-              data: {data: archivo},
+              data: {data: newObjFile},
               type: "POST",
               dataType: "html",
               error: function()
@@ -233,6 +237,8 @@ $(document).on('click', '#guardar', function(){
   
   var codigo_proyecto = $('#codigo_proyecto').val();
   var codigo_subproyecto = $('#codigo_subproyecto').val();
+  var arch_presu_mano = $('#presu_mano_obra').text();
+  var arch_presu_mate = $('#presu_materiales').text();
 
   $("#cuerpo_tabla_proySubproy tbody tr").each(function(){
     var proySubproy = new Object();
@@ -240,6 +246,9 @@ $(document).on('click', '#guardar', function(){
     proySubproy.codigo_proyecto = codigo_proyecto;
     proySubproy.codigo_subproyecto = codigo_subproyecto;
     proySubproy.codigo_unidad = $(this).find('#codigo').text();
+    proySubproy.arch_presu_mano = arch_presu_mano;
+    proySubproy.arch_presu_mate = arch_presu_mate;
+
     //proySubproy.descripcion = $(this).find('#descripcion').text();
     
     lista_proySubproy.push(proySubproy);
@@ -262,6 +271,8 @@ $(document).on('click', '#guardar', function(){
           alert('El Proyecto-SubProyecto se guardo correctamente!');
           $('#codigo_proyecto').val('');
           $('#codigo_subproyecto').val('');
+          $('#presu_mano_obra').text('');
+          $('#presu_materiales').text('');
           
           $('#cuerpo_tabla_proySubproy tbody').empty();
           carga_proyecto_subproyecto();
@@ -359,6 +370,8 @@ $(document).on('click', '#proysubproy', function(){
 
                      $("#codigo_proyecto").val(valor.id_proyecto);
                      $("#codigo_subproyecto").html('<option>'+valor.id_sub_proy+'</option>');
+                     $("#presu_mano_obra").text(valor.arch_presu_mano);
+                     $("#presu_materiales").text(valor.arch_presu_mate);
                      //$("#codigo_subproyecto").val();
 
                   
