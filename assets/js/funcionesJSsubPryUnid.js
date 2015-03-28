@@ -135,8 +135,9 @@ $(document).on('click', '#actualizar_salir', function(){
   var $motivo = $('#motivo').val();
   if ($avance.length > 0) {
     if ($motivo.length > 0) {
-      guardar();
-      $(location).attr('href','registro_proyectos2');
+      var salida = 'si';
+      guardar(salida);
+      
     }
     else{
     alert('Debe ingresar Motivo de Avance del proyecto');
@@ -153,7 +154,8 @@ $(document).on('click', '#actualizar', function(){
   var $motivo = $('#motivo').val();
   if ($avance.length>0) {
     if ($motivo.length > 0) {
-      guardar();
+      var salida = 'no';
+      guardar(salida);
     }
     else{
       alert('Debe ingresar Motivo de Avance del proyecto');
@@ -164,9 +166,8 @@ $(document).on('click', '#actualizar', function(){
   }
 });
 
-var guardar = function(){
+var guardar = function(salida){
   var lista_proySubproy = new Array();
-  
   var codigo_proyecto = $('#codigo_proyecto').val();
   var codigo_subproyecto = $('#codigo_subproyecto').val();
   var cod_unidad = $('#unidades').val();
@@ -216,6 +217,112 @@ var guardar = function(){
           
         }
     });
+  if (salida == 'si') {
+    $(location).attr('href','registro_proyectos2');
+  }
+  else{
+    a =1;
+  }
+}
+
+// ----- Guardado Global, sin unidades especificas -----------
+$(document).on('click', '#actualizar_salir_global', function(){
+  var $avance = $('#avg_avance').val();
+  var $motivo = $('#motivo').val();
+  if ($avance.length > 0) {
+    if ($motivo.length > 0) {
+      var salida = 'si';
+      guardar_sin_unidad(salida);
+      
+    }
+    else{
+    alert('Debe ingresar Motivo de Avance del proyecto');
+    }
+  }
+  else{
+    alert('Debe ingresar % de Avance del proyecto');
+  } 
+});
+
+//---- Guardar Elementos de la Unidad para un Sub Proyecto-------
+$(document).on('click', '#actualizar_global', function(){
+  var $avance = $('#avg_avance').val();
+  var $motivo = $('#motivo').val();
+  if ($avance.length>0) {
+    if ($motivo.length > 0) {
+      var salida = 'no';
+      guardar_sin_unidad(salida);
+    }
+    else{
+      alert('Debe ingresar Motivo de Avance del proyecto');
+    }
+  }
+  else{
+    alert('Debe ingresar % de Avance del proyecto');
+  }
+});
+
+var guardar_sin_unidad = function(salida){
+  var lista_proySubproy = new Array();
+  var codigo_proyecto = $('#codigo_proyecto').val();
+  var codigo_subproyecto = $('#codigo_subproyecto').val();
+  
+  var avance = $('#avg_avance').val();
+  var motivo = $('#motivo').val();
+  $("#cuerpo_tabla_unid tbody tr").each(function(){
+    var proySubproy = new Object();
+
+    proySubproy.codigo_proyecto = codigo_proyecto;
+    proySubproy.codigo_subproyecto = codigo_subproyecto;
+    
+    proySubproy.avance = avance;
+    proySubproy.motivo = motivo;
+
+    proySubproy.idelem = $(this).attr('id');
+    
+    proySubproy.codigo_unidad = $(this).attr('data-unidad');
+    proySubproy.dec_unidad = $(this).attr('data-descunidad');
+
+    proySubproy.codigo_fab = $(this).find('#codigo_fab').text();
+    proySubproy.descripcion = $(this).find('#desc_item').text();
+    proySubproy.unidad = $(this).find('#unidad').text(); 
+    proySubproy.cantidad = $(this).find('#cantidad').text();
+    proySubproy.presupuestado = $(this).find('#presupuestado').text();
+    proySubproy.retirado = $(this).find('#retirado').val();
+    proySubproy.usado = $(this).find('#usado').val();
+    proySubproy.nuevo = $(this).find('#nuevo').val();
+    
+    lista_proySubproy.push(proySubproy);
+  });
+  
+  var newObj2 = JSON.stringify(lista_proySubproy);
+  
+  $.ajax({
+        url: 'actualiza_proyecto_subproyecto_global',
+        data: {data2: newObj2},
+        type: "POST",
+        dataType: "html",
+        error: function()
+        {
+            alert('Error al Guardar!');
+        },
+        success: function(response)
+        {
+          alert('El Proyecto-SubProyecto se Actualizo correctamente!');
+          //alert('El Proyecto-SubProyecto se Actualizo correctamente!');
+          // $('#codigo_proyecto').val('');
+          // $('#codigo_subproyecto').val('');
+          // $('#unidades').val('');
+          //$('#cuerpo_tabla_unid tbody').empty();
+          
+        }
+    });
+  if (salida == 'si') {
+    $(location).attr('href','registro_proyectos2');
+  }
+  else{
+    a =1;
+  }
 }
 //-----------------------------------
 
@@ -277,14 +384,14 @@ $(document).on('change', '#codigo_proyecto', function(){
       },
       success: function(response)
       {
-        $('#codigo_subproyecto').val('');
+        //$('#codigo_subproyecto').val('');
         $('#codigo_subproyecto').html('<option></option>');
         $('#codigo_subproyecto').append(response); 
       }
     });
   }
 });
-
+// ----------- Doble funcion para subproyectos -------------//
 $(document).on('change', '#codigo_subproyecto', function(){
   proyecto = $("#codigo_proyecto").val();
   subproyecto = $(this).val();
@@ -309,11 +416,36 @@ $(document).on('change', '#codigo_subproyecto', function(){
               $('#unidades').html('<option></option>');
               //$('#cuerpo_tabla_proySubproy tbody').empty();
               $('#unidades').append(response);
-              
             }
     });
 });
 
+$(document).on('change', '#codigo_subproyecto', function(){
+    proySubproy = new Object();
+    proySubproy.proyecto = $('#codigo_proyecto').val();
+    proySubproy.subproyecto = $(this).val();
+
+    proySubproy = JSON.stringify(proySubproy);
+  $.ajax({
+      url: 'trae_elementos_por_subproy',
+            data: {data: proySubproy},
+            type: "POST",
+            dataType: "html",
+            error: function()
+            {
+                alert('Error al traer las Unidades!');
+            },
+            success: function(response)
+            {
+              //alert(response);
+              $('#cuerpo_tabla_unid tbody').empty();
+              $('#tipo_unidad').text('');
+              $('#cuerpo_tabla_unid tbody').append(response);
+            }
+    });
+    $('#imagen_unidad').html("<div><input type='button' value='Guardar/Actualizar' id='actualizar_global'><input type='button' value='Guardar y Salir' id='actualizar_salir_global'></div>");
+});
+// ----------------------------------------------
 $(document).on('change', '#unidades', function(){
   unidad = $(this).val();
   $.ajax({
@@ -328,7 +460,6 @@ $(document).on('change', '#unidades', function(){
             success: function(response)
             {
               //alert(response);
-              
               $('#tipo_unidad').empty();
               $('#tipo_unidad').append(response);
             }
@@ -337,10 +468,8 @@ $(document).on('change', '#unidades', function(){
     proySubproy2.unidad = unidad;
     proySubproy2.proyecto = proyecto;
     proySubproy2.subproyecto = subproyecto;
-
     proySubproy2 = JSON.stringify(proySubproy2);
   $.ajax({
-      
       url: 'trae_elementos_por_unidad',
             //data: {data: unidad},
             data: {data: proySubproy2},
@@ -352,7 +481,6 @@ $(document).on('change', '#unidades', function(){
             },
             success: function(response)
             {
-              //alert(response);
               $('#cuerpo_tabla_unid tbody').empty();
               $('#cuerpo_tabla_unid tbody').append(response);
               
@@ -418,25 +546,24 @@ $(document).on('click', '#proysubproy', function(){
             }
     });
 });
-
 //------------ Para Calculos ----------------/
-$(document).on('change', '#retirado', function(){
-  var obj = $(this).parents().get(1);
-  var cantidad = $(obj).find('#presupuestado');
-  var operacion = parseInt($(cantidad).text()) + parseInt($(this).val());
-  $(cantidad).text(operacion);
-});
+// $(document).on('change', '#retirado', function(){
+//   var obj = $(this).parents().get(1);
+//   var cantidad = $(obj).find('#presupuestado');
+//   var operacion = parseInt($(cantidad).text()) + parseInt($(this).val());
+//   $(cantidad).text(operacion);
+// });
 
-$(document).on('change', '#usado', function(){
-  var obj = $(this).parents().get(1);
-  var cantidad = $(obj).find('#presupuestado');
-  var operacion = parseInt($(cantidad).text()) + parseInt($(this).val());
-  $(cantidad).text(operacion);
-});
+// $(document).on('change', '#usado', function(){
+//   var obj = $(this).parents().get(1);
+//   var cantidad = $(obj).find('#presupuestado');
+//   var operacion = parseInt($(cantidad).text()) + parseInt($(this).val());
+//   $(cantidad).text(operacion);
+// });
 
-$(document).on('change', '#nuevo', function(){
-  var obj = $(this).parents().get(1);
-  var cantidad = $(obj).find('#presupuestado');
-  var operacion = parseInt($(cantidad).text()) - parseInt($(this).val());
-  $(cantidad).text(operacion);
-});
+// $(document).on('change', '#nuevo', function(){
+//   var obj = $(this).parents().get(1);
+//   var cantidad = $(obj).find('#presupuestado');
+//   var operacion = parseInt($(cantidad).text()) - parseInt($(this).val());
+//   $(cantidad).text(operacion);
+// });

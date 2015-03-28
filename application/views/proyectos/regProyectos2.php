@@ -75,6 +75,11 @@ endforeach;
 			});
 		}
 	});
+
+	$(document).on('change', '#field-fecha_entrega_asbuilt', function(){
+		var fecha_fin = $('#field-fecha_fin').val();
+		//if ()
+	});
 </script>
 </head>
 <body>

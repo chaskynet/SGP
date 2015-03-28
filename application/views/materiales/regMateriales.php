@@ -10,7 +10,7 @@ endforeach;
  foreach($js_files as $file): ?>
 	<script src="<?php echo $file; ?>"></script>
 <?php endforeach; ?>
-<link type="text/css" rel="stylesheet" href="<?php echo base_url(); ?>css/popup.css" />
+	<link type="text/css" rel="stylesheet" href="<?php echo base_url(); ?>css/popup.css" />
 	<script src="<?php echo base_url(); ?>assets/js/AjaxFileUploader/ajaxfileupload.js"></script>
 	<script src="<?php echo base_url(); ?>assets/js/funcionesJSimportaMaterial.js"></script>
 	<script type="text/javascript">
@@ -19,6 +19,14 @@ endforeach;
 	  							'<div class="fbutton">'+
 	  								'<div>'+
 	  									'<span>Importar desde Excel</span>'+
+	  								'</div>'+
+	  							'</div>'+
+	  						'</a>'+
+	  						'<div class="btnseparator"></div>'+
+	  						'<a id="fplantilla_materiales" href="<?php echo base_url();?>assets/plantillas/plantilla_materiales.xls">'+
+	  							'<div class="fbutton">'+
+	  								'<div>'+
+	  									'<span>Plantilla Excel</span>'+
 	  								'</div>'+
 	  							'</div>'+
 	  						'</a>');
@@ -39,9 +47,10 @@ endforeach;
     	<label for="archivo_subido">Archivo Subido: </label>
 		<span id="archivo_subido"></span>
 	</div>
-<div><h1>Registro de Materiales</h1><!--a href="#" id="fimportar">Importar desde archivo Excel</a></div-->
+
 <div>
-		<?php echo $output; ?>
+	<h1>Registro de Materiales</h1>
+	<?php echo $output; ?>
 </div>
 </body>
 </html>

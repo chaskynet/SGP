@@ -20,6 +20,14 @@ endforeach;
 	  									'<span>Importar desde Excel</span>'+
 	  								'</div>'+
 	  							'</div>'+
+	  						'</a>'+
+	  						'<div class="btnseparator"></div>'+
+	  						'<a id="fplantilla_manero_onra" href="<?php echo base_url();?>assets/plantillas/plantilla_mano_obra.xls">'+
+	  							'<div class="fbutton">'+
+	  								'<div>'+
+	  									'<span>Plantilla Excel</span>'+
+	  								'</div>'+
+	  							'</div>'+
 	  						'</a>');
 	});
 	</script>
@@ -37,11 +45,12 @@ endforeach;
     	<label for="archivo_subido">Archivo Subido: </label>
 		<span id="archivo_subido"></span>
 	</div>
-<div>
-	<h1>Registro de Mano de Obra</h1><!--a href="#" id="fimportar">Importar desde archivo Excel</a-->
-</div>
+
 
 <div>
+
+	<h1>Registro de Mano de Obra</h1>
+
 		<?php echo $output; ?>
 </div>
 </body>

@@ -111,13 +111,14 @@
 			<table id="cuerpo_tabla_unid" class="cuerpo_tabla_unid">
 				<thead>
 					<tr>
+						<th>Código Unidad</th>
 						<th>Código</th>
 						<th>Descripción</th>
 						<th>Unidad</th>
 						<th>Ref.</th>
 						<th>Pres.</th>
 						<th>Retirado</th>
-						<th>Usado</th>
+						<th>ReUsado</th>
 						<th>Nuevo</th>
 					</tr>
 				</thead>

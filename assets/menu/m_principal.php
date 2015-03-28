@@ -21,7 +21,6 @@
                     <li><a href="#" id="postergaProyecto">Postergar Proyectos</a></li>
                 </ul>
               </li>
-             
               <!--li class="dropdown">
                 <a href="#" style="color:#FFF" class="dropdown-toggle" data-toggle="dropdown" id="importdatos">Importar Datos<b class="caret"></b></a>
                 <ul class="dropdown-menu">
@@ -35,7 +34,8 @@
               <li class="dropdown">
                 <a href="#" style="color:#FFF" class="dropdown-toggle" data-toggle="dropdown" id="regconciliacion">Conciliación/Preliquidacion<b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                  <li><a href="#" id="regConciliar">Preliquidacion Proyectos</a></li>
+                  <li><a href="#" id="regPreliquidacion">Entrega de Proyectos</a></li>
+                  <li><a href="#" id="regInformePreliq">Informe Preliquidacion</a></li>
                 </ul>
               </li>
               <li class="dropdown">
@@ -66,6 +66,8 @@
                       <li class="divider"></li>
                       <li><a href="#" id="regUnidades2">Registro de Unidades desde Archivo</a></li>
                       <li><a href="#" id="regUnidades">Registro de Unidades Manual</a></li>
+                      <li class="divider"></li>
+                      <li><a href="#" id="regObservaciones">Registro de Observaciones</a></li>
                       <li class="divider"></li>
                       <li><a href="#" id="regUbicacionPostes">Registro de Ubicacion Postes</a></li>
                     </ul>

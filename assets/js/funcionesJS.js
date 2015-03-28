@@ -262,6 +262,41 @@ var iframePrioridadProyecto = function(){
        }
     });
 }
+//------- Pre-Liquidacion -------------------------------
+
+$(document).on('click', '#regPreliquidacion', function(){
+    iframePreliquidacion();
+});
+
+var iframePreliquidacion = function(){
+  $.ajax({
+       url: 'iframeRegPreliquidacion',
+      // data: data,
+       type: "GET",
+       //dataType: "html",
+       success: function(response)
+       {
+         $('#data').html(response);
+       }
+    });
+};
+
+$(document).on('click', '#regInformePreliq', function(){
+    iframeInfPreliquidacion();
+});
+
+var iframeInfPreliquidacion = function(){
+  $.ajax({
+       url: 'iframeRegInfPreliquidacion',
+      // data: data,
+       type: "GET",
+       //dataType: "html",
+       success: function(response)
+       {
+         $('#data').html(response);
+       }
+    });
+};
 
 //------- Importacion de Datos desde Archivo ------------
 $(document).on("click", "#regAdjuntar", function(){
@@ -276,3 +311,21 @@ $(document).on("click", "#regAdjuntar", function(){
        }
     });
 });
+
+//------------ Registro Observaciones del SUpervisor -------
+$(document).on('click', '#regObservaciones', function(){
+  iframeObservaciones();
+});
+
+var iframeObservaciones = function(){
+  $.ajax({
+       url: 'iframeRegObseraciones',
+      // data: data,
+       type: "GET",
+       //dataType: "html",
+       success: function(response)
+       {
+         $('#data').html(response);
+       }
+    });
+}

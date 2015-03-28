@@ -116,6 +116,7 @@ $(document).on('click', '#guardar', function(){
 
     unidad.cod_unidad = cod_unidad;
     unidad.desc_unidad = desc_unidad;
+    unidad.fecha_inicio_vigencia = fecha_inicio_vigencia;
     unidad.codigo = $(this).find('#codigo').text();
     unidad.descripcion = $(this).find('#descripcion').text();
     unidad.cantidad = $(this).find('#cantidad').val();
@@ -135,12 +136,13 @@ $(document).on('click', '#guardar', function(){
         },
         success: function(response)
         {
-          alert('La Unidad se guardo correctamente!');
-          $('#codigo_unidad').val('');
-          $('#desc_unidad').val('');
-          
-          $('#cuerpo_tabla_unidad tbody').empty();
-          carga_unidades();
+          alert(response);
+          // alert('La Unidad se guardo correctamente!');
+          // $('#codigo_unidad').val('');
+          // $('#desc_unidad').val('');
+          // $('#fecha_inicio_vigencia').val('');
+          // $('#cuerpo_tabla_unidad tbody').empty();
+          // carga_unidades();
         }
     });
   
@@ -207,16 +209,30 @@ $(document).on('click', '#unidad', function(){
   //------ Trae las unidades asociadas ----//
   $.ajax({
       url: 'trae_elementos_de_unidad',
-            data: {dato: tmp},
-            type: "POST",
-            dataType: "html",
-            error: function()
-            {
-                alert('Error al calcular Sub Proyectos!');
-            },
-            success: function(response)
-            {
-              $("#cuerpo_tabla_unidad tbody").html(response);
-            }
+      data: {dato: tmp},
+      type: "POST",
+      dataType: "html",
+      error: function()
+      {
+          alert('Error al calcular Sub Proyectos!');
+      },
+      success: function(response)
+      {
+        $("#cuerpo_tabla_unidad tbody").html(response);
+      }
     });
+  //------ Trae la fecha de Inicio de Vigencia ---//
+  $.ajax({
+      url: 'trea_fecha_inicio_vigencia',
+      data: {codigo:tmp},
+      type: 'POST',
+      dataType: 'html',
+      error: function()
+      {
+        alert('Error al trear la fecha de Vigencia');
+      },
+      success: function(response){
+          $('#fecha_inicio_vigencia').val(response);
+      }
+  });
 });

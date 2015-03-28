@@ -21,6 +21,14 @@ endforeach;
 	  									'<span>Importar desde Excel</span>'+
 	  								'</div>'+
 	  							'</div>'+
+	  						'</a>'+
+	  						'<div class="btnseparator"></div>'+
+	  						'<a id="fplantilla_unidades" href="<?php echo base_url();?>assets/plantillas/plantilla_unidades.xls">'+
+	  							'<div class="fbutton">'+
+	  								'<div>'+
+	  									'<span>Plantilla Excel</span>'+
+	  								'</div>'+
+	  							'</div>'+
 	  						'</a>');
 	});
 	</script>

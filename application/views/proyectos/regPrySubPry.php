@@ -58,6 +58,57 @@
 		<span id="archivo_subido_presu_materiales"></span>
 	</div>
 <!-- Fin ventana Importacion de Presupuesto de Materiales -->
+<!-- Ventana para mostrar datos de Presupuesto Mano de Obra -->
+	<div id="datos_presu_mano_obra" class="messagepop pop">
+		<div class="tabla-cabecera">
+			<div class="fila_cabecera">
+				<!--div class="columna chk"><input type="checkbox" id="checkAll" onclick="elijeTodosChk();"></div-->
+				<div class="columna">Nro.</div>
+				<div class="columna">Proyecto</div>
+				<div class="columna">Sub Proyecto</div>
+				
+				<div class="columna">Id Producto</div>
+				<div class="columna">Codigo</div>
+				<div class="columna">Descripcion</div>
+				<div class="columna">Presupuestado</div>
+				<div class="columna">Incremento</div>
+				<div class="columna">Decremento</div>
+				<div class="columna">Cantidad</div>
+				<div class="columna">Precio</div>
+				<div class="columna">Total</div>
+			</div>
+		</div>	
+		<div class="cuerpo" id="cuerpo">
+				<div class="tabla" id="tabla_ele_presu_mate">
+				</div>
+		</div>	
+	</div>
+<!-- FIN Ventana para mostrar datos de Presupuestos Mano de Obra-->
+<!-- Ventana para mostrar datos de Presupuesto Materiales -->
+	<div id="datos_presu_materiales" class="messagepop pop">
+		<div class="tabla-cabecera">
+			<div class="fila_cabecera">
+				<!--div class="columna chk"><input type="checkbox" id="checkAll" onclick="elijeTodosChk();"></div-->
+				<div class="columna">Nro.</div>
+				<div class="columna">Proyecto</div>
+				<div class="columna">Sub Proyecto</div>
+				
+				<div class="columna">Tipo</div>
+				<div class="columna">Codigo</div>
+				<div class="columna">Producto</div>
+				<div class="columna">Descripcion</div>
+				<div class="columna">Unidad</div>
+				<div class="columna">Cantidad</div>
+				<div class="columna">Estado</div>
+				
+			</div>
+		</div>	
+		<div class="cuerpo" id="cuerpo">
+				<div class="tabla" id="tabla_ele_presu_mate">
+				</div>
+		</div>	
+	</div>
+<!-- FIN Ventana para mostrar datos de Presupuestos Materiales-->
 	<div>
 		<center>
 			<h1>Adicion de Unidades a Proyecto - SubProyecto</h1>
@@ -65,7 +116,6 @@
 	</div>
 	<div id="cabecera">
 		<table>
-		
 			<tr>
 				<td>Codigo de Proyecto *: </td>
 				<td>
@@ -80,6 +130,26 @@
 					
 					<select id="codigo_subproyecto">
 						<option></option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					# Cuenta *: 
+				</td>
+				<td id="cuenta">
+					
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Propietario *: 
+				</td>
+				<td>
+					<select id="propietario">
+						<option></option>
+						<option>ELFEC</option>
+						<option>CLIENTE</option>
 					</select>
 				</td>
 			</tr>

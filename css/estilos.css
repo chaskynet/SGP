@@ -14,8 +14,14 @@ body{
 	float:right;
 	margin-top: 20px;
 }
+
 #cabecera{
 	width: 50%;	
+	float: left;
+}
+
+.cabecera_preliquidacion{
+	width: 65%;	
 	float: left;
 }
 
@@ -28,6 +34,12 @@ body{
 	width: 50%;
 	float: right;
 }
+
+#lista_proyectos_preliquidacion{
+	width: 25%;
+	float: right;
+}
+
 .lupa {
 	max-width: 20px;
 	height: 20px;
